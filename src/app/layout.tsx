@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { DemoAuthProvider } from "@/lib/demo/auth";
 import "./globals.css";
 
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
 export const metadata: Metadata = {
-  title: "Sending Church",
-  description: "A church that sends people into the world with the gospel.",
+  title: "Sending",
+  description:
+    "Save the Lost. Train the Saved. Send the Trained. A simple church movement starting in Frisco, TX.",
 };
 
 export default function RootLayout({
@@ -13,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className={`${inter.variable} ${inter.className} antialiased`}>
+        <DemoAuthProvider>{children}</DemoAuthProvider>
+      </body>
     </html>
   );
 }

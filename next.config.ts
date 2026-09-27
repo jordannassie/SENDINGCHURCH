@@ -1,5 +1,19 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  agentRules: false,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "eeeprmtermreavivzswn.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+    ],
+  },
+};
 
 export default nextConfig;
