@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { SENDING_LOGO } from "@/components/brand/Logo";
 import { DemoAuthProvider } from "@/lib/demo/auth";
 import "./globals.css";
 
@@ -12,6 +13,10 @@ export const metadata: Metadata = {
   title: "Sending",
   description:
     "Save the Lost. Train the Saved. Send the Trained. A simple church movement starting in Frisco, TX.",
+  icons: {
+    icon: SENDING_LOGO,
+    apple: SENDING_LOGO,
+  },
 };
 
 export default function RootLayout({
