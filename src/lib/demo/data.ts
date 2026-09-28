@@ -194,6 +194,8 @@ export const PASTORS = {
   susieImage:
     "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Jordan/Susie2.png",
   giveUrl: "https://give.tithe.ly/?formId=d5d258dc-6865-11ee-90fc-1260ab546d11",
+  tithelyLogo:
+    "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/61fbe41d8e639d18d7c516b7_be57441f903d5eb3a34d0c9563110b0d_Logomark.svg",
   address: "1 Cowboys Way, Frisco, TX 75034",
   phone: "949-331-6367",
   phoneHref: "tel:9493316367",

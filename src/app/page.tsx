@@ -8,7 +8,6 @@ import {
   Church,
   Droplets,
   Globe,
-  Heart,
   MapPin,
   Phone,
   Radio,
@@ -293,10 +292,14 @@ export default function HomePage() {
               </p>
             </div>
             <div className="mt-8">
-              <Button href={PASTORS.giveUrl}>
-                Give
-                <Heart size={15} />
-              </Button>
+              <div className="flex flex-wrap items-center gap-3">
+                <Button href={PASTORS.giveUrl}>Give</Button>
+                <img
+                  src={PASTORS.tithelyLogo}
+                  alt="Tithe.ly"
+                  className="h-6 w-auto"
+                />
+              </div>
               <p className="mt-3.5 max-w-[420px] text-[13px] leading-relaxed text-[#999]">
                 Your gift is tax-deductible and processed through Daily Church,
                 a 501(c)(3) nonprofit ministry. EIN: 84-2372867
