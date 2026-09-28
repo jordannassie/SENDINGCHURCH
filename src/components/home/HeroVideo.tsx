@@ -79,7 +79,7 @@ export function HeroVideo() {
           <button
             type="button"
             onClick={toggleSound}
-            className={`absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full ${
+            className={`absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full ${
               muted ? "bg-[#ff2d2d]" : "bg-[#22c55e]"
             }`}
             aria-label={muted ? "Turn sound on" : "Turn sound off"}
