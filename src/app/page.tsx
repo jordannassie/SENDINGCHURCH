@@ -253,7 +253,7 @@ export default function HomePage() {
                   alt="Pastor Jordan"
                   width={320}
                   height={320}
-                  className="h-40 w-40 object-cover object-[center_18%] sm:h-52 sm:w-52"
+                  className="h-40 w-40 object-cover object-center sm:h-52 sm:w-52"
                 />
               </div>
               <div className="relative z-20 -ml-8 overflow-hidden rounded-full border-4 border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:-ml-10">
@@ -262,25 +262,23 @@ export default function HomePage() {
                   alt="Susie"
                   width={320}
                   height={320}
-                  className="h-40 w-40 object-cover object-[center_22%] sm:h-52 sm:w-52"
+                  className="h-40 w-40 object-cover object-center sm:h-52 sm:w-52"
                 />
               </div>
             </div>
           </div>
 
           <div>
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-              {PASTORS.church}
-            </p>
-            <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+            <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
               Pastor Jordan and Susie
             </h2>
             <p className="mt-5 text-base leading-relaxed text-[#666]">
-              Sent by NAMB and the Southern Baptists, Jordan and Susie have
-              planted 180 churches in 23 nations. They have led over 2 million
-              people to Christ and have a passion to bring Jesus to more people
-              by empowering Christians to start Bible groups in their city,
-              village, and daily life.
+              Jordan and Susie have spent their lives helping people know Jesus,
+              start churches, and reach their communities. Together, they have
+              helped plant 180 churches across 23 nations and have seen more
+              than 2 million people make decisions for Christ. Their passion is
+              simple: help everyday Christians share Jesus, make disciples, and
+              start simple Bible-centered churches wherever they live.
             </p>
             <div className="mt-6 space-y-3 text-sm text-[#444]">
               <p className="flex items-center gap-2">
@@ -299,6 +297,10 @@ export default function HomePage() {
                 Give
                 <Heart size={15} />
               </Button>
+              <p className="mt-3.5 max-w-[420px] text-[13px] leading-relaxed text-[#999]">
+                Your gift is tax-deductible and processed through Daily Church,
+                a 501(c)(3) nonprofit ministry. EIN: 84-2372867
+              </p>
             </div>
           </div>
         </div>
