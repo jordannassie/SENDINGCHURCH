@@ -38,39 +38,34 @@ export const HOW_IT_WORKS = [
 export const GATHERING_STEPS = [
   {
     time: "0–5 min",
-    part: "WELCOME + MISSION",
-    happens:
-      "Welcome everyone, introduce new people, and repeat the mission: Save the Lost. Train the Saved. Send the Trained.",
+    part: "WELCOME",
+    happens: "Welcome people and repeat the mission: Save. Train. Send.",
   },
   {
     time: "5–10 min",
     part: "STORIES",
-    happens:
-      "Share 1–2 quick stories: Who did you reach? Who did you invite? What did God do this week?",
+    happens: "Share one or two quick stories of what God did this week.",
   },
   {
     time: "10–40 min",
-    part: "THE WORD",
-    happens:
-      "Spend 30 minutes in Scripture. Read through a passage or chapter and teach it simply, book by book.",
+    part: "WORD",
+    happens: "Read and teach Scripture together.",
   },
   {
     time: "40–50 min",
     part: "DISCUSS",
-    happens:
-      "Ask: What does this teach us about God? What does it teach us about us? What is God asking us to do?",
+    happens: "Talk about what the passage means and what God is saying.",
   },
   {
     time: "50–55 min",
-    part: "OBEY + SEND",
+    part: "SEND",
     happens:
-      "Ask: How will you obey what God showed you today? Who will you reach, invite, train, or encourage this week? Is God calling you to start another Sending Church?",
+      "Decide how you will obey, who you will reach, and where you may start next.",
   },
   {
     time: "55–60 min",
-    part: "PRAY + SEND OUT",
-    happens:
-      "Pray for one another, for people being reached, and for new Sending Churches to start.",
+    part: "PRAY",
+    happens: "Pray for one another and send everyone out on mission.",
   },
 ] as const;
 

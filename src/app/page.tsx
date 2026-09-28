@@ -73,8 +73,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <HeroVideo />
-
       <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-8 sm:grid-cols-3 lg:grid-cols-5">
         {IMPACT_STATS.map((stat, index) => {
           const Icon = IMPACT_ICONS[index];
@@ -87,6 +85,8 @@ export default function HomePage() {
           );
         })}
       </section>
+
+      <HeroVideo />
 
       <section id="vision" className="mx-auto max-w-6xl px-5 py-16">
         <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
@@ -157,11 +157,11 @@ export default function HomePage() {
             {GATHERING_STEPS.map((row) => (
               <div
                 key={row.time}
-                className="grid gap-2 border-t border-[#f0f0f0] px-6 py-5 md:grid-cols-[140px_220px_1fr] md:items-start"
+                className="grid gap-1 border-t border-[#f0f0f0] px-6 py-3.5 md:grid-cols-[140px_220px_1fr] md:items-center"
               >
                 <p className="text-sm font-medium text-[var(--sending-orange)]">{row.time}</p>
                 <p className="text-sm font-semibold tracking-wide">{row.part}</p>
-                <p className="text-sm leading-relaxed text-[#666]">{row.happens}</p>
+                <p className="text-sm leading-snug text-[#666] md:whitespace-nowrap">{row.happens}</p>
               </div>
             ))}
           </div>
