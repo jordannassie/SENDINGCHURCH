@@ -188,4 +188,4 @@ export const STORIES = [
 ] as const;
 
 export const STAR_IMAGE =
-  "https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&w=1600&q=80";
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/the-star_entertainment-district_00009.jpg";
