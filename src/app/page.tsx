@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { preload } from "react-dom";
 import {
   ArrowRight,
   BookOpen,
@@ -19,6 +20,7 @@ import { Button } from "@/components/ui/Button";
 import {
   GATHERING_STEPS,
   HERO_IMAGE,
+  HERO_VIDEO,
   HOW_IT_WORKS,
   IMPACT_STATS,
   STAR_IMAGE,
@@ -30,8 +32,11 @@ const IMPACT_ICONS = [Church, Globe, Users, Droplets, Radio];
 const STEP_ICONS = [Users, BookOpen, Send];
 
 export default function HomePage() {
+  preload(HERO_VIDEO, { as: "video" });
+
   return (
     <div className="bg-white">
+      <link rel="preload" as="video" href={HERO_VIDEO} type="video/quicktime" />
       <SiteHeader />
 
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 lg:grid-cols-[1fr_1.15fr] lg:py-16">
