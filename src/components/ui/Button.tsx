@@ -21,11 +21,24 @@ export function Button({
   variant = "primary",
   className = "",
 }: ButtonProps) {
+  const classes = `inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-colors ${variants[variant]} ${className}`;
+  const external = href.startsWith("http://") || href.startsWith("https://");
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-5 py-3 text-sm font-medium transition-colors ${variants[variant]} ${className}`}
-    >
+    <Link href={href} className={classes}>
       {children}
     </Link>
   );

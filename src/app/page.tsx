@@ -8,7 +8,9 @@ import {
   Church,
   Droplets,
   Globe,
+  Heart,
   MapPin,
+  Phone,
   Radio,
   Send,
   Users,
@@ -23,6 +25,7 @@ import {
   HERO_VIDEO,
   HOW_IT_WORKS,
   IMPACT_STATS,
+  PASTORS,
   STAR_IMAGE,
   START_FLOW,
   STORIES,
@@ -228,7 +231,7 @@ export default function HomePage() {
             </p>
             <p className="flex items-center gap-2">
               <MapPin size={16} className="text-[var(--sending-orange)]" />
-              The Star · Frisco, TX
+              The Star · {PASTORS.address}
             </p>
           </div>
           <div className="mt-8">
@@ -240,7 +243,68 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="stories" className="bg-[#fafafa] py-20">
+      <section id="pastors" className="bg-[#fafafa] py-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="flex items-center justify-center">
+            <div className="flex items-end">
+              <div className="relative z-10 overflow-hidden rounded-full border-4 border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
+                <Image
+                  src={PASTORS.jordanImage}
+                  alt="Pastor Jordan"
+                  width={320}
+                  height={320}
+                  className="h-40 w-40 object-cover object-[center_18%] sm:h-52 sm:w-52"
+                />
+              </div>
+              <div className="relative z-20 -ml-8 overflow-hidden rounded-full border-4 border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:-ml-10">
+                <Image
+                  src={PASTORS.susieImage}
+                  alt="Susie"
+                  width={320}
+                  height={320}
+                  className="h-40 w-40 object-cover object-[center_22%] sm:h-52 sm:w-52"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
+              {PASTORS.church}
+            </p>
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+              Pastor Jordan and Susie
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-[#666]">
+              Sent by NAMB and the Southern Baptists, Jordan and Susie have
+              planted 180 churches in 23 nations. They have led over 2 million
+              people to Christ and have a passion to bring Jesus to more people
+              by empowering Christians to start Bible groups in their city,
+              village, and daily life.
+            </p>
+            <div className="mt-6 space-y-3 text-sm text-[#444]">
+              <p className="flex items-center gap-2">
+                <MapPin size={16} className="text-[var(--sending-orange)]" />
+                {PASTORS.address}
+              </p>
+              <p className="flex items-center gap-2">
+                <Phone size={16} className="text-[var(--sending-orange)]" />
+                <a href={PASTORS.phoneHref} className="hover:text-[#111]">
+                  {PASTORS.phone}
+                </a>
+              </p>
+            </div>
+            <div className="mt-8">
+              <Button href={PASTORS.giveUrl}>
+                Give
+                <Heart size={15} />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stories" className="py-20">
         <div className="mx-auto max-w-6xl px-5">
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">Stories</p>
           <h2 className="mt-3 text-4xl font-semibold tracking-tight">Ordinary people. New churches.</h2>

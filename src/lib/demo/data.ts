@@ -187,3 +187,15 @@ export const STORIES = [
 
 export const STAR_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/the-star_entertainment-district_00009.jpg";
+
+export const PASTORS = {
+  jordanImage:
+    "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Jordan/jordan1.png",
+  susieImage:
+    "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Jordan/Susie1.png",
+  giveUrl: "https://give.tithe.ly/?formId=d5d258dc-6865-11ee-90fc-1260ab546d11",
+  church: "Daily Churches",
+  address: "1 Cowboys Way, Frisco, TX 75034",
+  phone: "949-331-6367",
+  phoneHref: "tel:9493316367",
+} as const;
