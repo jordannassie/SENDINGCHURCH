@@ -12,6 +12,7 @@ import {
   Send,
   Users,
 } from "lucide-react";
+import { HeroVideo } from "@/components/home/HeroVideo";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
@@ -66,6 +67,8 @@ export default function HomePage() {
           />
         </div>
       </section>
+
+      <HeroVideo />
 
       <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-8 sm:grid-cols-3 lg:grid-cols-5">
         {IMPACT_STATS.map((stat, index) => {

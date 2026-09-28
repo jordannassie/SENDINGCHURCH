@@ -1,6 +1,9 @@
 export const HERO_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/8a25b7cc-e852-4e7b-a895-adfff22a453c.jpg";
 
+export const HERO_VIDEO =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/video/Sending%20church.mov";
+
 export const DEMO_USER = {
   name: "Jordan",
   church: "Frisco, TX",
