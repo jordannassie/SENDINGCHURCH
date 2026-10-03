@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { HowItWorks } from "@/components/home/HowItWorks";
+import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
@@ -311,6 +312,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <WorldGlobe />
 
       <section id="stories" className="py-20">
         <div className="mx-auto max-w-6xl px-5">
