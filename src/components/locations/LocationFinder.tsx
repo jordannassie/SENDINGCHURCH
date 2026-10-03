@@ -1,24 +1,18 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  getLocations,
-  searchLocations,
-  type LocationFilter,
-} from "@/lib/locations";
+import { getLocations, searchLocations } from "@/lib/locations";
 import { EmptyLocationCTA } from "./EmptyLocationCTA";
 import { LocationCard } from "./LocationCard";
-import { LocationFilters } from "./LocationFilters";
 import { LocationSearch } from "./LocationSearch";
 
 export function LocationFinder() {
   const [query, setQuery] = useState("");
   const [submittedQuery, setSubmittedQuery] = useState("");
-  const [filter, setFilter] = useState<LocationFilter>("nearest");
 
   const result = useMemo(
-    () => searchLocations(getLocations(), submittedQuery, filter),
-    [submittedQuery, filter],
+    () => searchLocations(getLocations(), submittedQuery, "nearest"),
+    [submittedQuery],
   );
 
   return (
@@ -28,12 +22,8 @@ export function LocationFinder() {
           Find a Sending Church
         </p>
         <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-          Find Training and Church Near You
+          Find a Church Near You
         </h2>
-        <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
-          Enter your city or ZIP code to find the nearest Sending Church,
-          upcoming training, and Sunday gathering.
-        </p>
 
         <LocationSearch
           query={query}
@@ -43,7 +33,6 @@ export function LocationFinder() {
             setSubmittedQuery(value);
           }}
         />
-        <LocationFilters value={filter} onChange={setFilter} />
 
         <div className="mt-8 space-y-5">
           {result.locations.map((location) => (

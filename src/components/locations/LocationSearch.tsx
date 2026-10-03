@@ -1,4 +1,4 @@
-import { ArrowRight, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 type LocationSearchProps = {
   query: string;
@@ -39,8 +39,7 @@ export function LocationSearch({
         type="submit"
         className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-orange)] px-6 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] sm:w-auto"
       >
-        Find Locations
-        <ArrowRight size={15} />
+        Find
       </button>
     </form>
   );
