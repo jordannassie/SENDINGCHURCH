@@ -39,6 +39,9 @@ export function SiteHeader() {
             href="/login"
             className="hidden items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white md:inline-flex"
           >
+            Join the Team
+            <ArrowRight size={14} />
+          </Link>
           <button
             type="button"
             className="rounded-full p-2 text-[#111] md:hidden"
