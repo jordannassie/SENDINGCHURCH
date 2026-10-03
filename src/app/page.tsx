@@ -23,6 +23,7 @@ import {
   HERO_VIDEO,
   IMPACT_STATS,
   PASTORS,
+  OMNI_IMAGE,
   STAR_IMAGE,
   START_FLOW,
   START_WITH_TWO_IMAGE,
@@ -181,14 +182,25 @@ export default function HomePage() {
       </section>
 
       <section id="launch-hub" className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-20 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-[28px]">
-          <Image
-            src={STAR_IMAGE}
-            alt="The Star in Frisco"
-            width={1400}
-            height={900}
-            className="h-full min-h-[280px] w-full object-cover"
-          />
+        <div>
+          <div className="overflow-hidden rounded-[28px]">
+            <Image
+              src={STAR_IMAGE}
+              alt="The Star in Frisco"
+              width={1400}
+              height={900}
+              className="h-full min-h-[280px] w-full object-cover"
+            />
+          </div>
+          <div className="mt-4 w-[68%] overflow-hidden rounded-[22px]">
+            <Image
+              src={OMNI_IMAGE}
+              alt="Omni Coffee Shop"
+              width={900}
+              height={600}
+              className="h-40 w-full object-cover sm:h-44"
+            />
+          </div>
         </div>
         <div>
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
@@ -202,11 +214,23 @@ export default function HomePage() {
             where we are building, testing, and multiplying the Sending Church
             model.
           </p>
-          <div className="mt-6 space-y-3 text-sm text-[#444]">
-            <p className="flex items-center gap-2">
-              <Calendar size={16} className="text-[var(--sending-orange)]" />
-              Sunday Gathering · 9:00 AM – 10:00 AM
-            </p>
+          <div className="mt-6 space-y-4 text-sm text-[#444]">
+            <div>
+              <p className="flex items-center gap-2 font-medium">
+                <Calendar size={16} className="text-[var(--sending-orange)]" />
+                Sunday Gathering
+              </p>
+              <div className="mt-3 space-y-3 pl-6">
+                <div>
+                  <p className="font-medium text-[#111]">1 Hour Training</p>
+                  <p className="mt-0.5 text-[var(--sending-orange)]">8:00–9:00 AM</p>
+                </div>
+                <div>
+                  <p className="font-medium text-[#111]">1 Hour Church</p>
+                  <p className="mt-0.5 text-[var(--sending-orange)]">9:00–10:00 AM</p>
+                </div>
+              </div>
+            </div>
             <p className="flex items-center gap-2">
               <MapPin size={16} className="text-[var(--sending-orange)]" />
               The Star · {PASTORS.address}
