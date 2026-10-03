@@ -23,19 +23,25 @@ const PHASE_STYLES = {
 const SUNDAY_PARTS = [
   {
     label: "Part 1",
-    title: "12-Week Training",
+    title: "12-Week Sending Training",
+    lead: "Get equipped to be sent.",
     time: "8:00–9:00 AM",
-    badge: "$497 Training",
-    body: "Get trained for ministry, learn the Sending model, and be equipped to be sent out.",
+    badge: "$497",
+    body: "Get trained for ministry, learn the Sending model, and prepare to make disciples and start a Sending Church.",
+    status: "",
     icon: Users,
+    accent: "training",
   },
   {
     label: "Part 2",
-    title: "1-Hour Church",
+    title: "Sending Church",
+    lead: "Come as you are. Come and grow.",
     time: "9:00–10:00 AM",
     badge: "",
-    body: "You’re invited to church. Read through the Bible chapter by chapter in a simple, repeatable gathering anyone can lead.",
+    body: "Learn about Jesus and the Bible, ask questions, receive prayer, build friendships, and grow in faith together.",
+    status: "Free — Everyone is welcome. Just show up.",
     icon: BookOpen,
+    accent: "church",
   },
 ] as const;
 
@@ -67,15 +73,30 @@ export function HowItWorks() {
                 {part.label}
               </p>
               <div className="mt-4 flex items-start gap-4">
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
+                <span
+                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
+                    part.accent === "church"
+                      ? "bg-[#111] text-white"
+                      : "bg-[#fff4ec] text-[var(--sending-orange)]"
+                  }`}
+                >
                   <Icon size={20} />
                 </span>
                 <div>
                   <h3 className="text-2xl font-semibold tracking-tight sm:text-[28px]">
                     {part.title}
                   </h3>
-                  <p className="mt-1 text-sm font-medium text-[var(--sending-orange)]">
+                  <p
+                    className={`mt-1 text-sm font-medium ${
+                      part.accent === "church"
+                        ? "text-[#111]"
+                        : "text-[var(--sending-orange)]"
+                    }`}
+                  >
                     {part.time}
+                  </p>
+                  <p className="mt-2 text-sm font-medium text-[#111]">
+                    {part.lead}
                   </p>
                   {part.badge ? (
                     <p className="mt-3 inline-flex rounded-full bg-[#fff4ec] px-3 py-1 text-sm font-medium text-[var(--sending-orange)]">
@@ -85,6 +106,16 @@ export function HowItWorks() {
                   <p className="mt-3 max-w-md text-base leading-relaxed text-[#666]">
                     {part.body}
                   </p>
+                  {part.status ? (
+                    <>
+                      <p className="mt-3 text-sm font-semibold tracking-tight text-[#111]">
+                        {part.status}
+                      </p>
+                      <p className="mt-1 text-sm text-[#777]">
+                        No experience required. No registration required.
+                      </p>
+                    </>
+                  ) : null}
                 </div>
               </div>
             </div>

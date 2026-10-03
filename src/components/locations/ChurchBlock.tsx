@@ -12,15 +12,18 @@ export function ChurchBlock({ location }: { location: SendingLocation }) {
       <h4 className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
         Sending Church
       </h4>
-      <div className="mt-2 space-y-2 text-sm leading-relaxed text-[#666]">
-        <p>Come and grow in faith.</p>
-        <p>
-          Learn about Jesus and the Bible, ask honest questions, receive
-          prayer, and grow together in a simple church gathering.
-        </p>
-      </div>
+      <p className="mt-2 text-sm font-medium text-[#111]">
+        Come as you are. Come and grow.
+      </p>
+      <p className="mt-2 text-sm leading-relaxed text-[#666]">
+        Learn about Jesus and the Bible, ask questions, receive prayer, build
+        friendships, and grow in faith together.
+      </p>
       <p className="mt-4 text-base font-semibold tracking-tight text-[#111]">
-        Free — Just show up.
+        Free — Everyone is welcome. Just show up.
+      </p>
+      <p className="mt-1 text-sm text-[#777]">
+        No experience required. No registration required.
       </p>
     </div>
   );

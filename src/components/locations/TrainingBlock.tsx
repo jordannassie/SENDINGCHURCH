@@ -14,9 +14,12 @@ export function TrainingBlock({ location }: { location: SendingLocation }) {
       <h4 className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
         12-Week Sending Training
       </h4>
+      <p className="mt-2 text-sm font-medium text-[#111]">
+        Get equipped to be sent.
+      </p>
       <p className="mt-2 text-sm leading-relaxed text-[#666]">
-        Get trained for ministry, learn the Sending model, and be equipped to be
-        sent.
+        Get trained for ministry, learn the Sending model, and prepare to make
+        disciples and start a Sending Church.
       </p>
       <p className="mt-3 text-lg font-semibold tracking-tight text-[#111]">
         ${location.training_price}
