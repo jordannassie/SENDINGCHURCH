@@ -31,7 +31,6 @@ import {
   STAR_IMAGE,
   START_FLOW,
   START_WITH_TWO_IMAGE,
-  STORIES,
 } from "@/lib/demo/data";
 
 const IMPACT_ICONS = [Church, Globe, Users, Droplets, Radio];
@@ -308,26 +307,6 @@ export default function HomePage() {
       </section>
 
       <WorldGlobe />
-
-      <section id="stories" className="py-20">
-        <div className="mx-auto max-w-6xl px-5">
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">Stories</p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight">Ordinary people. New churches.</h2>
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
-            {STORIES.map((story) => (
-              <blockquote
-                key={story.name}
-                className="rounded-3xl border border-[#eee] bg-white p-7"
-              >
-                <p className="text-base leading-relaxed text-[#333]">“{story.quote}”</p>
-                <footer className="mt-5 text-sm text-[#777]">
-                  {story.name} · {story.city}
-                </footer>
-              </blockquote>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <section className="bg-[var(--sending-orange)]">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center">
