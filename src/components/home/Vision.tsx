@@ -9,7 +9,7 @@ export function WhySending() {
 }
 
 export function Vision() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<"why" | "faith" | null>(null);
 
   return (
     <section id="vision" className="bg-[var(--sending-orange)]">
@@ -25,21 +25,53 @@ export function Vision() {
           Ordinary people can start a Sending Church anywhere.
         </p>
 
-        <button
-          type="button"
-          aria-expanded={open}
-          aria-controls="why-sending"
-          onClick={() => setOpen((value) => !value)}
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
-        >
-          Why Sending
-          <ChevronDown
-            size={16}
-            className={`transition-transform ${open ? "rotate-180" : ""}`}
-          />
-        </button>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <button
+            type="button"
+            aria-expanded={open === "why"}
+            aria-controls="why-sending"
+            onClick={() => setOpen((value) => (value === "why" ? null : "why"))}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
+          >
+            Why Sending
+            <ChevronDown
+              size={16}
+              className={`transition-transform ${open === "why" ? "rotate-180" : ""}`}
+            />
+          </button>
+          <button
+            type="button"
+            aria-expanded={open === "faith"}
+            aria-controls="statement-of-faith"
+            onClick={() => setOpen((value) => (value === "faith" ? null : "faith"))}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
+          >
+            Statement of Faith
+            <ChevronDown
+              size={16}
+              className={`transition-transform ${open === "faith" ? "rotate-180" : ""}`}
+            />
+          </button>
+        </div>
 
-        {open ? (
+        {open === "faith" ? (
+          <div id="statement-of-faith" className="mt-10 max-w-2xl">
+            <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
+              Statement of Faith
+            </p>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+              What We Believe
+            </h3>
+            <p className="mt-4 text-base leading-relaxed text-white/90">
+              We believe the Bible is the Word of God. We believe Jesus Christ
+              is the Son of God, that He died for our sins and rose again, and
+              that salvation is by grace through faith in Him alone. We believe
+              the Church is sent to make disciples of all nations.
+            </p>
+          </div>
+        ) : null}
+
+        {open === "why" ? (
           <div id="why-sending" className="mt-10">
             <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
               Why Sending
