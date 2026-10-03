@@ -30,7 +30,7 @@ export const FRISCO_LOCATION: SendingLocation = {
   church_end_time: "10:00 AM",
   church_capacity: 80,
   join_training_url: "/login",
-  attend_church_url: "/login",
+  attend_church_url: "/#sunday",
   generation: 1,
   parent_location_id: null,
 };

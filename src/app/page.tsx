@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { HowItWorks } from "@/components/home/HowItWorks";
+import { NotInFrisco } from "@/components/home/NotInFrisco";
+import { StartHere } from "@/components/home/StartHere";
+import { SundayRsvp } from "@/components/home/SundayRsvp";
 import { WhySending } from "@/components/home/Vision";
 import { WhyWeExist } from "@/components/home/WhyWeExist";
 import { LocationFinder } from "@/components/locations/LocationFinder";
@@ -50,20 +53,28 @@ export default function HomePage() {
             <br />
             Send the Saved.
           </h1>
-          <p className="mt-6 max-w-md text-base leading-relaxed text-[#6b6b6b]">
-            A simple church movement built to save people, train believers, and
-            send ordinary people to start churches anywhere.
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-[#6b6b6b]">
+            A simple church movement where you can know Jesus, grow in your
+            faith, find community, and when you’re ready, be equipped to help
+            others do the same.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="/login">
-              Join the Frisco Team
+            <Button href="/#sunday" className="w-full sm:w-auto">
+              Come This Sunday
               <ArrowRight size={15} />
             </Button>
-            <Button href="/login" variant="secondary">
-              Start a Sending Church
+            <Button
+              href="/#how-it-works"
+              variant="secondary"
+              className="w-full sm:w-auto"
+            >
+              See How Sending Works
               <ArrowRight size={15} />
             </Button>
           </div>
+          <p className="mt-4 text-sm text-[#777]">
+            Free • Everyone is welcome • No experience required
+          </p>
         </div>
         <div className="overflow-hidden rounded-[28px]">
           <Image
@@ -76,6 +87,8 @@ export default function HomePage() {
           />
         </div>
       </section>
+
+      <StartHere />
 
       <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-8 sm:grid-cols-3 lg:grid-cols-5">
         {IMPACT_STATS.map((stat, index) => {
@@ -99,6 +112,8 @@ export default function HomePage() {
       <HowItWorks />
 
       <LocationFinder />
+
+      <SundayRsvp />
 
       <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-5">
@@ -167,7 +182,7 @@ export default function HomePage() {
             ))}
           </div>
           <div className="mt-8">
-            <Button href="/login">
+            <Button href="/login" className="w-full sm:w-auto">
               Start a Sending Church
               <ArrowRight size={15} />
             </Button>
@@ -216,12 +231,12 @@ export default function HomePage() {
               </p>
               <div className="mt-3 space-y-3 pl-6">
                 <div>
-                  <p className="font-medium text-[#111]">1 Hour Training</p>
+                  <p className="font-medium text-[#111]">12-Week Training</p>
                   <p className="mt-0.5 text-[var(--sending-orange)]">8:00–9:00 AM</p>
                 </div>
                 <div>
-                  <p className="font-medium text-[#111]">1 Hour Church</p>
-                  <p className="mt-0.5 text-[var(--sending-orange)]">9:00–10:00 AM</p>
+                  <p className="font-medium text-[#111]">Sending Church</p>
+                  <p className="mt-0.5 text-[#111]">9:00–10:00 AM · Free</p>
                 </div>
               </div>
             </div>
@@ -230,9 +245,17 @@ export default function HomePage() {
               The Star · {PASTORS.address}
             </p>
           </div>
-          <div className="mt-8">
-            <Button href="/login">
-              Join the Frisco Team
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Button href="/#sunday" className="w-full sm:w-auto">
+              Come This Sunday
+              <ArrowRight size={15} />
+            </Button>
+            <Button
+              href="/#12-weeks"
+              variant="secondary"
+              className="w-full sm:w-auto"
+            >
+              Explore the Training
               <ArrowRight size={15} />
             </Button>
           </div>
@@ -308,21 +331,23 @@ export default function HomePage() {
 
       <WorldGlobe />
 
+      <NotInFrisco />
+
       <section className="bg-[var(--sending-orange)]">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center">
           <div>
             <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
-              Be part of something bigger
+              This Sunday
             </p>
             <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              Join the Sending Team.
+              Come as you are.
             </h2>
           </div>
           <Link
-            href="/login"
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
+            href="/#sunday"
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111] md:w-auto"
           >
-            Join the Team
+            Come This Sunday
             <ArrowRight size={15} />
           </Link>
         </div>

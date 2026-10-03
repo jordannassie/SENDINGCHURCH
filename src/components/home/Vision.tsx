@@ -19,23 +19,49 @@ export function Vision() {
           Vision
         </p>
         <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-          You Were Made for More Than Just Sitting in Church.
+          A Church Where You Can Belong, Grow, and Be Sent.
         </h2>
+        <div className="mt-5 max-w-2xl space-y-2 text-base leading-relaxed text-white/90">
+          <p>Come as you are.</p>
+          <p>Learn about Jesus and the Bible.</p>
+          <p>Ask questions.</p>
+          <p>Receive prayer.</p>
+          <p>Build real friendships.</p>
+          <p>Grow in your faith.</p>
+        </div>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/90">
-          Sending helps ordinary believers get trained, live on mission, and
-          start simple, reproducible churches anywhere.
+          And when you’re ready for more, we’ll help equip you to make
+          disciples, lead others, and start a simple Sending Church.
         </p>
-        <p className="mt-4 text-base font-medium tracking-tight text-white">
+
+        <div className="mt-8 flex flex-wrap items-center gap-2">
+          {["Belong", "Grow", "Train", "Send", "Multiply"].map((step, index) => (
+            <div key={step} className="flex items-center gap-2">
+              <span className="rounded-full bg-white px-4 py-2 text-sm font-medium text-[#111]">
+                {step}
+              </span>
+              {index < 4 ? (
+                <span className="text-white/70">→</span>
+              ) : null}
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-6 text-base font-medium tracking-tight text-white">
           Save the Lost. Train the Saved. Send the Trained.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
-          <Button href="/login" variant="white">
-            Join the Team
+          <Button href="/#sunday" variant="white" className="w-full sm:w-auto">
+            Come This Sunday
             <ArrowRight size={15} />
           </Button>
-          <Button href="/#how-it-works" variant="outline">
-            See How It Works
+          <Button
+            href="/#how-it-works"
+            variant="outline"
+            className="w-full sm:w-auto"
+          >
+            See How Sending Works
             <ArrowRight size={15} />
           </Button>
         </div>
@@ -88,12 +114,12 @@ export function Vision() {
               Why You Are Here
             </p>
             <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-              You Were Made to Go
+              You Belong Here
             </h3>
             <p className="mt-4 text-base leading-relaxed text-white/90">
-              God never made you to sit in a church building, but to go into
-              all the world and share the Gospel. We are a church equipping
-              you to do that.
+              Come grow in your faith, find community, and learn about Jesus.
+              And when you’re ready, we’ll help you live on mission and help
+              others do the same.
             </p>
           </div>
         ) : null}

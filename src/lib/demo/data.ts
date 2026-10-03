@@ -78,7 +78,7 @@ export const WHY_SENDING = [
   {
     number: "04",
     title: "Move People to Mission",
-    body: "We continually move people from attending to actively living on mission.",
+    body: "We help people belong and grow, and we equip those who are ready to live on mission.",
   },
   {
     number: "05",

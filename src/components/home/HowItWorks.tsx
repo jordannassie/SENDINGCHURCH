@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { BookOpen, Users } from "lucide-react";
+import { ArrowRight, BookOpen, Users } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { HOW_IMAGE, TWELVE_WEEKS } from "@/lib/demo/data";
 
 const PHASE_STYLES = {
@@ -23,23 +24,42 @@ const PHASE_STYLES = {
 const SUNDAY_PARTS = [
   {
     label: "Part 1",
+    audience: "For people ready to be trained and sent",
     title: "12-Week Sending Training",
     lead: "Get equipped to be sent.",
     time: "8:00–9:00 AM",
     badge: "$497",
-    body: "Get trained for ministry, learn the Sending model, and prepare to make disciples and start a Sending Church.",
+    body: "A practical 12-week leadership pathway for believers who want to make disciples, lead others, and learn how to start a simple Sending Church.",
+    points: [
+      "Learn one practical skill each week.",
+      "Practice it.",
+      "Use it in real life.",
+      "Learn to teach it to someone else.",
+    ],
     status: "",
+    cta: "Learn About the 12-Week Training",
+    href: "/#12-weeks",
     icon: Users,
     accent: "training",
   },
   {
     label: "Part 2",
+    audience: "The free Sunday gathering",
     title: "Sending Church",
     lead: "Come as you are. Come and grow.",
     time: "9:00–10:00 AM",
     badge: "",
     body: "Learn about Jesus and the Bible, ask questions, receive prayer, build friendships, and grow in faith together.",
-    status: "Free — Everyone is welcome. Just show up.",
+    points: [
+      "Free.",
+      "Everyone is welcome.",
+      "No experience required.",
+      "No pressure to join the training.",
+      "Just come.",
+    ],
+    status: "",
+    cta: "Come This Sunday",
+    href: "/#sunday",
     icon: BookOpen,
     accent: "church",
   },
@@ -67,10 +87,15 @@ export function HowItWorks() {
           return (
             <div
               key={part.label}
-              className="rounded-[28px] border border-[#eee] bg-white px-7 py-8"
+              className={`rounded-[28px] border bg-white px-7 py-8 ${
+                part.accent === "church" ? "border-[#ffd8c2]" : "border-[#eee]"
+              }`}
             >
               <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
                 {part.label}
+              </p>
+              <p className="mt-2 text-xs font-medium tracking-[0.12em] uppercase text-[#777]">
+                {part.audience}
               </p>
               <div className="mt-4 flex items-start gap-4">
                 <span
@@ -106,16 +131,21 @@ export function HowItWorks() {
                   <p className="mt-3 max-w-md text-base leading-relaxed text-[#666]">
                     {part.body}
                   </p>
-                  {part.status ? (
-                    <>
-                      <p className="mt-3 text-sm font-semibold tracking-tight text-[#111]">
-                        {part.status}
-                      </p>
-                      <p className="mt-1 text-sm text-[#777]">
-                        No experience required. No registration required.
-                      </p>
-                    </>
-                  ) : null}
+                  <ul className="mt-3 max-w-md space-y-1 text-sm leading-relaxed text-[#666]">
+                    {part.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                  <div className="mt-5">
+                    <Button
+                      href={part.href}
+                      variant={part.accent === "church" ? "primary" : "secondary"}
+                      className="w-full sm:w-auto"
+                    >
+                      {part.cta}
+                      <ArrowRight size={15} />
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -145,8 +175,8 @@ export function HowItWorks() {
             12 Weeks to Multiply
           </h3>
           <p className="mt-4 text-base leading-relaxed text-[#666]">
-            One simple skill each week, practiced in training and lived out in
-            church.
+            This 12-week path is for people ready to be trained and sent.
+            Sunday church is open to everyone.
           </p>
 
           <div className="mt-10 space-y-8">

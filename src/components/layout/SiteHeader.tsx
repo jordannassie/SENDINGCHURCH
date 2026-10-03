@@ -36,10 +36,10 @@ export function SiteHeader() {
         <div className="flex items-center gap-3">
           <SocialLinks size={22} className="text-[#111]" />
           <Link
-            href="/login"
+            href="/#sunday"
             className="hidden items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white md:inline-flex"
           >
-            Join the Team
+            Come This Sunday
             <ArrowRight size={14} />
           </Link>
           <button
@@ -68,11 +68,11 @@ export function SiteHeader() {
           <div className="mt-2 flex items-center gap-3">
             <SocialLinks size={22} className="text-[#111]" />
             <Link
-              href="/login"
+              href="/#sunday"
               className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white"
               onClick={() => setOpen(false)}
             >
-              Join the Team
+              Come This Sunday
               <ArrowRight size={14} />
             </Link>
           </div>
