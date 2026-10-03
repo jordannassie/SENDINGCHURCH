@@ -14,8 +14,6 @@ import {
 } from "lucide-react";
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { HowItWorks } from "@/components/home/HowItWorks";
-import { NotInFrisco } from "@/components/home/NotInFrisco";
-import { StartHere } from "@/components/home/StartHere";
 import { SundayRsvp } from "@/components/home/SundayRsvp";
 import { WhySending } from "@/components/home/Vision";
 import { WhyWeExist } from "@/components/home/WhyWeExist";
@@ -88,7 +86,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <StartHere />
+      <SundayRsvp />
 
       <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-8 sm:grid-cols-3 lg:grid-cols-5">
         {IMPACT_STATS.map((stat, index) => {
@@ -112,8 +110,6 @@ export default function HomePage() {
       <HowItWorks />
 
       <LocationFinder />
-
-      <SundayRsvp />
 
       <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-5">
@@ -330,8 +326,6 @@ export default function HomePage() {
       </section>
 
       <WorldGlobe />
-
-      <NotInFrisco />
 
       <section className="bg-[var(--sending-orange)]">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center">
