@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import { formatTimeRange, getLocations } from "@/lib/locations";
 import { rsvpConfirmationText } from "@/lib/rsvp/messages";
@@ -63,6 +64,24 @@ export function SundayRsvp() {
               {location.venue_name}
             </p>
             <p className="mt-1 text-sm text-[#666]">{location.address}</p>
+            {location.leader_name ? (
+              <div className="mt-5 flex items-center gap-3">
+                <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#fff4ec]">
+                  {location.leader_photo_url ? (
+                    <Image
+                      src={location.leader_photo_url}
+                      alt={location.leader_name}
+                      fill
+                      className="object-cover"
+                      sizes="48px"
+                    />
+                  ) : null}
+                </div>
+                <p className="text-sm font-medium text-[#111]">
+                  {location.leader_name}
+                </p>
+              </div>
+            ) : null}
             <div className="mt-6 space-y-2 text-sm leading-relaxed text-[#666]">
               <p>Bring your Bible.</p>
               <p>Grab a coffee.</p>
