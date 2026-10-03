@@ -22,12 +22,14 @@ import {
   GATHERING_STEPS,
   HERO_IMAGE,
   HERO_VIDEO,
+  HOW_IMAGE,
   HOW_IT_WORKS,
   IMPACT_STATS,
   PASTORS,
   STAR_IMAGE,
   START_FLOW,
   STORIES,
+  TWELVE_WEEKS,
 } from "@/lib/demo/data";
 
 const IMPACT_ICONS = [Church, Globe, Users, Droplets, Radio];
@@ -133,6 +135,49 @@ export default function HomePage() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section id="12-weeks" className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-20 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="flex justify-center">
+          <Image
+            src={HOW_IMAGE}
+            alt="Save, Train, Send, Multiply"
+            width={1200}
+            height={1200}
+            className="h-auto w-full max-w-[520px]"
+          />
+        </div>
+        <div>
+          <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
+            The path
+          </p>
+          <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+            12 Weeks
+          </h2>
+          <div className="mt-8 space-y-8">
+            {TWELVE_WEEKS.map((group, groupIndex) => (
+              <div key={group.title}>
+                <p className="text-sm font-semibold tracking-wide">
+                  {group.title}{" "}
+                  <span className="font-medium text-[#888]">— {group.weeks}</span>
+                </p>
+                <ol className="mt-3 space-y-2">
+                  {group.steps.map((step, stepIndex) => (
+                    <li
+                      key={step}
+                      className="flex items-center gap-3 text-sm text-[#444]"
+                    >
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#fff4ec] text-xs font-semibold text-[var(--sending-orange)]">
+                        {groupIndex * 4 + stepIndex + 1}
+                      </span>
+                      {step}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
           </div>
         </div>
       </section>

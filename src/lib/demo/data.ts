@@ -35,6 +35,27 @@ export const HOW_IT_WORKS = [
   },
 ] as const;
 
+export const HOW_IMAGE =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/How.png";
+
+export const TWELVE_WEEKS = [
+  {
+    title: "SAVE",
+    weeks: "Weeks 1–4",
+    steps: ["Pray", "Invite", "Share", "Gather"],
+  },
+  {
+    title: "TRAIN",
+    weeks: "Weeks 5–8",
+    steps: ["Read", "Discuss", "Obey", "Lead"],
+  },
+  {
+    title: "SEND",
+    weeks: "Weeks 9–12",
+    steps: ["Identify", "Prepare", "Launch", "Multiply"],
+  },
+] as const;
+
 export const GATHERING_STEPS = [
   {
     time: "0–5 min",
