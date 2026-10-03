@@ -5,6 +5,7 @@ import { useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { SocialLinks } from "@/components/brand/SocialLinks";
+import { useDemoAuth } from "@/lib/demo/auth";
 
 const NAV = [
   { href: "/#vision", label: "Vision" },
@@ -15,6 +16,10 @@ const NAV = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { user, ready } = useDemoAuth();
+  const account = user
+    ? { href: "/dashboard", label: "Dashboard" }
+    : { href: "/login", label: "Login" };
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#f0f0f0] bg-white/90 backdrop-blur">
@@ -31,6 +36,14 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          {ready ? (
+            <Link
+              href={account.href}
+              className="transition-colors hover:text-[#111]"
+            >
+              {account.label}
+            </Link>
+          ) : null}
         </nav>
 
         <div className="flex items-center gap-3">
@@ -65,6 +78,15 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          {ready ? (
+            <Link
+              href={account.href}
+              className="block py-2 text-sm text-[#333]"
+              onClick={() => setOpen(false)}
+            >
+              {account.label}
+            </Link>
+          ) : null}
           <div className="mt-2 flex items-center gap-3">
             <SocialLinks size={22} className="text-[#111]" />
             <Link
