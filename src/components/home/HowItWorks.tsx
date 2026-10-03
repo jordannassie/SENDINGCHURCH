@@ -21,34 +21,30 @@ const PHASE_STYLES = {
   },
 } as const;
 
-const SUNDAY_PARTS = [
+const TRACKS = [
   {
-    label: "Part 1",
-    title: "Sending Church",
-    time: "9:00–10:00 AM",
+    label: "Church",
+    path: "Belong → Grow → Send",
     points: [
-      "Come as you are.",
-      "Grow in faith.",
-      "Meet people.",
-      "Ask questions.",
+      "Come to church.",
+      "Find community.",
+      "Grow in your faith.",
+      "When you’re ready, take your next step.",
     ],
-    status: "Free • Everyone welcome",
-    price: "",
     cta: "Come This Sunday",
     href: "/#sunday",
     accent: "church",
   },
   {
-    label: "Part 2",
-    title: "12-Week Sending Training",
-    time: "8:00–9:00 AM",
+    label: "Training",
+    path: "Save → Train → Send",
     points: [
-      "For people ready to go deeper.",
-      "Learn to make disciples, lead others, and start a Sending Church.",
+      "Learn to reach people.",
+      "Make disciples.",
+      "Develop leaders.",
+      "Start and multiply churches.",
     ],
-    status: "",
-    price: "$497",
-    cta: "View Training",
+    cta: "Explore Training",
     href: "/#12-weeks",
     accent: "training",
   },
@@ -59,50 +55,42 @@ export function HowItWorks() {
     <section id="how-it-works" className="mx-auto max-w-[1220px] px-5 py-20 lg:py-24">
       <div className="max-w-2xl">
         <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-          A simple model
+          How It Works
         </p>
         <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-          How It Works
+          Two Simple Tracks
         </h2>
         <p className="mt-5 text-base leading-relaxed text-[#666]">
-          A simple, repeatable path to reach people, make disciples, and
-          multiply churches everywhere.
+          Choose where you are.
         </p>
       </div>
 
       <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {SUNDAY_PARTS.map((part) => (
+        {TRACKS.map((track) => (
             <div
-              key={part.label}
+              key={track.label}
               className={`rounded-[28px] border bg-white px-7 py-8 ${
-                part.accent === "church" ? "border-[#ffd8c2]" : "border-[#eee]"
+                track.accent === "church" ? "border-[#ffd8c2]" : "border-[#eee]"
               }`}
             >
               <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-                {part.label}
+                {track.label}
               </p>
-              <h3 className="mt-4 text-2xl font-semibold tracking-tight sm:text-[28px]">
-                {part.title}
-              </h3>
-              <p className="mt-1 text-sm font-medium text-[#111]">{part.time}</p>
+              <p className="mt-4 text-sm font-medium tracking-[0.14em] uppercase text-[#111]">
+                {track.path}
+              </p>
               <ul className="mt-5 max-w-md space-y-1 text-base leading-relaxed text-[#666]">
-                {part.points.map((point) => (
+                {track.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
               </ul>
-              {part.status ? (
-                <p className="mt-5 text-sm font-medium text-[#111]">{part.status}</p>
-              ) : null}
-              {part.price ? (
-                <p className="mt-5 text-lg font-semibold tracking-tight">{part.price}</p>
-              ) : null}
               <div className="mt-6">
                 <Button
-                  href={part.href}
-                  variant={part.accent === "church" ? "primary" : "secondary"}
+                  href={track.href}
+                  variant={track.accent === "church" ? "primary" : "secondary"}
                   className="w-full sm:w-auto"
                 >
-                  {part.cta}
+                  {track.cta}
                   <ArrowRight size={15} />
                 </Button>
               </div>
