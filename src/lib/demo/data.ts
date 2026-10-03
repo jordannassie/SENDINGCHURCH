@@ -59,6 +59,54 @@ export const TWELVE_WEEKS = [
   },
 ] as const;
 
+export const WHY_SENDING = [
+  {
+    number: "01",
+    title: "Radical Simplicity",
+    body: "Everything is simple enough to remember, do, and teach to someone else.",
+  },
+  {
+    number: "02",
+    title: "Everyone Practices",
+    body: "We don’t just listen. Everyone learns by actually doing.",
+  },
+  {
+    number: "03",
+    title: "Leaders Reproduce Leaders",
+    body: "Every leader is trained to develop the next leader.",
+  },
+  {
+    number: "04",
+    title: "Move People to Mission",
+    body: "We continually move people from attending to actively living on mission.",
+  },
+  {
+    number: "05",
+    title: "Churches Reproduce Churches",
+    body: "The goal is not simply bigger churches. It is more healthy churches.",
+  },
+  {
+    number: "06",
+    title: "Local Ownership",
+    body: "Local leaders lead the mission in their own communities and cultures.",
+  },
+  {
+    number: "07",
+    title: "Ultra-Low-Cost Reproduction",
+    body: "The model is designed to be affordable and reproducible almost anywhere.",
+  },
+  {
+    number: "08",
+    title: "Mission-First Economics",
+    body: "Money exists to fuel leaders, mission, and multiplication.",
+  },
+  {
+    number: "09",
+    title: "Healthy Reproduction",
+    body: "We multiply with sound doctrine, healthy character, resilient leaders, and churches that last.",
+  },
+] as const;
+
 export const GATHERING_STEPS = [
   {
     time: "0–5 min",
