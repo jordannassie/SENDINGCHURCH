@@ -41,17 +41,20 @@ export const HOW_IMAGE =
 export const TWELVE_WEEKS = [
   {
     title: "SAVE",
-    weeks: "Weeks 1–4",
+    weeks: "WEEKS 1–4",
+    accent: "save",
     steps: ["Pray", "Invite", "Share", "Gather"],
   },
   {
     title: "TRAIN",
-    weeks: "Weeks 5–8",
+    weeks: "WEEKS 5–8",
+    accent: "train",
     steps: ["Read", "Discuss", "Obey", "Lead"],
   },
   {
     title: "SEND",
-    weeks: "Weeks 9–12",
+    weeks: "WEEKS 9–12",
+    accent: "send",
     steps: ["Identify", "Prepare", "Launch", "Multiply"],
   },
 ] as const;

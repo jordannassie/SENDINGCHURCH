@@ -3,7 +3,6 @@ import Link from "next/link";
 import { preload } from "react-dom";
 import {
   ArrowRight,
-  BookOpen,
   Calendar,
   Church,
   Droplets,
@@ -11,10 +10,10 @@ import {
   MapPin,
   Phone,
   Radio,
-  Send,
   Users,
 } from "lucide-react";
 import { HeroVideo } from "@/components/home/HeroVideo";
+import { HowItWorks } from "@/components/home/HowItWorks";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
@@ -22,18 +21,14 @@ import {
   GATHERING_STEPS,
   HERO_IMAGE,
   HERO_VIDEO,
-  HOW_IMAGE,
-  HOW_IT_WORKS,
   IMPACT_STATS,
   PASTORS,
   STAR_IMAGE,
   START_FLOW,
   STORIES,
-  TWELVE_WEEKS,
 } from "@/lib/demo/data";
 
 const IMPACT_ICONS = [Church, Globe, Users, Droplets, Radio];
-const STEP_ICONS = [Users, BookOpen, Send];
 
 export default function HomePage() {
   preload(HERO_VIDEO, { as: "video" });
@@ -105,82 +100,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      <section id="how-it-works" className="mx-auto max-w-6xl px-5 pb-16">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.4fr] lg:items-start">
-          <div>
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-              A simple model
-            </p>
-            <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-              How It Works
-            </h2>
-            <p className="mt-5 max-w-sm text-base leading-relaxed text-[#666]">
-              A simple, repeatable path to reach people, make disciples, and
-              multiply churches everywhere.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-3">
-            {HOW_IT_WORKS.map((step, index) => {
-              const Icon = STEP_ICONS[index];
-              return (
-                <div
-                  key={step.title}
-                  className="rounded-3xl border border-[#eee] bg-white p-6"
-                >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
-                    <Icon size={20} />
-                  </span>
-                  <h3 className="mt-5 text-xl font-semibold">{step.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-[#666]">{step.body}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section id="12-weeks" className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-20 lg:grid-cols-[1.05fr_0.95fr]">
-        <div className="flex justify-center">
-          <Image
-            src={HOW_IMAGE}
-            alt="Save, Train, Send, Multiply"
-            width={1200}
-            height={1200}
-            className="h-auto w-full max-w-[520px]"
-          />
-        </div>
-        <div>
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-            The path
-          </p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-            12 Weeks
-          </h2>
-          <div className="mt-8 space-y-8">
-            {TWELVE_WEEKS.map((group, groupIndex) => (
-              <div key={group.title}>
-                <p className="text-sm font-semibold tracking-wide">
-                  {group.title}{" "}
-                  <span className="font-medium text-[#888]">— {group.weeks}</span>
-                </p>
-                <ol className="mt-3 space-y-2">
-                  {group.steps.map((step, stepIndex) => (
-                    <li
-                      key={step}
-                      className="flex items-center gap-3 text-sm text-[#444]"
-                    >
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#fff4ec] text-xs font-semibold text-[var(--sending-orange)]">
-                        {groupIndex * 4 + stepIndex + 1}
-                      </span>
-                      {step}
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <HowItWorks />
 
       <section className="bg-[#fafafa] py-20">
         <div className="mx-auto max-w-6xl px-5">
