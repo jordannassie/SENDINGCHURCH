@@ -10,8 +10,6 @@ type City = {
   label: string;
 };
 
-type Vec = { x: number; y: number; z: number };
-
 const CITIES: City[] = [
   { name: "Frisco, TX", lat: 33.15, lon: -96.82, label: "Meeting together" },
   { name: "London, UK", lat: 51.51, lon: -0.13, label: "Meeting together" },
@@ -20,7 +18,7 @@ const CITIES: City[] = [
   { name: "São Paulo, Brazil", lat: -23.55, lon: -46.63, label: "Meeting together" },
 ];
 
-function toVector(lat: number, lon: number): Vec {
+function toVector(lat: number, lon: number) {
   const phi = ((90 - lat) * Math.PI) / 180;
   const theta = ((lon + 180) * Math.PI) / 180;
   return {
@@ -30,7 +28,7 @@ function toVector(lat: number, lon: number): Vec {
   };
 }
 
-function rotateY(point: Vec, angle: number): Vec {
+function rotateY(point: { x: number; y: number; z: number }, angle: number) {
   const cos = Math.cos(angle);
   const sin = Math.sin(angle);
   return {
@@ -40,6 +38,22 @@ function rotateY(point: Vec, angle: number): Vec {
   };
 }
 
+function buildDots() {
+  const dots: { x: number; y: number; z: number }[] = [];
+  const rings = 42;
+  for (let i = 0; i <= rings; i += 1) {
+    const v = i / rings;
+    const lat = 90 - v * 180;
+    const count = Math.max(8, Math.round(Math.sin((v * Math.PI)) * 72));
+    for (let j = 0; j < count; j += 1) {
+      const lon = (j / count) * 360 - 180;
+      dots.push(toVector(lat, lon));
+    }
+  }
+  return dots;
+}
+
+const DOTS = buildDots();
 const CITY_POINTS = CITIES.map((city) => ({
   ...city,
   point: toVector(city.lat, city.lon),
@@ -65,7 +79,6 @@ export function WorldGlobe() {
     let frame = 0;
     let width = 0;
     let height = 0;
-    let land: Vec[][] = [];
 
     const resize = () => {
       const bounds = wrap.getBoundingClientRect();
@@ -82,42 +95,6 @@ export function WorldGlobe() {
     resize();
     window.addEventListener("resize", resize);
 
-    const loadLand = fetch("/world-land.json")
-      .then((response) => response.json())
-      .then((rings: number[][][]) => {
-        land = rings.map((ring) =>
-          ring.map(([lon, lat]) => toVector(lat, lon)),
-        );
-      })
-      .catch(() => {
-        land = [];
-      });
-
-    const drawRing = (
-      ring: Vec[],
-      angle: number,
-      radius: number,
-      cx: number,
-      cy: number,
-    ) => {
-      let drawing = false;
-      for (const point of ring) {
-        const rotated = rotateY(point, angle);
-        if (rotated.z < 0.04) {
-          drawing = false;
-          continue;
-        }
-        const x = cx + rotated.x * radius;
-        const y = cy - rotated.y * radius;
-        if (!drawing) {
-          context.moveTo(x, y);
-          drawing = true;
-        } else {
-          context.lineTo(x, y);
-        }
-      }
-    };
-
     const draw = (time: number) => {
       const angle = time * 0.00012;
       const radius = Math.min(width, height) * 0.34;
@@ -125,29 +102,29 @@ export function WorldGlobe() {
       const cy = height / 2 + 8;
 
       context.clearRect(0, 0, width, height);
-      context.save();
-      context.beginPath();
-      context.arc(cx, cy, radius, 0, Math.PI * 2);
-      context.fillStyle = "#0b0b0b";
-      context.fill();
-      context.clip();
-
-      context.beginPath();
-      for (const ring of land) {
-        drawRing(ring, angle, radius, cx, cy);
-      }
-      context.fillStyle = "rgba(255, 255, 255, 0.16)";
-      context.fill();
-      context.strokeStyle = "rgba(255, 255, 255, 0.42)";
-      context.lineWidth = 1;
-      context.stroke();
-      context.restore();
-
       context.beginPath();
       context.arc(cx, cy, radius + 1.5, 0, Math.PI * 2);
       context.strokeStyle = "rgba(255, 106, 0, 0.55)";
       context.lineWidth = 1.5;
       context.stroke();
+
+      for (const dot of DOTS) {
+        const rotated = rotateY(dot, angle);
+        if (rotated.z < -0.05) {
+          continue;
+        }
+        const depth = (rotated.z + 1) / 2;
+        context.fillStyle = `rgba(255, 255, 255, ${0.08 + depth * 0.28})`;
+        context.beginPath();
+        context.arc(
+          cx + rotated.x * radius,
+          cy - rotated.y * radius,
+          0.7 + depth * 0.6,
+          0,
+          Math.PI * 2,
+        );
+        context.fill();
+      }
 
       CITY_POINTS.forEach((city, index) => {
         const rotated = rotateY(city.point, angle);
@@ -172,7 +149,6 @@ export function WorldGlobe() {
       frame = requestAnimationFrame(draw);
     };
 
-    void loadLand;
     frame = requestAnimationFrame(draw);
 
     return () => {
@@ -198,7 +174,7 @@ export function WorldGlobe() {
 
       <div
         ref={wrapRef}
-        className="relative mx-auto h-[520px] w-full max-w-[980px] overflow-visible sm:h-[620px]"
+        className="relative mx-auto h-[520px] w-full max-w-[980px] sm:h-[620px]"
       >
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
         {CITIES.map((city, index) => (
