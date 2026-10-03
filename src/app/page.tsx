@@ -87,17 +87,19 @@ export default function HomePage() {
 
       <HeroVideo />
 
-      <section id="vision" className="mx-auto max-w-6xl px-5 py-16">
-        <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-          Vision
-        </p>
-        <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-          Save the Lost. Train the Saved. Send the Trained.
-        </h2>
-        <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
-          Start with two. Meet for 60 minutes. Save. Train. Send. Multiply.
-          Ordinary people can start a Sending Church anywhere.
-        </p>
+      <section id="vision" className="bg-[var(--sending-orange)]">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
+            Vision
+          </p>
+          <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
+            Save the Lost. Train the Saved. Send the Trained.
+          </h2>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/90">
+            Start with two. Meet for 60 minutes. Save. Train. Send. Multiply.
+            Ordinary people can start a Sending Church anywhere.
+          </p>
+        </div>
       </section>
 
       <HowItWorks />
