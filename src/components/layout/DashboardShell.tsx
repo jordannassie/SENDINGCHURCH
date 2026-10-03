@@ -95,7 +95,18 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
           <div className="md:hidden">
             <Logo href="/dashboard" />
           </div>
-          <div className="ml-auto flex items-center gap-3">
+          <div className="ml-auto flex items-center gap-2 sm:gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                logout();
+                router.push("/");
+              }}
+              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-3 py-2 text-sm font-medium text-white md:hidden"
+            >
+              <LogOut size={15} />
+              Log Out
+            </button>
             <button type="button" className="rounded-full p-2 text-[#888]" aria-label="Notifications">
               <Bell size={18} />
             </button>
