@@ -88,17 +88,21 @@ export default function HomePage() {
 
       <SundayRsvp />
 
-      <section className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-8 sm:grid-cols-3 lg:grid-cols-5">
-        {IMPACT_STATS.map((stat, index) => {
-          const Icon = IMPACT_ICONS[index];
-          return (
-            <div key={stat.label} className="text-center">
-              <Icon className="mx-auto text-[var(--sending-orange)]" size={22} />
-              <p className="mt-3 text-2xl font-semibold tracking-tight">{stat.value}</p>
-              <p className="mt-1 text-sm text-[#777]">{stat.label}</p>
-            </div>
-          );
-        })}
+      <section className="bg-black">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-12 sm:grid-cols-3 lg:grid-cols-5">
+          {IMPACT_STATS.map((stat, index) => {
+            const Icon = IMPACT_ICONS[index];
+            return (
+              <div key={stat.label} className="text-center">
+                <Icon className="mx-auto text-[var(--sending-orange)]" size={22} />
+                <p className="mt-3 text-2xl font-semibold tracking-tight text-white">
+                  {stat.value}
+                </p>
+                <p className="mt-1 text-sm text-white/55">{stat.label}</p>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       <HeroVideo />
