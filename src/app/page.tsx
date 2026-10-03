@@ -15,6 +15,7 @@ import {
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { WhySending } from "@/components/home/Vision";
+import { WhyWeExist } from "@/components/home/WhyWeExist";
 import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -92,6 +93,8 @@ export default function HomePage() {
       <HeroVideo />
 
       <WhySending />
+
+      <WhyWeExist />
 
       <HowItWorks />
 

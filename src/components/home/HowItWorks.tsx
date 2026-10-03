@@ -23,7 +23,7 @@ const PHASE_STYLES = {
 const SUNDAY_PARTS = [
   {
     label: "Part 1",
-    title: "1 Hour Training",
+    title: "12-Week Training",
     time: "8:00–9:00 AM",
     badge: "$497 Training",
     body: "Get trained for ministry, learn the Sending model, and be equipped to be sent out.",
@@ -31,10 +31,10 @@ const SUNDAY_PARTS = [
   },
   {
     label: "Part 2",
-    title: "1 Hour Church",
+    title: "1-Hour Church",
     time: "9:00–10:00 AM",
     badge: "",
-    body: "You’re invited to church. Read chapter by chapter through the Bible together in a simple, repeatable format.",
+    body: "You’re invited to church. Read through the Bible chapter by chapter in a simple, repeatable gathering anyone can lead.",
     icon: BookOpen,
   },
 ] as const;

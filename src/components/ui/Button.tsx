@@ -6,6 +6,8 @@ const variants = {
   secondary:
     "bg-white text-[#111] border border-[#e8e8e8] hover:border-[#d4d4d4]",
   white: "bg-white text-[#111] hover:bg-white/90",
+  outline:
+    "border border-white/40 bg-transparent text-white hover:bg-white/10",
 } as const;
 
 type ButtonProps = {

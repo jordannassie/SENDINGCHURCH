@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 import { WHY_SENDING } from "@/lib/demo/data";
 
 export function WhySending() {
@@ -18,20 +19,34 @@ export function Vision() {
           Vision
         </p>
         <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-          Save the Lost. Train the Saved. Send the Trained.
+          You Were Made for More Than Just Sitting in Church.
         </h2>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/90">
-          Start with two. Meet for 60 minutes. Save. Train. Send. Multiply.
-          Ordinary people can start a Sending Church anywhere.
+          Sending helps ordinary believers get trained, live on mission, and
+          start simple, reproducible churches anywhere.
+        </p>
+        <p className="mt-4 text-base font-medium tracking-tight text-white">
+          Save the Lost. Train the Saved. Send the Trained.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
+          <Button href="/login" variant="white">
+            Join the Team
+            <ArrowRight size={15} />
+          </Button>
+          <Button href="/#how-it-works" variant="outline">
+            See How It Works
+            <ArrowRight size={15} />
+          </Button>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-3">
           <button
             type="button"
             aria-expanded={open === "here"}
             aria-controls="why-you-are-here"
             onClick={() => setOpen((value) => (value === "here" ? null : "here"))}
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-white/85 hover:text-white"
           >
             Why You Are Here
             <ChevronDown
@@ -44,7 +59,7 @@ export function Vision() {
             aria-expanded={open === "why"}
             aria-controls="why-sending"
             onClick={() => setOpen((value) => (value === "why" ? null : "why"))}
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-white/85 hover:text-white"
           >
             Our Uniqueness
             <ChevronDown
@@ -57,7 +72,7 @@ export function Vision() {
             aria-expanded={open === "faith"}
             aria-controls="statement-of-faith"
             onClick={() => setOpen((value) => (value === "faith" ? null : "faith"))}
-            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-white/85 hover:text-white"
           >
             Statement of Faith
             <ChevronDown
