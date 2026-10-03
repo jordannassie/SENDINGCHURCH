@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { SendingLocation } from "@/lib/locations";
 import { ChurchBlock } from "./ChurchBlock";
 import { TrainingBlock } from "./TrainingBlock";
@@ -13,7 +14,7 @@ export function LocationCard({
 }: LocationCardProps) {
   return (
     <article className="overflow-hidden rounded-[28px] border border-[#ffd8c2] bg-white">
-      <div className="border-b border-[#f3f3f3] px-6 py-6 sm:px-8">
+      <div className="border-b border-[#f3f3f3] px-6 py-5 sm:px-8">
         {nearestFallback ? (
           <p className="mb-2 text-xs font-medium tracking-[0.16em] uppercase text-[var(--sending-orange)]">
             Nearest available Sending Church
@@ -22,10 +23,38 @@ export function LocationCard({
         <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
           {location.church_day}
         </p>
-        <h3 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+        <h3 className="mt-1.5 text-2xl font-semibold tracking-tight sm:text-3xl">
           {location.location_name}
         </h3>
-        <p className="mt-2 text-sm text-[#666]">{location.venue_name}</p>
+        <p className="mt-1 text-sm text-[#666]">{location.venue_name}</p>
+
+        <div className="mt-4 flex items-center gap-3">
+          <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#fff4ec]">
+            {location.leader_photo_url ? (
+              <Image
+                src={location.leader_photo_url}
+                alt={location.leader_name}
+                fill
+                className="object-cover"
+                sizes="48px"
+              />
+            ) : (
+              <span className="flex h-full w-full items-center justify-center text-sm font-semibold text-[var(--sending-orange)]">
+                {location.leader_name
+                  .split(" ")
+                  .map((part) => part[0])
+                  .slice(0, 2)
+                  .join("")}
+              </span>
+            )}
+          </div>
+          <div>
+            <p className="text-sm font-semibold tracking-tight text-[#111]">
+              {location.leader_name}
+            </p>
+            <p className="text-xs text-[#777]">{location.leader_title}</p>
+          </div>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-2 lg:divide-x lg:divide-[#eee]">

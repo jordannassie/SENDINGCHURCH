@@ -13,7 +13,10 @@ export const FRISCO_LOCATION: SendingLocation = {
   address: "11 Cowboys Way, Frisco, TX 75034",
   map_url: "https://maps.google.com/?q=Omni+Frisco+Hotel",
   leader_id: "jordan-nassie",
-  leader_name: "Jordan",
+  leader_name: "Jordan Nassie",
+  leader_title: "Location Leader",
+  leader_photo_url:
+    "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Jordan/Jordan2.png",
   status: "active",
   training_day: "Sunday",
   training_start_time: "8:00 AM",

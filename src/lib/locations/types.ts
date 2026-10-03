@@ -16,6 +16,8 @@ export type SendingLocation = {
   map_url: string;
   leader_id: string;
   leader_name: string;
+  leader_title: string;
+  leader_photo_url: string;
   status: LocationStatus;
   training_day: string;
   training_start_time: string;
