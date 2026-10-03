@@ -8,6 +8,7 @@ const variants = {
   white: "bg-white text-[#111] hover:bg-white/90",
   outline:
     "border border-white/40 bg-transparent text-white hover:bg-white/10",
+  dark: "bg-[#111] text-white hover:bg-[#222]",
 } as const;
 
 type ButtonProps = {

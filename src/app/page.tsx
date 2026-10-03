@@ -16,6 +16,7 @@ import { HeroVideo } from "@/components/home/HeroVideo";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { WhySending } from "@/components/home/Vision";
 import { WhyWeExist } from "@/components/home/WhyWeExist";
+import { LocationFinder } from "@/components/locations/LocationFinder";
 import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -97,6 +98,8 @@ export default function HomePage() {
       <WhyWeExist />
 
       <HowItWorks />
+
+      <LocationFinder />
 
       <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-5">
