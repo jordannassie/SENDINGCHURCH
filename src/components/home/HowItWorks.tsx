@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { BookOpen, Users } from "lucide-react";
 import { HOW_IMAGE, TWELVE_WEEKS } from "@/lib/demo/data";
 
 const PHASE_STYLES = {
@@ -25,12 +26,14 @@ const SUNDAY_PARTS = [
     title: "1 Hour Training",
     time: "8:00–9:00 AM",
     body: "Practice the week’s skill and prepare people to live it out.",
+    icon: Users,
   },
   {
     label: "Part 2",
     title: "1 Hour Church",
     time: "9:00–10:00 AM",
     body: "Gather as church to share, learn, obey, pray, and send.",
+    icon: BookOpen,
   },
 ] as const;
 
@@ -50,26 +53,36 @@ export function HowItWorks() {
         </p>
       </div>
 
-      <div className="mt-12 grid gap-4 md:grid-cols-2">
-        {SUNDAY_PARTS.map((part) => (
-          <div
-            key={part.label}
-            className="rounded-[28px] border border-[#eee] bg-white px-8 py-9"
-          >
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-              {part.label}
-            </p>
-            <h3 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-              {part.title}
-            </h3>
-            <p className="mt-3 text-sm font-medium text-[var(--sending-orange)]">
-              {part.time}
-            </p>
-            <p className="mt-4 max-w-sm text-base leading-relaxed text-[#666]">
-              {part.body}
-            </p>
-          </div>
-        ))}
+      <div className="mt-10 grid gap-4 md:grid-cols-2">
+        {SUNDAY_PARTS.map((part) => {
+          const Icon = part.icon;
+          return (
+            <div
+              key={part.label}
+              className="rounded-[28px] border border-[#eee] bg-white px-7 py-8"
+            >
+              <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
+                {part.label}
+              </p>
+              <div className="mt-4 flex items-start gap-4">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
+                  <Icon size={20} />
+                </span>
+                <div>
+                  <h3 className="text-2xl font-semibold tracking-tight sm:text-[28px]">
+                    {part.title}
+                  </h3>
+                  <p className="mt-1 text-sm font-medium text-[var(--sending-orange)]">
+                    {part.time}
+                  </p>
+                  <p className="mt-3 max-w-sm text-base leading-relaxed text-[#666]">
+                    {part.body}
+                  </p>
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <div
