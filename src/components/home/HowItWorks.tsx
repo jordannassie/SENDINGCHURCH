@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ArrowRight, BookOpen, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { HOW_IMAGE, TWELVE_WEEKS } from "@/lib/demo/data";
 
@@ -24,44 +24,33 @@ const PHASE_STYLES = {
 const SUNDAY_PARTS = [
   {
     label: "Part 1",
-    audience: "For people ready to be trained and sent",
-    title: "12-Week Sending Training",
-    lead: "Get equipped to be sent.",
-    time: "8:00–9:00 AM",
-    badge: "$497",
-    body: "A practical 12-week leadership pathway for believers who want to make disciples, lead others, and learn how to start a simple Sending Church.",
+    title: "Sending Church",
+    time: "9:00–10:00 AM",
     points: [
-      "Learn one practical skill each week.",
-      "Practice it.",
-      "Use it in real life.",
-      "Learn to teach it to someone else.",
+      "Come as you are.",
+      "Grow in faith.",
+      "Meet people.",
+      "Ask questions.",
     ],
-    status: "",
-    cta: "Learn About the 12-Week Training",
-    href: "/#12-weeks",
-    icon: Users,
-    accent: "training",
+    status: "Free • Everyone welcome",
+    price: "",
+    cta: "Come This Sunday",
+    href: "/#sunday",
+    accent: "church",
   },
   {
     label: "Part 2",
-    audience: "The free Sunday gathering",
-    title: "Sending Church",
-    lead: "Come as you are. Come and grow.",
-    time: "9:00–10:00 AM",
-    badge: "",
-    body: "Learn about Jesus and the Bible, ask questions, receive prayer, build friendships, and grow in faith together.",
+    title: "12-Week Sending Training",
+    time: "8:00–9:00 AM",
     points: [
-      "Free.",
-      "Everyone is welcome.",
-      "No experience required.",
-      "No pressure to join the training.",
-      "Just come.",
+      "For people ready to go deeper.",
+      "Learn to make disciples, lead others, and start a Sending Church.",
     ],
     status: "",
-    cta: "Come This Sunday",
-    href: "/#sunday",
-    icon: BookOpen,
-    accent: "church",
+    price: "$497",
+    cta: "View Training",
+    href: "/#12-weeks",
+    accent: "training",
   },
 ] as const;
 
@@ -82,9 +71,7 @@ export function HowItWorks() {
       </div>
 
       <div className="mt-10 grid gap-4 md:grid-cols-2">
-        {SUNDAY_PARTS.map((part) => {
-          const Icon = part.icon;
-          return (
+        {SUNDAY_PARTS.map((part) => (
             <div
               key={part.label}
               className={`rounded-[28px] border bg-white px-7 py-8 ${
@@ -94,63 +81,33 @@ export function HowItWorks() {
               <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
                 {part.label}
               </p>
-              <p className="mt-2 text-xs font-medium tracking-[0.12em] uppercase text-[#777]">
-                {part.audience}
-              </p>
-              <div className="mt-4 flex items-start gap-4">
-                <span
-                  className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full ${
-                    part.accent === "church"
-                      ? "bg-[#111] text-white"
-                      : "bg-[#fff4ec] text-[var(--sending-orange)]"
-                  }`}
+              <h3 className="mt-4 text-2xl font-semibold tracking-tight sm:text-[28px]">
+                {part.title}
+              </h3>
+              <p className="mt-1 text-sm font-medium text-[#111]">{part.time}</p>
+              <ul className="mt-5 max-w-md space-y-1 text-base leading-relaxed text-[#666]">
+                {part.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              {part.status ? (
+                <p className="mt-5 text-sm font-medium text-[#111]">{part.status}</p>
+              ) : null}
+              {part.price ? (
+                <p className="mt-5 text-lg font-semibold tracking-tight">{part.price}</p>
+              ) : null}
+              <div className="mt-6">
+                <Button
+                  href={part.href}
+                  variant={part.accent === "church" ? "primary" : "secondary"}
+                  className="w-full sm:w-auto"
                 >
-                  <Icon size={20} />
-                </span>
-                <div>
-                  <h3 className="text-2xl font-semibold tracking-tight sm:text-[28px]">
-                    {part.title}
-                  </h3>
-                  <p
-                    className={`mt-1 text-sm font-medium ${
-                      part.accent === "church"
-                        ? "text-[#111]"
-                        : "text-[var(--sending-orange)]"
-                    }`}
-                  >
-                    {part.time}
-                  </p>
-                  <p className="mt-2 text-sm font-medium text-[#111]">
-                    {part.lead}
-                  </p>
-                  {part.badge ? (
-                    <p className="mt-3 inline-flex rounded-full bg-[#fff4ec] px-3 py-1 text-sm font-medium text-[var(--sending-orange)]">
-                      {part.badge}
-                    </p>
-                  ) : null}
-                  <p className="mt-3 max-w-md text-base leading-relaxed text-[#666]">
-                    {part.body}
-                  </p>
-                  <ul className="mt-3 max-w-md space-y-1 text-sm leading-relaxed text-[#666]">
-                    {part.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
-                  <div className="mt-5">
-                    <Button
-                      href={part.href}
-                      variant={part.accent === "church" ? "primary" : "secondary"}
-                      className="w-full sm:w-auto"
-                    >
-                      {part.cta}
-                      <ArrowRight size={15} />
-                    </Button>
-                  </div>
-                </div>
+                  {part.cta}
+                  <ArrowRight size={15} />
+                </Button>
               </div>
             </div>
-          );
-        })}
+        ))}
       </div>
 
       <div
