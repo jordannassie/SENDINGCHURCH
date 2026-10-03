@@ -9,7 +9,7 @@ export function WhySending() {
 }
 
 export function Vision() {
-  const [open, setOpen] = useState<"why" | "faith" | null>(null);
+  const [open, setOpen] = useState<"here" | "why" | "faith" | null>(null);
 
   return (
     <section id="vision" className="bg-[var(--sending-orange)]">
@@ -26,6 +26,19 @@ export function Vision() {
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
+          <button
+            type="button"
+            aria-expanded={open === "here"}
+            aria-controls="why-you-are-here"
+            onClick={() => setOpen((value) => (value === "here" ? null : "here"))}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
+          >
+            Why You Are Here
+            <ChevronDown
+              size={16}
+              className={`transition-transform ${open === "here" ? "rotate-180" : ""}`}
+            />
+          </button>
           <button
             type="button"
             aria-expanded={open === "why"}
@@ -53,6 +66,22 @@ export function Vision() {
             />
           </button>
         </div>
+
+        {open === "here" ? (
+          <div id="why-you-are-here" className="mt-10 max-w-2xl">
+            <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
+              Why You Are Here
+            </p>
+            <h3 className="mt-3 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+              You Were Made to Go
+            </h3>
+            <p className="mt-4 text-base leading-relaxed text-white/90">
+              God never made you to sit in a church building, but to go into
+              all the world and share the Gospel. We are a church equipping
+              you to do that.
+            </p>
+          </div>
+        ) : null}
 
         {open === "faith" ? (
           <div id="statement-of-faith" className="mt-10 max-w-2xl">
