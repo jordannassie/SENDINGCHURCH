@@ -11,8 +11,6 @@ export function SiteFooter() {
           <Link href="/#how-it-works">How It Works</Link>
           <Link href="/#pastors">Pastors</Link>
           <Link href="/#launch-hub">Join</Link>
-          <Link href="/dashboard">Dashboard</Link>
-          <Link href="/#stories">Stories</Link>
         </nav>
         <p className="text-sm text-white/90">
           Save the Lost. Send the Saved.

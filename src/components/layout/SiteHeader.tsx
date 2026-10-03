@@ -4,20 +4,16 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
-import { useDemoAuth } from "@/lib/demo/auth";
 
 const NAV = [
   { href: "/#vision", label: "Vision" },
   { href: "/#how-it-works", label: "How It Works" },
   { href: "/#pastors", label: "Pastors" },
   { href: "/#launch-hub", label: "Join" },
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/#stories", label: "Stories" },
 ];
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const { user } = useDemoAuth();
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#f0f0f0] bg-white/90 backdrop-blur">
@@ -28,7 +24,7 @@ export function SiteHeader() {
           {NAV.map((item) => (
             <Link
               key={item.href}
-              href={item.label === "Dashboard" && !user ? "/login" : item.href}
+              href={item.href}
               className="transition-colors hover:text-[#111]"
             >
               {item.label}
@@ -60,7 +56,7 @@ export function SiteHeader() {
           {NAV.map((item) => (
             <Link
               key={item.href}
-              href={item.label === "Dashboard" && !user ? "/login" : item.href}
+              href={item.href}
               className="block py-2 text-sm text-[#333]"
               onClick={() => setOpen(false)}
             >
