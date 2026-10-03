@@ -1,6 +1,6 @@
 const STATEMENTS = [
+  "Not just believe — obey.",
   "Not just attend — participate.",
-  "Not just learn — obey.",
   "Not just stay — be sent.",
 ];
 
@@ -12,12 +12,13 @@ export function WhyWeExist() {
           Why We Exist
         </p>
         <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-          We Exist to Move People From Attendance to Mission.
+          We Exist to Move People From Saved to Sent.
         </h2>
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
-          Too many Christians want more than simply showing up. They want to
-          grow, live on mission, make disciples, and help others follow Jesus.
-          Sending exists to give ordinary people a simple path to do that.
+          Too many believers want more than simply showing up. They want to
+          grow, make disciples, live on mission, and help others follow Jesus.
+          Sending gives ordinary people a simple path to be trained, equipped,
+          and sent.
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
