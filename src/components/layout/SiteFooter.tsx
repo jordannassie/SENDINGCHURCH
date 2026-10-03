@@ -10,6 +10,7 @@ export function SiteFooter() {
           <Link href="/#vision">Vision</Link>
           <Link href="/#how-it-works">How It Works</Link>
           <Link href="/#pastors">Pastors</Link>
+          <Link href="/#launch-hub">Join</Link>
           <Link href="/dashboard">Dashboard</Link>
           <Link href="/#stories">Stories</Link>
         </nav>

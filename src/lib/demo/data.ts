@@ -63,28 +63,29 @@ export const GATHERING_STEPS = [
   {
     time: "0–5 min",
     part: "WELCOME",
-    happens: "Welcome people and repeat the mission: Save. Train. Send.",
+    happens: "Welcome everyone and repeat the mission: Save. Train. Send.",
   },
   {
     time: "5–10 min",
-    part: "STORIES",
-    happens: "Share one or two quick stories of what God did this week.",
+    part: "READ",
+    happens: "Read the Bible together and let Scripture set the agenda.",
   },
   {
     time: "10–40 min",
-    part: "WORD",
-    happens: "Read and teach Scripture together.",
+    part: "DISCUSS",
+    happens: "Talk about what the passage means and what God is saying.",
   },
   {
     time: "40–50 min",
-    part: "DISCUSS",
-    happens: "Talk about what the passage means and what God is saying.",
+    part: "OBEY",
+    happens:
+      "Decide one thing you will believe, change, or do because of what we read.",
   },
   {
     time: "50–55 min",
     part: "SEND",
     happens:
-      "Decide how you will obey, who you will reach, and where you may start next.",
+      "Decide who you will tell, invite, serve, disciple, or train this week.",
   },
   {
     time: "55–60 min",

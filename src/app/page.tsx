@@ -102,10 +102,10 @@ export default function HomePage() {
 
       <HowItWorks />
 
-      <section className="bg-[#fafafa] py-20">
+      <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-5">
           <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-            The 60-Minute Sending Church
+            Church Hour Format
           </p>
           <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
             One Hour. One Mission. Completely Repeatable.
@@ -116,19 +116,19 @@ export default function HomePage() {
           </p>
 
           <div className="mt-10 overflow-hidden rounded-3xl border border-[#eee] bg-white">
-            <div className="hidden grid-cols-[140px_220px_1fr] bg-[#fafafa] px-6 py-3 text-xs font-medium tracking-[0.16em] uppercase text-[#888] md:grid">
+            <div className="hidden grid-cols-[140px_220px_1fr] bg-[#f7f7f7] px-6 py-3 text-xs font-medium tracking-[0.16em] uppercase text-[#888] md:grid">
               <span>Time</span>
               <span>Part</span>
               <span>What Happens</span>
             </div>
             {GATHERING_STEPS.map((row) => (
               <div
-                key={row.time}
-                className="grid gap-1 border-t border-[#f0f0f0] px-6 py-3.5 md:grid-cols-[140px_220px_1fr] md:items-center"
+                key={row.part}
+                className="grid gap-1 border-t border-[#eee] px-6 py-3.5 md:grid-cols-[140px_220px_1fr] md:items-center"
               >
                 <p className="text-sm font-medium text-[var(--sending-orange)]">{row.time}</p>
                 <p className="text-sm font-semibold tracking-wide">{row.part}</p>
-                <p className="text-sm leading-snug text-[#666] md:whitespace-nowrap">{row.happens}</p>
+                <p className="text-sm leading-snug text-[#666]">{row.happens}</p>
               </div>
             ))}
           </div>
@@ -166,7 +166,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-20 lg:grid-cols-2">
+      <section id="launch-hub" className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-20 lg:grid-cols-2">
         <div className="overflow-hidden rounded-[28px]">
           <Image
             src={STAR_IMAGE}

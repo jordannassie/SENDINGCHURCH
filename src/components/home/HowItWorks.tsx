@@ -1,8 +1,5 @@
 import Image from "next/image";
-import { BookOpen, Send, Users } from "lucide-react";
-import { HOW_IMAGE, HOW_IT_WORKS, TWELVE_WEEKS } from "@/lib/demo/data";
-
-const STEP_ICONS = [Users, BookOpen, Send];
+import { HOW_IMAGE, TWELVE_WEEKS } from "@/lib/demo/data";
 
 const PHASE_STYLES = {
   save: {
@@ -22,6 +19,21 @@ const PHASE_STYLES = {
   },
 } as const;
 
+const SUNDAY_PARTS = [
+  {
+    label: "Part 1",
+    title: "1 Hour Training",
+    time: "8:00–9:00 AM",
+    body: "Practice the week’s skill and prepare people to live it out.",
+  },
+  {
+    label: "Part 2",
+    title: "1 Hour Church",
+    time: "9:00–10:00 AM",
+    body: "Gather as church to share, learn, obey, pray, and send.",
+  },
+] as const;
+
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="mx-auto max-w-[1220px] px-5 py-20 lg:py-24">
@@ -38,26 +50,26 @@ export function HowItWorks() {
         </p>
       </div>
 
-      <div className="mt-10 grid gap-4 md:grid-cols-3">
-        {HOW_IT_WORKS.map((step, index) => {
-          const Icon = STEP_ICONS[index];
-          return (
-            <div
-              key={step.title}
-              className="min-h-[220px] rounded-[28px] border border-[#eee] bg-white px-8 py-9 transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_28px_rgba(0,0,0,0.06)]"
-            >
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
-                <Icon size={22} />
-              </span>
-              <h3 className="mt-6 text-2xl font-semibold tracking-tight">
-                {step.title}
-              </h3>
-              <p className="mt-2 text-base leading-relaxed text-[#666]">
-                {step.body}
-              </p>
-            </div>
-          );
-        })}
+      <div className="mt-12 grid gap-4 md:grid-cols-2">
+        {SUNDAY_PARTS.map((part) => (
+          <div
+            key={part.label}
+            className="rounded-[28px] border border-[#eee] bg-white px-8 py-9"
+          >
+            <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
+              {part.label}
+            </p>
+            <h3 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+              {part.title}
+            </h3>
+            <p className="mt-3 text-sm font-medium text-[var(--sending-orange)]">
+              {part.time}
+            </p>
+            <p className="mt-4 max-w-sm text-base leading-relaxed text-[#666]">
+              {part.body}
+            </p>
+          </div>
+        ))}
       </div>
 
       <div
@@ -82,7 +94,8 @@ export function HowItWorks() {
             12 Weeks to Multiply
           </h3>
           <p className="mt-4 text-base leading-relaxed text-[#666]">
-            One simple skill each week. Learn it. Practice it. Reproduce it.
+            One simple skill each week, practiced in training and lived out in
+            church.
           </p>
 
           <div className="mt-10 space-y-8">
