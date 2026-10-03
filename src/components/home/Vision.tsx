@@ -33,7 +33,7 @@ export function Vision() {
             onClick={() => setOpen((value) => (value === "why" ? null : "why"))}
             className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111]"
           >
-            Why Sending
+            Our Uniqueness
             <ChevronDown
               size={16}
               className={`transition-transform ${open === "why" ? "rotate-180" : ""}`}
@@ -74,7 +74,7 @@ export function Vision() {
         {open === "why" ? (
           <div id="why-sending" className="mt-10">
             <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
-              Why Sending
+              Our Uniqueness
             </p>
             <h3 className="mt-3 max-w-3xl text-2xl font-semibold tracking-tight text-white sm:text-3xl">
               What Makes Sending Churches Unique
