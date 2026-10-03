@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { InstagramLink } from "@/components/brand/InstagramLink";
 import { Logo } from "@/components/brand/Logo";
 
 export function SiteFooter() {
@@ -12,9 +13,12 @@ export function SiteFooter() {
           <Link href="/#pastors">Pastors</Link>
           <Link href="/#launch-hub">Join</Link>
         </nav>
-        <p className="text-sm text-white/90">
-          Save the Lost. Send the Saved.
-        </p>
+        <div className="flex flex-col items-start gap-3 md:items-end">
+          <InstagramLink size={40} className="text-white" />
+          <p className="text-sm text-white/90">
+            Save the Lost. Send the Saved.
+          </p>
+        </div>
       </div>
     </footer>
   );

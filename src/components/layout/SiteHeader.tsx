@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
+import { InstagramLink } from "@/components/brand/InstagramLink";
 import { Logo } from "@/components/brand/Logo";
 
 const NAV = [
@@ -33,13 +34,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <InstagramLink size={22} className="text-[#111]" />
           <Link
             href="/login"
             className="hidden items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white md:inline-flex"
           >
-            Join the Team
-            <ArrowRight size={14} />
-          </Link>
           <button
             type="button"
             className="rounded-full p-2 text-[#111] md:hidden"
@@ -63,14 +62,17 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="/login"
-            className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white"
-            onClick={() => setOpen(false)}
-          >
-            Join the Team
-            <ArrowRight size={14} />
-          </Link>
+          <div className="mt-2 flex items-center gap-3">
+            <InstagramLink size={22} className="text-[#111]" />
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white"
+              onClick={() => setOpen(false)}
+            >
+              Join the Team
+              <ArrowRight size={14} />
+            </Link>
+          </div>
         </div>
       ) : null}
     </header>
