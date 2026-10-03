@@ -60,7 +60,7 @@ export default function StartAChurchPage() {
   if (user) {
     return (
       <DashboardShell>
-        <StartContent ctaHref="/my-church" />
+        <StartContent ctaHref="/login" />
       </DashboardShell>
     );
   }

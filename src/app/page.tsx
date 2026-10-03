@@ -54,7 +54,7 @@ export default function HomePage() {
               Join the Frisco Team
               <ArrowRight size={15} />
             </Button>
-            <Button href="/start-a-church" variant="secondary">
+            <Button href="/login" variant="secondary">
               Start a Sending Church
               <ArrowRight size={15} />
             </Button>
@@ -161,7 +161,7 @@ export default function HomePage() {
           ))}
         </div>
         <div className="mt-8">
-          <Button href="/start-a-church">
+          <Button href="/login">
             Start a Sending Church
             <ArrowRight size={15} />
           </Button>
