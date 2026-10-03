@@ -17,8 +17,8 @@ export function WhyWeExist() {
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
           Too many believers want more than simply showing up. They want to
           grow, make disciples, live on mission, and help others follow Jesus.
-          Sending gives ordinary people a simple path to be trained, equipped,
-          and sent.
+          Sending gives Believers a simple path to be trained, equipped, and
+          sent.
         </p>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
