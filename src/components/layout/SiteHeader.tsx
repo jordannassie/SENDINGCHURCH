@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowRight, Menu, X } from "lucide-react";
-import { InstagramLink } from "@/components/brand/InstagramLink";
 import { Logo } from "@/components/brand/Logo";
+import { SocialLinks } from "@/components/brand/SocialLinks";
 
 const NAV = [
   { href: "/#vision", label: "Vision" },
@@ -34,7 +34,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <InstagramLink size={22} className="text-[#111]" />
+          <SocialLinks size={22} className="text-[#111]" />
           <Link
             href="/login"
             className="hidden items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white md:inline-flex"
@@ -66,7 +66,7 @@ export function SiteHeader() {
             </Link>
           ))}
           <div className="mt-2 flex items-center gap-3">
-            <InstagramLink size={22} className="text-[#111]" />
+            <SocialLinks size={22} className="text-[#111]" />
             <Link
               href="/login"
               className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white"
