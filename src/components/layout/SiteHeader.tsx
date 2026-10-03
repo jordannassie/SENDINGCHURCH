@@ -9,7 +9,7 @@ import { Logo } from "@/components/brand/Logo";
 const NAV = [
   { href: "/#vision", label: "Vision" },
   { href: "/#how-it-works", label: "How It Works" },
-  { href: "/#pastors", label: "Pastors" },
+  { href: "/#pastors", label: "Pastor" },
   { href: "/#launch-hub", label: "Join" },
 ];
 

@@ -10,7 +10,7 @@ export function SiteFooter() {
         <nav className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/85">
           <Link href="/#vision">Vision</Link>
           <Link href="/#how-it-works">How It Works</Link>
-          <Link href="/#pastors">Pastors</Link>
+          <Link href="/#pastors">Pastor</Link>
           <Link href="/#launch-hub">Join</Link>
         </nav>
         <div className="flex flex-col items-start gap-3 md:items-end">
