@@ -1,16 +1,24 @@
 "use client";
 
-import { useState } from "react";
-import { FRISCO_LOCATION } from "@/lib/locations";
+import { useMemo, useState } from "react";
+import { formatTimeRange, getLocations } from "@/lib/locations";
 import { rsvpConfirmationText } from "@/lib/rsvp/messages";
 import { saveSundayRsvp } from "@/lib/rsvp/save";
 
 export function SundayRsvp() {
+  const locations = useMemo(() => getLocations(), []);
+  const [locationId, setLocationId] = useState(
+    locations[0]?.location_id ?? "",
+  );
   const [firstName, setFirstName] = useState("");
   const [mobile, setMobile] = useState("");
-  const [email, setEmail] = useState("");
   const [savedName, setSavedName] = useState("");
   const [error, setError] = useState("");
+
+  const location =
+    locations.find((item) => item.location_id === locationId) ?? locations[0];
+
+  if (!location) return null;
 
   return (
     <section id="sunday" className="bg-[#fafafa]">
@@ -25,29 +33,57 @@ export function SundayRsvp() {
           Your first step is simple. Just show up.
         </p>
 
-        <div className="mt-10 grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+        <label className="mt-8 block max-w-[380px]">
+          <span className="text-xs font-medium tracking-[0.16em] uppercase text-[#999]">
+            Select Location
+          </span>
+          <select
+            value={location.location_id}
+            onChange={(event) => {
+              setLocationId(event.target.value);
+              setSavedName("");
+            }}
+            className="mt-2 h-12 w-full rounded-full border border-[#eee] bg-white px-5 text-sm text-[#111] outline-none focus:border-[#d4d4d4]"
+          >
+            {locations.map((item) => (
+              <option key={item.location_id} value={item.location_id}>
+                {item.location_name}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <div className="mt-8 grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
           <div className="rounded-[28px] border border-[#ffd8c2] bg-white px-6 py-7 sm:px-8">
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-[var(--sending-orange)]">
-              Sending Church — Frisco
-            </p>
-            <p className="mt-4 text-sm font-medium text-[#111]">Sunday</p>
+            <p className="text-sm font-medium text-[#111]">{location.church_day}</p>
             <p className="mt-1 text-2xl font-semibold tracking-tight">
-              9:00–10:00 AM
+              {formatTimeRange(location.church_start_time, location.church_end_time)}
             </p>
             <p className="mt-4 text-base font-semibold tracking-tight text-[#111]">
-              {FRISCO_LOCATION.venue_name}
+              {location.venue_name}
             </p>
-            <p className="mt-1 text-sm text-[#666]">{FRISCO_LOCATION.address}</p>
+            <p className="mt-1 text-sm text-[#666]">{location.address}</p>
             <div className="mt-6 space-y-2 text-sm leading-relaxed text-[#666]">
+              <p>Bring your Bible.</p>
+              <p>Grab a coffee.</p>
+              <p>Meet friends.</p>
+              <p>Find a community to belong.</p>
+            </div>
+            <div className="mt-5 space-y-2 text-sm leading-relaxed text-[#666]">
               <p>Come as you are.</p>
               <p>No church experience required.</p>
               <p>No pressure.</p>
               <p>Bring your questions.</p>
-              <p>We’d love to meet you.</p>
             </div>
+            <p className="mt-5 text-sm font-medium text-[#111]">
+              We’d love to meet you.
+            </p>
           </div>
 
-          <div id="sunday-rsvp" className="rounded-[28px] border border-[#eee] bg-white px-6 py-7 sm:px-8">
+          <div
+            id="sunday-rsvp"
+            className="rounded-[28px] border border-[#eee] bg-white px-6 py-7 sm:px-8"
+          >
             {savedName ? (
               <div>
                 <h3 className="text-2xl font-semibold tracking-tight">
@@ -73,7 +109,7 @@ export function SundayRsvp() {
                   saveSundayRsvp({
                     first_name: firstName,
                     mobile,
-                    email,
+                    location_id: location.location_id,
                   });
                   setSavedName(firstName.trim());
                   setError("");
@@ -105,23 +141,12 @@ export function SundayRsvp() {
                     className="mt-2 h-12 w-full rounded-full border border-[#eee] px-5 text-sm outline-none focus:border-[#d4d4d4]"
                   />
                 </label>
-                <label className="block">
-                  <span className="text-xs font-medium tracking-[0.16em] uppercase text-[#999]">
-                    Email optional
-                  </span>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    className="mt-2 h-12 w-full rounded-full border border-[#eee] px-5 text-sm outline-none focus:border-[#d4d4d4]"
-                  />
-                </label>
                 {error ? <p className="text-sm text-[#c2410c]">{error}</p> : null}
                 <button
                   type="submit"
                   className="inline-flex h-12 w-full items-center justify-center rounded-full bg-[var(--sending-orange)] px-5 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)]"
                 >
-                  Save My Spot
+                  I’m Coming Sunday
                 </button>
               </form>
             )}

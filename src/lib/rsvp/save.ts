@@ -1,7 +1,7 @@
 export type SundayRsvp = {
   first_name: string;
   mobile: string;
-  email: string;
+  location_id: string;
   created_at: string;
 };
 
@@ -10,12 +10,12 @@ const STORAGE_KEY = "sending-sunday-rsvps";
 export function saveSundayRsvp(input: {
   first_name: string;
   mobile: string;
-  email?: string;
+  location_id: string;
 }): SundayRsvp {
   const record: SundayRsvp = {
     first_name: input.first_name.trim(),
     mobile: input.mobile.trim(),
-    email: input.email?.trim() ?? "",
+    location_id: input.location_id,
     created_at: new Date().toISOString(),
   };
 
