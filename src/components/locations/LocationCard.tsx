@@ -26,9 +26,35 @@ export function LocationCard({
         <h3 className="mt-1.5 text-2xl font-semibold tracking-tight sm:text-3xl">
           {location.location_name}
         </h3>
-        <p className="mt-1 text-sm text-[#666]">{location.venue_name}</p>
 
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <p className="text-xs font-medium tracking-[0.16em] uppercase text-[#999]">
+              Venue
+            </p>
+            <p className="mt-1 text-base font-semibold tracking-tight text-[#111]">
+              {location.venue_name}
+            </p>
+          </div>
+          <div>
+            <p className="text-xs font-medium tracking-[0.16em] uppercase text-[#999]">
+              Address
+            </p>
+            <p className="mt-1 text-base font-semibold tracking-tight text-[#111]">
+              {location.address}
+            </p>
+            <a
+              href={location.map_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-flex items-center text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)]"
+            >
+              Get Directions →
+            </a>
+          </div>
+        </div>
+
+        <div className="mt-5 flex items-center gap-3">
           <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-[#fff4ec]">
             {location.leader_photo_url ? (
               <Image

@@ -1,5 +1,3 @@
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/Button";
 import { formatTimeRange, type SendingLocation } from "@/lib/locations";
 
 export function ChurchBlock({ location }: { location: SendingLocation }) {
@@ -14,23 +12,16 @@ export function ChurchBlock({ location }: { location: SendingLocation }) {
       <h4 className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
         Sending Church
       </h4>
-      <p className="mt-2 text-sm leading-relaxed text-[#666]">
-        Read through the Bible chapter by chapter in a simple, repeatable
-        gathering anyone can lead.
-      </p>
-      <p className="mt-3 text-lg font-semibold tracking-tight text-[#111]">
-        Free
-      </p>
-      <div className="mt-4">
-        <Button
-          href={location.attend_church_url}
-          variant="dark"
-          className="w-full sm:w-auto"
-        >
-          Attend Church
-          <ArrowRight size={15} />
-        </Button>
+      <div className="mt-2 space-y-2 text-sm leading-relaxed text-[#666]">
+        <p>Come and grow in faith.</p>
+        <p>
+          Learn about Jesus and the Bible, ask honest questions, receive
+          prayer, and grow together in a simple church gathering.
+        </p>
       </div>
+      <p className="mt-4 text-base font-semibold tracking-tight text-[#111]">
+        Free — Just show up.
+      </p>
     </div>
   );
 }
