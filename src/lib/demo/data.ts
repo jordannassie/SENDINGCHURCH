@@ -213,6 +213,9 @@ export const STORIES = [
 export const STAR_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/the-star_entertainment-district_00009.jpg";
 
+export const START_WITH_TWO_IMAGE =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/2.png";
+
 export const PASTORS = {
   jordanImage:
     "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Jordan/Jordan2.png",

@@ -25,6 +25,7 @@ import {
   PASTORS,
   STAR_IMAGE,
   START_FLOW,
+  START_WITH_TWO_IMAGE,
   STORIES,
 } from "@/lib/demo/data";
 
@@ -140,31 +141,42 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-20">
-        <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Start With Two.</h2>
-        <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
-          You do not need a building, stage, staff, or large crowd. Find one
-          other person. Meet in a home, coffee shop, workplace, campus,
-          restaurant, or anywhere people can gather. Follow the 60-minute
-          Sending Church format. Then multiply.
-        </p>
-        <div className="mt-10 flex flex-wrap items-center gap-3">
-          {START_FLOW.map((item, index) => (
-            <div key={item} className="flex items-center gap-3">
-              <span className="rounded-full border border-[#eee] bg-white px-4 py-2 text-sm font-medium">
-                {item}
-              </span>
-              {index < START_FLOW.length - 1 ? (
-                <ArrowRight size={16} className="text-[var(--sending-orange)]" />
-              ) : null}
-            </div>
-          ))}
+      <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 lg:grid-cols-2">
+        <div className="overflow-hidden rounded-[28px]">
+          <Image
+            src={START_WITH_TWO_IMAGE}
+            alt="Two people praying together"
+            width={1400}
+            height={900}
+            className="h-full min-h-[280px] w-full object-cover"
+          />
         </div>
-        <div className="mt-8">
-          <Button href="/login">
-            Start a Sending Church
-            <ArrowRight size={15} />
-          </Button>
+        <div>
+          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Start With Two.</h2>
+          <p className="mt-5 text-base leading-relaxed text-[#666]">
+            You do not need a building, stage, staff, or large crowd. Find one
+            other person. Meet in a home, coffee shop, workplace, campus,
+            restaurant, or anywhere people can gather. Follow the 60-minute
+            Sending Church format. Then multiply.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            {START_FLOW.map((item, index) => (
+              <div key={item} className="flex items-center gap-3">
+                <span className="rounded-full border border-[#eee] bg-white px-4 py-2 text-sm font-medium">
+                  {item}
+                </span>
+                {index < START_FLOW.length - 1 ? (
+                  <ArrowRight size={16} className="text-[var(--sending-orange)]" />
+                ) : null}
+              </div>
+            ))}
+          </div>
+          <div className="mt-8">
+            <Button href="/login">
+              Start a Sending Church
+              <ArrowRight size={15} />
+            </Button>
+          </div>
         </div>
       </section>
 
