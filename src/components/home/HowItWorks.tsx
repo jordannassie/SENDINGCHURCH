@@ -25,14 +25,16 @@ const SUNDAY_PARTS = [
     label: "Part 1",
     title: "1 Hour Training",
     time: "8:00–9:00 AM",
-    body: "Practice the week’s skill and prepare people to live it out.",
+    badge: "$497 Training",
+    body: "Get trained for ministry, learn the Sending model, and be equipped to be sent out.",
     icon: Users,
   },
   {
     label: "Part 2",
     title: "1 Hour Church",
     time: "9:00–10:00 AM",
-    body: "Gather as church to share, learn, obey, pray, and send.",
+    badge: "",
+    body: "You’re invited to church. Read chapter by chapter through the Bible together in a simple, repeatable format.",
     icon: BookOpen,
   },
 ] as const;
@@ -75,7 +77,12 @@ export function HowItWorks() {
                   <p className="mt-1 text-sm font-medium text-[var(--sending-orange)]">
                     {part.time}
                   </p>
-                  <p className="mt-3 max-w-sm text-base leading-relaxed text-[#666]">
+                  {part.badge ? (
+                    <p className="mt-3 inline-flex rounded-full bg-[#fff4ec] px-3 py-1 text-sm font-medium text-[var(--sending-orange)]">
+                      {part.badge}
+                    </p>
+                  ) : null}
+                  <p className="mt-3 max-w-md text-base leading-relaxed text-[#666]">
                     {part.body}
                   </p>
                 </div>
