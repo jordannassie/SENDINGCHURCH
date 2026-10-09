@@ -143,13 +143,13 @@ export function SundayRsvp() {
             <p className="text-[11px] font-medium tracking-[0.22em] text-[#9a9a9a] uppercase sm:text-xs">
               You’re invited
             </p>
-            <h2
+            <h1
               id="sunday-heading"
               className="mt-4 text-[2.7rem] font-black leading-[0.9] tracking-[-0.045em] text-[#111] sm:text-[3.4rem] md:text-[3.15rem] lg:text-[4.5rem] xl:text-[5.15rem]"
             >
               <span className="block">Come This</span>
               <span className="block text-[var(--sending-orange)]">Sunday</span>
-            </h2>
+            </h1>
             <p className="mt-5 max-w-[420px] text-[15px] leading-relaxed text-[#5e5e5e] sm:text-base md:max-w-[340px] lg:max-w-[420px]">
               Bring your Bible, grab coffee, meet friends, and find a community
               to belong. Come as you are.

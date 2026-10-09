@@ -23,7 +23,6 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
 import {
   GATHERING_STEPS,
-  HERO_IMAGE,
   HERO_VIDEO,
   IMPACT_STATS,
   PASTORS,
@@ -43,47 +42,6 @@ export default function HomePage() {
       <link rel="preload" as="video" href={HERO_VIDEO} type="video/quicktime" />
       <SiteHeader />
       <SundayRsvp />
-
-      <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 lg:grid-cols-[1fr_1.15fr] lg:py-16">
-        <div>
-          <h1 className="text-5xl font-semibold tracking-tight text-[#111] sm:text-6xl lg:text-[72px] lg:leading-[0.95]">
-            Save the Lost.
-            <br />
-            Send the Saved.
-          </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-[#6b6b6b]">
-            A simple church movement where you can know Jesus, grow in your
-            faith, find community, and when you’re ready, be equipped to help
-            others do the same.
-          </p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="/#sunday" className="w-full sm:w-auto">
-              Come This Sunday
-              <ArrowRight size={15} />
-            </Button>
-            <Button
-              href="/#how-it-works"
-              variant="secondary"
-              className="w-full sm:w-auto"
-            >
-              See How Sending Works
-              <ArrowRight size={15} />
-            </Button>
-          </div>
-          <p className="mt-4 text-sm text-[#777]">
-            Free • Everyone is welcome • No experience required
-          </p>
-        </div>
-        <div className="overflow-hidden rounded-[28px]">
-          <Image
-            src={HERO_IMAGE}
-            alt="Sending gathering"
-            width={1400}
-            height={900}
-            className="h-full w-full object-cover"
-          />
-        </div>
-      </section>
 
       <section className="bg-black">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-12 sm:grid-cols-3 lg:grid-cols-5">
