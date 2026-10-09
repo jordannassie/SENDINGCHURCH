@@ -261,6 +261,9 @@ export const STORIES = [
 export const STAR_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/the-star_entertainment-district_00009.jpg";
 
+export const STAR_VISIT_IMAGE =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/e8dc9c51-ddad-4215-85fb-2bd0f7fe5a00.png";
+
 export const OMNI_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Omni.png";
 

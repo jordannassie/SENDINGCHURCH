@@ -28,6 +28,7 @@ import {
   PASTORS,
   OMNI_IMAGE,
   STAR_IMAGE,
+  STAR_VISIT_IMAGE,
   START_FLOW,
   START_WITH_TWO_IMAGE,
 } from "@/lib/demo/data";
@@ -42,6 +43,17 @@ export default function HomePage() {
       <link rel="preload" as="video" href={HERO_VIDEO} type="video/quicktime" />
       <SiteHeader />
       <SundayRsvp />
+
+      <section aria-label="The Star in Frisco">
+        <Image
+          src={STAR_VISIT_IMAGE}
+          alt="A couple standing outside The Star in Frisco"
+          width={1672}
+          height={941}
+          sizes="100vw"
+          className="h-auto w-full"
+        />
+      </section>
 
       <section className="bg-black">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-12 sm:grid-cols-3 lg:grid-cols-5">
