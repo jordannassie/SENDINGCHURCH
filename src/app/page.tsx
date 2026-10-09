@@ -42,6 +42,7 @@ export default function HomePage() {
     <div className="bg-white">
       <link rel="preload" as="video" href={HERO_VIDEO} type="video/quicktime" />
       <SiteHeader />
+      <SundayRsvp />
 
       <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 lg:grid-cols-[1fr_1.15fr] lg:py-16">
         <div>
@@ -80,12 +81,9 @@ export default function HomePage() {
             width={1400}
             height={900}
             className="h-full w-full object-cover"
-            priority
           />
         </div>
       </section>
-
-      <SundayRsvp />
 
       <section className="bg-black">
         <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-12 sm:grid-cols-3 lg:grid-cols-5">
