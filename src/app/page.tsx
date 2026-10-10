@@ -12,6 +12,7 @@ import {
   Radio,
   Users,
 } from "lucide-react";
+import { DownloadGuideButton } from "@/components/home/DownloadGuideButton";
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { SundayRsvp } from "@/components/home/SundayRsvp";
@@ -22,6 +23,10 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
 import {
+  BOOK_AMAZON_LOGO,
+  BOOK_AMAZON_URL,
+  BOOK_IMAGE,
+  CHURCH_GUIDE_IMAGE,
   GATHERING_STEPS,
   HERO_VIDEO,
   IMPACT_STATS,
@@ -113,6 +118,81 @@ export default function HomePage() {
           <p className="mt-6 text-sm text-[#666]">
             After 60 minutes: stay for coffee, fellowship, conversation, and prayer.
           </p>
+        </div>
+      </section>
+
+      <section id="book" className="scroll-mt-[73px] bg-[#fafafa] py-20">
+        <div className="mx-auto max-w-6xl px-5">
+          <p className="text-xs font-medium tracking-[0.2em] text-[#999] uppercase">
+            The Book
+          </p>
+          <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+            Buy the book. Print the guide.
+          </h2>
+          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
+            Take Sending home, and give your church members the one-hour guide
+            to follow together.
+          </p>
+
+          <div className="mt-12 grid items-start gap-8 lg:grid-cols-2">
+            <article className="overflow-hidden rounded-[28px] border border-[#eee] bg-white">
+              <Image
+                src={BOOK_IMAGE}
+                alt="Sending book: Save the Lost. Train the Saved. Send the Trained."
+                width={1254}
+                height={1254}
+                className="aspect-square w-full object-cover"
+                sizes="(min-width: 1024px) 560px, 100vw"
+              />
+              <div className="px-6 py-7 sm:px-8">
+                <h3 className="text-2xl font-semibold tracking-tight">Sending</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#666]">
+                  Save the Lost. Train the Saved. Send the Trained.
+                </p>
+                <p className="mt-5 text-3xl font-semibold tracking-tight">$5.00</p>
+                <a
+                  href={BOOK_AMAZON_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Buy Sending on Amazon for $5.00"
+                  className="mt-5 inline-flex h-14 items-center justify-center rounded-full bg-black px-5"
+                >
+                  <Image
+                    src={BOOK_AMAZON_LOGO}
+                    alt=""
+                    width={3840}
+                    height={1160}
+                    className="h-8 w-auto"
+                  />
+                </a>
+              </div>
+            </article>
+
+            <article className="overflow-hidden rounded-[28px] border border-[#eee] bg-white">
+              <div className="bg-[#f6f6f6] p-4 sm:p-6">
+                <Image
+                  src={CHURCH_GUIDE_IMAGE}
+                  alt="Sending Church guide with the one-hour gathering format"
+                  width={1545}
+                  height={2000}
+                  className="mx-auto h-auto w-full rounded-2xl bg-white shadow-[0_12px_40px_rgba(0,0,0,0.06)]"
+                  sizes="(min-width: 1024px) 520px, 100vw"
+                />
+              </div>
+              <div className="px-6 py-7 sm:px-8">
+                <h3 className="text-2xl font-semibold tracking-tight">
+                  Sending Church Guide
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#666]">
+                  The same one-hour format, ready to print and hand to your
+                  church members.
+                </p>
+                <div className="mt-6">
+                  <DownloadGuideButton />
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
       </section>
 

@@ -270,6 +270,18 @@ export const OMNI_IMAGE =
 export const START_WITH_TWO_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/2.png";
 
+export const BOOK_IMAGE =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Book1.png";
+
+export const BOOK_AMAZON_URL =
+  "https://www.amazon.com/Sending-Church-Movement-Saved-Trained/dp/B0HLRTWFMS";
+
+export const BOOK_AMAZON_LOGO =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Amazon_logo.svg.webp";
+
+export const CHURCH_GUIDE_IMAGE =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Groupme.jpg";
+
 export const PASTORS = {
   jordanImage:
     "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Jordan/Jordan2.png",
