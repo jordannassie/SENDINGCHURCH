@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HERO_VIDEO, STAR_VISIT_IMAGE } from "@/lib/demo/data";
 
 function SpeakerOffIcon() {
@@ -37,6 +37,18 @@ export function StarVisit() {
   const [muted, setMuted] = useState(true);
   const [pinned, setPinned] = useState(false);
 
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    const start = () => {
+      void video.play().catch(() => {});
+    };
+    start();
+    video.addEventListener("canplay", start);
+    return () => video.removeEventListener("canplay", start);
+  }, []);
+
   function applyMuted(nextMuted: boolean) {
     const video = videoRef.current;
     if (!video) return;
@@ -71,7 +83,7 @@ export function StarVisit() {
             loop
             muted
             playsInline
-            preload="metadata"
+            preload="auto"
             aria-label="Sending Church video"
           />
           <button

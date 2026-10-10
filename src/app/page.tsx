@@ -12,6 +12,7 @@ import {
   Radio,
   Users,
 } from "lucide-react";
+import { Beliefs } from "@/components/home/Beliefs";
 import { DownloadGuideButton } from "@/components/home/DownloadGuideButton";
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { HowItWorks } from "@/components/home/HowItWorks";
@@ -112,20 +113,20 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="book" className="scroll-mt-[73px] bg-[#fafafa] py-20">
+      <section id="book" className="scroll-mt-[73px] bg-[#fafafa] py-12">
         <div className="mx-auto max-w-6xl px-5">
           <p className="text-xs font-medium tracking-[0.2em] text-[#999] uppercase">
             The Book
           </p>
-          <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+          <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
             Buy the book. Print the guide.
           </h2>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#666] sm:text-base">
             Take Sending home, and give your church members the one-hour guide
             to follow together.
           </p>
 
-          <div className="mt-12 grid items-stretch gap-8 lg:grid-cols-2">
+          <div className="mx-auto mt-8 grid w-full max-w-xl items-stretch gap-4 sm:grid-cols-2">
             <article className="flex h-full flex-col overflow-hidden rounded-[28px] border border-[#eee] bg-white">
               <div className="relative aspect-square">
                 <Image
@@ -133,28 +134,28 @@ export default function HomePage() {
                   alt="Sending book: Save the Lost. Train the Saved. Send the Trained."
                   fill
                   className="object-cover"
-                  sizes="(min-width: 1024px) 560px, 100vw"
+                  sizes="280px"
                 />
               </div>
-              <div className="flex flex-1 flex-col px-6 py-7 sm:px-8">
-                <h3 className="text-2xl font-semibold tracking-tight">Sending</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#666]">
+              <div className="flex flex-1 flex-col px-4 py-4 sm:px-5">
+                <h3 className="text-lg font-semibold tracking-tight">Sending</h3>
+                <p className="mt-1 text-xs leading-relaxed text-[#666] sm:text-sm">
                   Save the Lost. Train the Saved. Send the Trained.
                 </p>
-                <p className="mt-5 text-3xl font-semibold tracking-tight">$5.00</p>
+                <p className="mt-3 text-2xl font-semibold tracking-tight">$5.00</p>
                 <a
                   href={BOOK_AMAZON_URL}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Buy Sending on Amazon for $5.00"
-                  className="mt-5 inline-flex h-14 w-fit items-center justify-center rounded-full bg-black px-5"
+                  className="mt-3 inline-flex h-11 w-fit items-center justify-center rounded-full bg-black px-4"
                 >
                   <Image
                     src={BOOK_AMAZON_LOGO}
                     alt=""
                     width={1024}
                     height={373}
-                    className="h-7 w-auto"
+                    className="h-5 w-auto"
                   />
                 </a>
               </div>
@@ -168,19 +169,19 @@ export default function HomePage() {
                     alt="Sending Church guide with the one-hour gathering format"
                     fill
                     className="object-contain"
-                    sizes="(min-width: 1024px) 560px, 100vw"
+                    sizes="280px"
                   />
                 </div>
               </div>
-              <div className="flex flex-1 flex-col px-6 py-7 sm:px-8">
-                <h3 className="text-2xl font-semibold tracking-tight">
+              <div className="flex flex-1 flex-col px-4 py-4 sm:px-5">
+                <h3 className="text-lg font-semibold tracking-tight">
                   Sending Church Guide
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#666]">
+                <p className="mt-1 text-xs leading-relaxed text-[#666] sm:text-sm">
                   The same one-hour format, ready to print and hand to your
                   church members.
                 </p>
-                <div className="mt-auto pt-6">
+                <div className="mt-auto pt-4">
                   <DownloadGuideButton />
                 </div>
               </div>
@@ -388,6 +389,8 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
+
+      <Beliefs />
 
       <SiteFooter />
     </div>

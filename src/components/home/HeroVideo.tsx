@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { HERO_VIDEO } from "@/lib/demo/data";
 
 function SpeakerOffIcon() {
@@ -38,6 +38,18 @@ export function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMutedState] = useState(true);
   const [pinned, setPinned] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    const start = () => {
+      void video.play().catch(() => {});
+    };
+    start();
+    video.addEventListener("canplay", start);
+    return () => video.removeEventListener("canplay", start);
+  }, []);
 
   function applyMuted(nextMuted: boolean) {
     const video = videoRef.current;
