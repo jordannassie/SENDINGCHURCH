@@ -277,7 +277,7 @@ export const BOOK_AMAZON_URL =
   "https://www.amazon.com/Sending-Church-Movement-Saved-Trained/dp/B0HLRTWFMS";
 
 export const BOOK_AMAZON_LOGO =
-  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Amazon_logo.svg.webp";
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Amazon-Logo-White-PNG-Image.png";
 
 export const CHURCH_GUIDE_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Groupme.jpg";
