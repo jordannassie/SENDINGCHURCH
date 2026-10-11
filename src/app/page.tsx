@@ -370,6 +370,8 @@ export default function HomePage() {
 
       <WorldGlobe />
 
+      <Beliefs />
+
       <section className="bg-[var(--sending-orange)]">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center">
           <div>
@@ -389,8 +391,6 @@ export default function HomePage() {
           </Link>
         </div>
       </section>
-
-      <Beliefs />
 
       <SiteFooter />
     </div>
