@@ -18,22 +18,22 @@ const FOCUS =
 
 const PATHWAY = [
   {
-    number: "01",
+    months: "Months 1–3",
     title: "Know Jesus",
     body: "Know who Jesus is and what it means to follow Him.",
   },
   {
-    number: "02",
+    months: "Months 4–6",
     title: "Grow in faith",
     body: "Build healthy habits and a deeper love for God's Word.",
   },
   {
-    number: "03",
+    months: "Months 7–9",
     title: "Live your faith",
     body: "Put your faith into practice in everyday life.",
   },
   {
-    number: "04",
+    months: "Months 10–12",
     title: "Help others follow Jesus",
     body: "Share what you're learning and help others take a next step.",
   },
@@ -232,17 +232,37 @@ export default function HomePage() {
           <p className="mt-4 max-w-xl text-lg text-[#555]">
             Foundations supports your everyday walk with Jesus.
           </p>
-          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {PATHWAY.map((step) => (
-              <div key={step.number}>
-                <p className="text-sm font-semibold tracking-[0.12em] text-[var(--sending-orange)]">
-                  {step.number}
-                </p>
-                <h3 className="mt-3 text-xl font-semibold tracking-tight">{step.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-[#666]">{step.body}</p>
-              </div>
+          <ol className="mt-12 space-y-8 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:space-y-0">
+            {PATHWAY.map((step, index) => (
+              <li key={step.title} className="relative flex gap-4 lg:block">
+                {index < PATHWAY.length - 1 ? (
+                  <>
+                    <span
+                      aria-hidden
+                      className="absolute top-5 bottom-[-2rem] left-[9px] w-px bg-[#ffd3b8] lg:hidden"
+                    />
+                    <span
+                      aria-hidden
+                      className="absolute top-[9px] left-[10px] hidden h-px w-[calc(100%+2rem)] bg-[#ffd3b8] lg:block"
+                    />
+                  </>
+                ) : null}
+                <span
+                  aria-hidden
+                  className="relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--sending-orange)]"
+                >
+                  <span className="h-2 w-2 rounded-full bg-white" />
+                </span>
+                <div className="min-w-0 lg:mt-5">
+                  <p className="inline-flex rounded-full bg-[#fff1e8] px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-[var(--sending-orange)] uppercase">
+                    {step.months}
+                  </p>
+                  <h3 className="mt-3 text-lg font-semibold tracking-tight">{step.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-[#6b6b6b]">{step.body}</p>
+                </div>
+              </li>
             ))}
-          </div>
+          </ol>
           <p className="mt-12 text-sm text-[#666]">
             Start where you are. Take your next step when you are ready.
           </p>
