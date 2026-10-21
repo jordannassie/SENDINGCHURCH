@@ -79,7 +79,7 @@ export function SundayRsvp() {
   }
 
   const fieldClass =
-    "h-[52px] w-full rounded-2xl border border-[#e6e6e6] bg-white pr-4 pl-11 text-sm text-[#111] outline-none placeholder:text-[#b0b0b0] focus:border-[#ffbfa0] focus:ring-2 focus:ring-[#ff6a00]/20";
+    "h-[52px] w-full rounded-2xl border border-[#e6e6e6] bg-[#f7f7f7] pr-4 pl-11 text-sm text-[#111] outline-none placeholder:text-[#8a8a8a] focus:border-[#ffbfa0] focus:bg-white focus:ring-2 focus:ring-[#ff6a00]/20";
 
   return (
     <section
@@ -97,11 +97,11 @@ export function SundayRsvp() {
 
         <div
           id="sunday-rsvp"
-          className="mt-10 w-full rounded-[28px] border border-white/12 bg-[#141414] p-6 sm:p-8"
+          className="mt-10 w-full rounded-[28px] border border-black/5 bg-white p-6 text-[#111] shadow-[0_18px_50px_rgba(0,0,0,0.28)] sm:p-8"
         >
           {locations.length > 1 ? (
             <label className="mb-5 block">
-              <span className="text-[11px] font-medium tracking-[0.16em] text-white/50 uppercase">
+              <span className="text-[11px] font-medium tracking-[0.16em] text-[#777] uppercase">
                 Select Location
               </span>
               <select
@@ -110,7 +110,7 @@ export function SundayRsvp() {
                   setLocationId(event.target.value);
                   resetSubmission();
                 }}
-                className="mt-2 h-12 w-full rounded-2xl border border-white/15 bg-[#111] px-4 text-sm text-white outline-none focus:border-[var(--sending-orange)]"
+                className="mt-2 h-12 w-full rounded-2xl border border-[#e6e6e6] bg-[#f7f7f7] px-4 text-sm text-[#111] outline-none focus:border-[var(--sending-orange)]"
               >
                 {locations.map((item) => (
                   <option key={item.location_id} value={item.location_id}>
@@ -121,7 +121,7 @@ export function SundayRsvp() {
             </label>
           ) : null}
 
-          <p className="text-sm font-medium text-white">
+          <p className="text-sm font-medium text-[#111]">
             Sending · {location.city}
           </p>
           <p className="mt-3 text-lg font-semibold tracking-tight">
@@ -139,17 +139,17 @@ export function SundayRsvp() {
               href={location.map_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-w-0 rounded-sm text-sm text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]"
+              className="min-w-0 rounded-sm text-sm text-[#333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]"
             >
-              <span className="flex items-center gap-1.5 font-medium text-white">
+              <span className="flex items-center gap-1.5 font-medium text-[#111]">
                 <MapPin aria-hidden size={14} className="shrink-0 text-[var(--sending-orange)]" />
                 {location.venue_name}
               </span>
-              <span className="mt-0.5 block text-white">{location.address}</span>
+              <span className="mt-0.5 block text-[#333]">{location.address}</span>
             </a>
           </div>
           {location.leader_name ? (
-            <p className="mt-3 flex items-center gap-2 text-sm text-white">
+            <p className="mt-3 flex items-center gap-2 text-sm text-[#333]">
               {location.leader_photo_url ? (
                 <Image
                   src={location.leader_photo_url}
@@ -166,15 +166,15 @@ export function SundayRsvp() {
             </p>
           ) : null}
 
-          <div className="my-6 h-px bg-white/10" />
+          <div className="my-6 h-px bg-black/10" />
 
           {savedName ? (
             <div role="status">
               <h3 className="text-2xl font-semibold tracking-tight">You’re in.</h3>
-              <p className="mt-3 text-sm leading-relaxed text-white/70">
+              <p className="mt-3 text-sm leading-relaxed text-[#444]">
                 We’ll text you the location details and a reminder before Sunday.
               </p>
-              <p className="mt-3 text-sm leading-relaxed text-white/55">
+              <p className="mt-3 text-sm leading-relaxed text-[#555]">
                 {rsvpConfirmationText(savedName)}
               </p>
             </div>
@@ -227,11 +227,11 @@ export function SundayRsvp() {
                 </span>
               </label>
               {error ? (
-                <p id="sunday-rsvp-error" role="alert" className="text-sm text-[#ffb089]">
+                <p id="sunday-rsvp-error" role="alert" className="text-sm text-[#c2410c]">
                   {error}
                 </p>
               ) : (
-                <p id="sunday-rsvp-note" className="text-sm leading-relaxed text-white">
+                <p id="sunday-rsvp-note" className="text-sm leading-relaxed text-[#444]">
                   We’ll text you the location details and a reminder before Sunday.
                 </p>
               )}
@@ -239,14 +239,14 @@ export function SundayRsvp() {
                 type="submit"
                 disabled={submitting}
                 aria-busy={submitting}
-                className="inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-orange)] text-[15px] font-semibold text-white transition-colors hover:bg-[var(--sending-orange-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-orange)] text-[15px] font-semibold text-white transition-colors hover:bg-[var(--sending-orange-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {submitting ? "Sending…" : "I’m Coming Sunday"}
                 {submitting ? null : <ArrowRight aria-hidden size={16} />}
               </button>
             </form>
           )}
-          <p className="mt-5 text-sm text-white">Come as you are. We’d love to meet you.</p>
+          <p className="mt-5 text-sm text-[#444]">Come as you are. We’d love to meet you.</p>
         </div>
       </div>
     </section>
