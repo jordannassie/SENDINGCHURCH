@@ -3,6 +3,7 @@ import Link from "next/link";
 import { preload } from "react-dom";
 import { ArrowRight, ArrowUpRight, MapPin, Phone } from "lucide-react";
 import { Beliefs } from "@/components/home/Beliefs";
+import { InstagramReels } from "@/components/home/InstagramReels";
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { SundayRsvp } from "@/components/home/SundayRsvp";
 import { WorldGlobe } from "@/components/home/WorldGlobe";
@@ -266,6 +267,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      <InstagramReels />
       <WorldGlobe />
       <SundayRsvp />
       <Beliefs />
