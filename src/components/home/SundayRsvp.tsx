@@ -133,7 +133,7 @@ export function SundayRsvp() {
               alt="The Star in Frisco"
               width={280}
               height={180}
-              className="h-16 w-24 shrink-0 rounded-xl border-2 border-white object-cover"
+              className="h-32 w-48 shrink-0 rounded-xl object-cover"
             />
             <a
               href={location.map_url}
@@ -156,7 +156,7 @@ export function SundayRsvp() {
                   alt=""
                   width={64}
                   height={64}
-                  className="h-8 w-8 shrink-0 rounded-full border-2 border-white object-cover"
+                  className="h-16 w-16 shrink-0 rounded-full object-cover"
                 />
               ) : null}
               <span>
