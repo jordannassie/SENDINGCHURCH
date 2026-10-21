@@ -1,4 +1,4 @@
-export const FACEBOOK_URL = "https://www.facebook.com/sending_churches";
+export const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61553659930761";
 
 type FacebookLinkProps = {
   size?: number;
