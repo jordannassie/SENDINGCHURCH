@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { importLeads } from "@/lib/leads/import";
-import { parseEmail, normalizeUsPhone } from "@/lib/leads/phone";
+import { parseEmail, cleanLeadPhone } from "@/lib/leads/phone";
 import { UPSERT_OPTIONS, type ParsedLead } from "@/lib/leads/types";
 import { createClient } from "@/lib/supabase/server";
 
@@ -41,7 +41,7 @@ export async function POST(request: Request) {
 
   incoming.forEach((lead, index) => {
     const fullName = lead.fullName?.trim() ?? "";
-    const phone = normalizeUsPhone(lead.phone ?? "");
+    const phone = cleanLeadPhone(lead.phone ?? "");
     if (!fullName || !phone.ok) {
       rejected.push(`Row ${lead.rowNumber ?? index + 2} could not be saved.`);
       return;
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     leads.push({
       rowNumber: lead.rowNumber ?? index + 2,
       fullName,
-      phone: phone.digits,
+      phone: phone.phone,
       email: email.email,
       emailWarning: email.warning,
       metaLeadId: lead.metaLeadId?.trim() || null,

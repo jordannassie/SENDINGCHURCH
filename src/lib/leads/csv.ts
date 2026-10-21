@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import { parseEmail, normalizeUsPhone } from "./phone";
+import { parseEmail, cleanLeadPhone } from "./phone";
 import type { ParsedLead, InvalidRow } from "./types";
 
 export type LeadField =
@@ -150,7 +150,7 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
       const phoneRaw = cell(row, mapping.phone);
       const reasons: string[] = [];
       if (!fullName) reasons.push("Name is missing.");
-      const phone = normalizeUsPhone(phoneRaw);
+      const phone = cleanLeadPhone(phoneRaw);
       if (!phone.ok) reasons.push(phone.reason);
 
       if (reasons.length || !phone.ok) {
@@ -158,11 +158,11 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
         return;
       }
 
-      if (seen.has(phone.digits)) {
+      if (seen.has(phone.phone)) {
         fileDuplicateCount += 1;
         return;
       }
-      seen.add(phone.digits);
+      seen.add(phone.phone);
 
       const email = parseEmail(cell(row, mapping.email));
       if (email.warning) emailWarningCount += 1;
@@ -170,7 +170,7 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
       valid.push({
         rowNumber,
         fullName,
-        phone: phone.digits,
+        phone: phone.phone,
         email: email.email,
         emailWarning: email.warning,
         metaLeadId: cell(row, mapping.lead_id) || null,

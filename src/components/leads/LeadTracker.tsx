@@ -134,7 +134,7 @@ function LeadRow({
   onDone: (checked: boolean) => void;
 }) {
   const name = firstName(lead.full_name);
-  const phone = lead.phone_normalized || lead.phone;
+  const phone = lead.phone;
 
   return (
     <div className="flex items-center gap-3 px-4 py-3 sm:gap-6">
@@ -153,7 +153,7 @@ function LeadRow({
           <span className="truncate text-base font-medium">{name}</span>
           <CopyButton value={name} label={`Copy first name ${name}`} />
         </div>
-        <div className="flex items-center gap-1 sm:w-44">
+        <div className="flex items-center gap-1">
           <span className="tabular-nums">{phone}</span>
           <CopyButton value={phone} label={`Copy phone number ${phone}`} />
         </div>

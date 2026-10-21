@@ -24,12 +24,7 @@ create table if not exists public.sending_leads (
   full_name text not null,
   phone text not null,
   phone_normalized text generated always as (
-    case
-      when length(regexp_replace(phone, '\D', '', 'g')) = 11
-        and left(regexp_replace(phone, '\D', '', 'g'), 1) = '1'
-      then substring(regexp_replace(phone, '\D', '', 'g') from 2)
-      else regexp_replace(phone, '\D', '', 'g')
-    end
+    btrim(regexp_replace(btrim(phone), '^[Pp]:', ''))
   ) stored,
   email text,
   status text not null default 'new'
@@ -43,8 +38,7 @@ create table if not exists public.sending_leads (
   imported_by uuid references auth.users (id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
-  constraint sending_leads_phone_normalized_key unique (phone_normalized),
-  constraint sending_leads_phone_normalized_check check (phone_normalized ~ '^[0-9]{10}$')
+  constraint sending_leads_phone_normalized_key unique (phone_normalized)
 );
 
 create or replace function public.sending_leads_set_updated_at()
@@ -88,5 +82,18 @@ create policy "csv page can update leads"
   to anon, authenticated
   using (true)
   with check (true);
+
+-- Existing databases: drop the 10-digit checks and keep the CSV phone,
+-- including a leading +, after removing only a leading "p:" and surrounding whitespace.
+alter table public.sending_leads drop constraint if exists sending_leads_valid_us_phone;
+alter table public.sending_leads drop constraint if exists sending_leads_phone_normalized_check;
+alter table public.sending_leads drop constraint if exists sending_leads_phone_normalized_key;
+alter table public.sending_leads drop column if exists phone_normalized;
+alter table public.sending_leads
+  add column phone_normalized text generated always as (
+    btrim(regexp_replace(btrim(phone), '^[Pp]:', ''))
+  ) stored;
+alter table public.sending_leads
+  add constraint sending_leads_phone_normalized_key unique (phone_normalized);
 
 notify pgrst, 'reload schema';

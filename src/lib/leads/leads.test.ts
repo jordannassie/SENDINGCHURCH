@@ -2,27 +2,29 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadSearchOr, pageRange, phonesForBulkCopy, toInsertRow } from "./csv";
 import { databaseFailureText, importLeads, importSummaryText } from "./import";
-import { formatUsPhone, normalizeUsPhone } from "./phone";
+import { cleanLeadPhone, formatUsPhone } from "./phone";
 import { UPSERT_OPTIONS } from "./types";
 
-describe("US phones", () => {
-  it("treats formatting variations as one number", () => {
-    const formats = ["(214) 555-0199", "214-555-0199", "2145550199", "1-214-555-0199", "+1 214 555 0199"];
-    const digits = formats.map((value) => {
-      const result = normalizeUsPhone(value);
-      assert.equal(result.ok, true);
-      return result.ok ? result.digits : "";
-    });
-    assert.deepEqual(new Set(digits), new Set(["2145550199"]));
+describe("lead phones", () => {
+  it("removes only a leading p: and surrounding whitespace", () => {
+    const result = cleanLeadPhone("  p:+44 7700 900123  ");
+    assert.equal(result.ok, true);
+    if (result.ok) assert.equal(result.phone, "+44 7700 900123");
+    const plain = cleanLeadPhone(" +1 214 555 0199 ");
+    assert.equal(plain.ok, true);
+    if (plain.ok) assert.equal(plain.phone, "+1 214 555 0199");
   });
 
-  it("rejects extensions and international numbers without truncating", () => {
-    assert.equal(normalizeUsPhone("214-555-0199 x12").ok, false);
-    assert.equal(normalizeUsPhone("2145550199 ext 12").ok, false);
-    const uk = normalizeUsPhone("+44 7700 900123");
-    assert.equal(uk.ok, false);
-    if (!uk.ok) assert.match(uk.reason, /10-digit US/);
-    assert.equal(normalizeUsPhone("2145550199123").ok, false);
+  it("keeps every digit and a leading plus", () => {
+    for (const value of ["+447700900123", "(214) 555-0199", "214-555-0199 x12", "P:+81 90 1234 5678"]) {
+      const result = cleanLeadPhone(value);
+      assert.equal(result.ok, true);
+      if (result.ok) assert.equal(result.phone.includes("+") || !value.includes("+"), true);
+    }
+    const japan = cleanLeadPhone("P:+81 90 1234 5678");
+    assert.equal(japan.ok, true);
+    if (japan.ok) assert.equal(japan.phone, "+81 90 1234 5678");
+    assert.equal(cleanLeadPhone("   ").ok, false);
   });
 });
 
@@ -37,18 +39,20 @@ describe("CSV import", () => {
     '"Quoted, Name",214-555-0101,"line@example.com","id,1","2026-10-03T12:00:00Z"',
   ].join("\r\n");
 
-  it("keeps one lead when the file repeats a phone", () => {
+  it("keeps each provided phone, including different formatting", () => {
     const analysis = analyzeCsv(`\uFEFF${csv}`);
     assert.equal(analysis.needsMapping, false);
-    assert.equal(analysis.valid.length, 3);
-    assert.equal(analysis.fileDuplicateCount, 1);
+    assert.equal(analysis.valid.length, 5);
+    assert.equal(analysis.fileDuplicateCount, 0);
     assert.equal(analysis.blankCount, 1);
-    assert.equal(analysis.invalid.length, 1);
+    assert.equal(analysis.invalid.length, 0);
     assert.equal(analysis.emailWarningCount, 1);
-    assert.equal(analysis.valid[0]?.phone, "2145550199");
-    assert.equal(analysis.valid[1]?.email, null);
-    assert.equal(analysis.valid[2]?.fullName, "Quoted, Name");
-    assert.equal(analysis.valid[2]?.metaLeadId, "id,1");
+    assert.equal(analysis.valid[0]?.phone, "(214) 555-0199");
+    assert.equal(analysis.valid[1]?.phone, "1-214-555-0199");
+    assert.equal(analysis.valid[3]?.phone, "ext 99");
+    assert.equal(analysis.valid[2]?.email, null);
+    assert.equal(analysis.valid[4]?.fullName, "Quoted, Name");
+    assert.equal(analysis.valid[4]?.metaLeadId, "id,1");
   });
 
   it("reads a quoted multiline field", () => {
@@ -56,6 +60,7 @@ describe("CSV import", () => {
     assert.equal(analysis.needsMapping, false);
     assert.equal(analysis.valid[0]?.fullName, "Ann\nLee Nassie");
     assert.equal(analysis.valid[0]?.phone, "2145550102");
+    assert.equal(analysis.invalid.length, 0);
   });
 
   it("picks the name and phone columns without asking", () => {
@@ -76,11 +81,19 @@ describe("CSV import", () => {
     const analysis = analyzeCsv(decodeLeadFile(bytes));
     assert.equal(analysis.needsMapping, false);
     assert.equal(analysis.mapping.full_name, undefined);
-    assert.equal(analysis.valid.length, 1);
+    assert.equal(analysis.valid.length, 2);
     assert.equal(analysis.valid[0]?.fullName, "Jordan");
-    assert.equal(analysis.valid[0]?.phone, "2145550199");
-    assert.equal(analysis.invalid.length, 1);
-    assert.match(analysis.invalid[0]?.reason ?? "", /10-digit US/);
+    assert.equal(analysis.valid[0]?.phone, "(214) 555-0199");
+    assert.equal(analysis.valid[1]?.phone, "+44 7700 900123");
+    assert.equal(analysis.invalid.length, 0);
+  });
+
+  it("treats the same CSV phone as a duplicate after removing p:", () => {
+    const analysis = analyzeCsv("first_name,phone\nPat,p:+44 7700 900123\nPat Again, +44 7700 900123 \n");
+    assert.equal(analysis.valid.length, 1);
+    assert.equal(analysis.fileDuplicateCount, 1);
+    assert.equal(analysis.valid[0]?.phone, "+44 7700 900123");
+    assert.equal(analysis.invalid.length, 0);
   });
 
   it("builds insert rows without generated or existing-lead fields", () => {

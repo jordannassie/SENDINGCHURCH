@@ -1,34 +1,10 @@
-export function hasPhoneExtension(raw: string) {
-  return /(?:\bext(?:ension)?\.?|\bx)\s*\d+/i.test(raw);
-}
-
-export function normalizeUsPhone(
+export function cleanLeadPhone(
   raw: string,
-): { ok: true; digits: string } | { ok: false; reason: string } {
-  const trimmed = raw.trim();
-  if (!trimmed) return { ok: false, reason: "Phone number is missing." };
-  if (hasPhoneExtension(trimmed)) {
-    return {
-      ok: false,
-      reason: "Extensions are not supported. Use a 10-digit US number.",
-    };
-  }
-
-  const digits = trimmed.replace(/\D/g, "");
-  if (!digits) return { ok: false, reason: "Phone number is missing." };
-
-  const normalized =
-    digits.length === 11 && digits.startsWith("1") ? digits.slice(1) : digits;
-
-  if (normalized.length !== 10) {
-    return {
-      ok: false,
-      reason:
-        "Use a 10-digit US phone number. International numbers are not imported.",
-    };
-  }
-
-  return { ok: true, digits: normalized };
+): { ok: true; phone: string } | { ok: false; reason: string } {
+  let phone = raw.trim();
+  if (phone.slice(0, 2).toLowerCase() === "p:") phone = phone.slice(2).trim();
+  if (!phone) return { ok: false, reason: "Phone number is missing." };
+  return { ok: true, phone };
 }
 
 export function formatUsPhone(digits: string) {
