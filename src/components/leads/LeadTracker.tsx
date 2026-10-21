@@ -27,7 +27,12 @@ export function LeadTracker() {
       .range(from, to);
 
     if (readError) {
-      setError(readError.message);
+      const missing = /schema cache|could not find the table/i.test(readError.message);
+      setError(
+        missing
+          ? "The sending_leads table is not in this Supabase project yet."
+          : readError.message,
+      );
       setLeads([]);
       setLoading(false);
       return;

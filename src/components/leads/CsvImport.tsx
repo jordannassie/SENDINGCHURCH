@@ -2,22 +2,24 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { analyzeCsv, missingMappingLabels, toInsertRow } from "@/lib/leads/csv";
-import { importLeads, importSummaryText } from "@/lib/leads/import";
+import { analyzeCsv, decodeLeadFile, missingMappingLabels, toInsertRow } from "@/lib/leads/csv";
+import { databaseFailureText, importLeads, importSummaryText } from "@/lib/leads/import";
 import { UPSERT_OPTIONS } from "@/lib/leads/types";
 
 export function CsvImport({ onImported }: { onImported: () => void }) {
   const [summary, setSummary] = useState("");
-  const [problems, setProblems] = useState<string[]>([]);
+  const [rowProblems, setRowProblems] = useState<string[]>([]);
+  const [databaseProblem, setDatabaseProblem] = useState("");
   const [busy, setBusy] = useState(false);
 
   async function importText(fileName: string, text: string) {
     setBusy(true);
     setSummary("");
-    setProblems([]);
+    setRowProblems([]);
+    setDatabaseProblem("");
     const analysis = analyzeCsv(text);
     if (analysis.needsMapping) {
-      setProblems(missingMappingLabels(analysis.mapping).map((label) => `Couldn't find a ${label} column.`));
+      setRowProblems(missingMappingLabels(analysis.mapping).map((label) => `Couldn't find a ${label} column.`));
       setBusy(false);
       return;
     }
@@ -25,8 +27,8 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
     const problemsForRows = analysis.invalid.map((row) => `Row ${row.rowNumber}: ${row.reason}`);
     if (analysis.valid.length === 0) {
       const duplicates = analysis.fileDuplicateCount;
-      setSummary(`${0} added · ${duplicates} duplicates skipped`);
-      setProblems(problemsForRows);
+      if (duplicates > 0) setSummary(`0 added · ${duplicates} duplicates skipped`);
+      setRowProblems(problemsForRows);
       setBusy(false);
       return;
     }
@@ -49,21 +51,24 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
       analysis.invalid.length,
     );
 
-    const failedNotes = result.errors.map(
-      (message) => `${result.failed} rows were not saved. ${message} Drop the file again to retry those rows.`,
-    );
-    setSummary(importSummaryText(result));
-    setProblems([...problemsForRows, ...failedNotes]);
+    const duplicates = result.fileDuplicates + result.existingDuplicates;
+    const savedSomething = result.added > 0 || duplicates > 0;
+    if (result.failed > 0) {
+      setDatabaseProblem(databaseFailureText(result.errors));
+    }
+    if (savedSomething) setSummary(importSummaryText(result));
+    setRowProblems(problemsForRows);
     setBusy(false);
-    if (result.added > 0 || result.existingDuplicates > 0) onImported();
+    if (result.added > 0) onImported();
   }
 
   function readFile(file: File) {
     const reader = new FileReader();
     reader.onload = () => {
-      void importText(file.name, String(reader.result ?? ""));
+      const bytes = new Uint8Array(reader.result as ArrayBuffer);
+      void importText(file.name, decodeLeadFile(bytes));
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
   }
 
   return (
@@ -93,15 +98,18 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
         />
       </label>
       {summary ? <p className="mt-4 text-sm font-medium">{summary}</p> : null}
-      {problems.length > 0 ? (
+      {databaseProblem ? (
+        <p className="mt-3 rounded-2xl bg-[#fff4ec] px-4 py-3 text-sm text-[#9a3412]" role="alert">
+          {databaseProblem}
+        </p>
+      ) : null}
+      {rowProblems.length > 0 ? (
         <div className="mt-3 rounded-2xl bg-[#fff4ec] px-4 py-3 text-sm text-[#9a3412]" role="alert">
-          {problems.some((problem) => problem.startsWith("Row ")) ? (
-            <p className="font-medium">
-              {problems.filter((problem) => problem.startsWith("Row ")).length} rows failed.
-            </p>
-          ) : null}
+          <p className="font-medium">
+            {rowProblems.length} {rowProblems.length === 1 ? "row" : "rows"} could not be read.
+          </p>
           <ul className="mt-2 space-y-1">
-            {problems.map((problem, index) => (
+            {rowProblems.map((problem, index) => (
               <li key={`${index}-${problem}`}>{problem}</li>
             ))}
           </ul>

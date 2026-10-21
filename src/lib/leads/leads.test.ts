@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { analyzeCsv, accountBatch, excelSafe, firstName, leadSearchOr, pageRange, phonesForBulkCopy, toInsertRow } from "./csv";
-import { importLeads, importSummaryText } from "./import";
+import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadSearchOr, pageRange, phonesForBulkCopy, toInsertRow } from "./csv";
+import { databaseFailureText, importLeads, importSummaryText } from "./import";
 import { formatUsPhone, normalizeUsPhone } from "./phone";
 import { UPSERT_OPTIONS } from "./types";
 
@@ -66,6 +66,23 @@ describe("CSV import", () => {
     assert.equal(firstName("Jordan Nassie"), "Jordan");
   });
 
+  it("reads a UTF-16 tab-separated Meta export", () => {
+    const text = [
+      "id\tcreated_time\tad_name\tfirst_name\tphone",
+      "1\t2026-10-01T10:00:00Z\tFrisco\tJordan\t(214) 555-0199",
+      "2\t2026-10-02T10:00:00Z\tFrisco\tPat\t+44 7700 900123",
+    ].join("\n");
+    const bytes = new Uint8Array(Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(text, "utf16le")]));
+    const analysis = analyzeCsv(decodeLeadFile(bytes));
+    assert.equal(analysis.needsMapping, false);
+    assert.equal(analysis.mapping.full_name, undefined);
+    assert.equal(analysis.valid.length, 1);
+    assert.equal(analysis.valid[0]?.fullName, "Jordan");
+    assert.equal(analysis.valid[0]?.phone, "2145550199");
+    assert.equal(analysis.invalid.length, 1);
+    assert.match(analysis.invalid[0]?.reason ?? "", /10-digit US/);
+  });
+
   it("builds insert rows without generated or existing-lead fields", () => {
     const [lead] = analyzeCsv("name,phone\nA,2145550199\n").valid;
     const row = toInsertRow(lead!, "leads.csv", "user-1");
@@ -98,6 +115,7 @@ describe("saving", () => {
     assert.equal(summary.failed, 2);
     assert.equal(summary.failedLeads.length, 2);
     assert.equal(importSummaryText(summary), "0 added · 0 duplicates skipped");
+    assert.equal(databaseFailureText(summary.errors), "Import could not save. permission denied");
     assert.equal(summary.errors[0], "permission denied");
   });
 

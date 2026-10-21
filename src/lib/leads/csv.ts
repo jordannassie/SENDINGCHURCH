@@ -93,11 +93,32 @@ export type CsvAnalysis = {
   preview: ParsedLead[];
 };
 
+export function decodeLeadFile(bytes: Uint8Array) {
+  const utf16le = bytes.length >= 2 && bytes[0] === 0xff && bytes[1] === 0xfe;
+  const utf16be = bytes.length >= 2 && bytes[0] === 0xfe && bytes[1] === 0xff;
+  const utf16leWithoutBom =
+    bytes.length >= 8 && bytes[1] === 0 && bytes[3] === 0 && bytes[5] === 0;
+  if (utf16le || utf16leWithoutBom) return new TextDecoder("utf-16le").decode(bytes);
+  if (utf16be) return new TextDecoder("utf-16be").decode(bytes);
+  return new TextDecoder("utf-8").decode(bytes);
+}
+
+export function detectDelimiter(text: string) {
+  const line = text.replace(/^\uFEFF/, "").split(/\r?\n/, 1)[0] ?? "";
+  const tabs = line.split("\t").length - 1;
+  const commas = line.split(",").length - 1;
+  if (tabs > commas) return "\t";
+  if (commas > 0) return ",";
+  return "";
+}
+
 export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAnalysis {
+  const delimiter = detectDelimiter(text);
   const parsed = Papa.parse<Record<string, string>>(text, {
     header: true,
     skipEmptyLines: false,
     transformHeader: normalizeHeader,
+    ...(delimiter ? { delimiter } : {}),
   });
 
   const headers = (parsed.meta.fields ?? []).map(normalizeHeader).filter(Boolean);

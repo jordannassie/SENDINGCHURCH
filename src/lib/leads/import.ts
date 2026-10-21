@@ -73,6 +73,11 @@ export async function importLeads(
   return summary;
 }
 
+export function databaseFailureText(errors: string[]) {
+  const reason = [...new Set(errors.map((error) => error.trim()).filter(Boolean))].join(" ");
+  return reason ? `Import could not save. ${reason}` : "Import could not save.";
+}
+
 export function importSummaryText(
   summary: Pick<ImportSummary, "added" | "fileDuplicates" | "existingDuplicates">,
 ) {
