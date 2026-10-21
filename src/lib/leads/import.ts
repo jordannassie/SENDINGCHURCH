@@ -73,13 +73,9 @@ export async function importLeads(
   return summary;
 }
 
-export function importSummaryText(summary: Pick<ImportSummary, "added" | "fileDuplicates" | "existingDuplicates" | "invalid" | "failed">) {
+export function importSummaryText(
+  summary: Pick<ImportSummary, "added" | "fileDuplicates" | "existingDuplicates">,
+) {
   const duplicates = summary.fileDuplicates + summary.existingDuplicates;
-  const parts = [
-    `${summary.added} added`,
-    `${duplicates} duplicates skipped`,
-    `${summary.invalid} invalid`,
-  ];
-  if (summary.failed) parts.push(`${summary.failed} failed`);
-  return parts.join(" · ");
+  return `${summary.added} added · ${duplicates} duplicates skipped`;
 }

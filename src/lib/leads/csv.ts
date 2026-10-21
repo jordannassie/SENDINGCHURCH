@@ -39,8 +39,8 @@ export function suggestMapping(headers: string[]): {
   const ambiguous: LeadField[] = [];
 
   for (const field of Object.keys(ALIASES) as LeadField[]) {
-    const matches = headers.filter((header) => ALIASES[field].includes(header));
-    if (matches.length === 1) mapping[field] = matches[0];
+    const matches = ALIASES[field].filter((alias) => headers.includes(alias));
+    if (matches[0]) mapping[field] = matches[0];
     if (matches.length > 1) ambiguous.push(field);
   }
 
@@ -48,17 +48,19 @@ export function suggestMapping(headers: string[]): {
 }
 
 export function mappingIsComplete(mapping: ColumnMapping) {
-  const hasName = Boolean(mapping.full_name || (mapping.first_name && mapping.last_name));
+  const hasName = Boolean(mapping.full_name || mapping.first_name);
   return hasName && Boolean(mapping.phone);
 }
 
 export function missingMappingLabels(mapping: ColumnMapping) {
   const missing: string[] = [];
-  if (!mapping.full_name && !(mapping.first_name && mapping.last_name)) {
-    missing.push("name");
-  }
+  if (!mapping.full_name && !mapping.first_name) missing.push("name");
   if (!mapping.phone) missing.push("phone");
   return missing;
+}
+
+export function firstName(fullName: string) {
+  return fullName.trim().split(/\s+/)[0] ?? "";
 }
 
 function cell(row: Record<string, string>, key: string | undefined) {
@@ -101,9 +103,7 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
   const headers = (parsed.meta.fields ?? []).map(normalizeHeader).filter(Boolean);
   const suggested = suggestMapping(headers);
   const mapping = mappingOverride ?? suggested.mapping;
-  const needsMapping =
-    !mappingOverride &&
-    (suggested.ambiguous.length > 0 || !mappingIsComplete(suggested.mapping));
+  const needsMapping = !mappingIsComplete(mapping);
 
   const valid: ParsedLead[] = [];
   const invalid: InvalidRow[] = [];

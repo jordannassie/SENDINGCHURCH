@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { analyzeCsv, accountBatch, excelSafe, leadSearchOr, pageRange, phonesForBulkCopy, toInsertRow } from "./csv";
+import { analyzeCsv, accountBatch, excelSafe, firstName, leadSearchOr, pageRange, phonesForBulkCopy, toInsertRow } from "./csv";
 import { importLeads, importSummaryText } from "./import";
 import { formatUsPhone, normalizeUsPhone } from "./phone";
 import { UPSERT_OPTIONS } from "./types";
@@ -58,10 +58,12 @@ describe("CSV import", () => {
     assert.equal(analysis.valid[0]?.phone, "2145550102");
   });
 
-  it("asks for a mapping when headers are ambiguous", () => {
+  it("picks the name and phone columns without asking", () => {
     const analysis = analyzeCsv("name,phone,mobile\nA,2145550199,2145550100\n");
-    assert.equal(analysis.needsMapping, true);
-    assert.ok(analysis.ambiguous.includes("phone"));
+    assert.equal(analysis.needsMapping, false);
+    assert.equal(analysis.mapping.phone, "phone");
+    assert.equal(analysis.valid[0]?.phone, "2145550199");
+    assert.equal(firstName("Jordan Nassie"), "Jordan");
   });
 
   it("builds insert rows without generated or existing-lead fields", () => {
@@ -95,8 +97,8 @@ describe("saving", () => {
     assert.equal(summary.existingDuplicates, 0);
     assert.equal(summary.failed, 2);
     assert.equal(summary.failedLeads.length, 2);
-    assert.match(importSummaryText(summary), /0 added/);
-    assert.match(importSummaryText(summary), /2 failed/);
+    assert.equal(importSummaryText(summary), "0 added · 0 duplicates skipped");
+    assert.equal(summary.errors[0], "permission denied");
   });
 
   it("counts only rows the database says were inserted", async () => {
@@ -115,7 +117,7 @@ describe("saving", () => {
     assert.equal(summary.existingDuplicates, 1);
     assert.equal(summary.fileDuplicates, 1);
     assert.equal(summary.invalid, 2);
-    assert.equal(importSummaryText(summary), "1 added · 2 duplicates skipped · 2 invalid");
+    assert.equal(importSummaryText(summary), "1 added · 2 duplicates skipped");
   });
 
   it("does not treat a failed request as a successful insert", () => {
