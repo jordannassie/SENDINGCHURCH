@@ -1,4 +1,4 @@
--- Run in the Supabase SQL editor for jyhfffqximlbhlaarozs.
+-- Run in the Supabase SQL editor for eeeprmtermreavivzswn.
 -- Creates the lead tables, keeps Row Level Security on, and does not
 -- let anyone add themselves to sending_lead_admins.
 -- /csv has no login, so the anon key may read, add, and update leads.
