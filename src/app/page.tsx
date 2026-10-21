@@ -148,9 +148,10 @@ export default function HomePage() {
                   className="aspect-[16/10] w-full object-cover object-center"
                 />
               </div>
+              <p className="mt-5 text-sm text-[#666]">Free when you visit on Sunday.</p>
               <Link
                 href="/#foundations"
-                className={`mt-5 inline-flex items-center gap-1 self-start rounded-sm text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)] ${FOCUS}`}
+                className={`mt-3 inline-flex items-center gap-1 self-start rounded-sm text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)] ${FOCUS}`}
               >
                 Explore Foundations
                 <ArrowUpRight size={16} aria-hidden />
