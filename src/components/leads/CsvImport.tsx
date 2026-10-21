@@ -25,13 +25,7 @@ const FIELD_LABELS: Record<LeadField, string> = {
   created_time: "Created time",
 };
 
-export function CsvImport({
-  userId,
-  onImported,
-}: {
-  userId: string;
-  onImported: () => void;
-}) {
+export function CsvImport({ onImported }: { onImported: () => void }) {
   const [fileName, setFileName] = useState("");
   const [text, setText] = useState("");
   const [analysis, setAnalysis] = useState<CsvAnalysis | null>(null);
@@ -84,7 +78,7 @@ export function CsvImport({
       },
       leads,
       fileName,
-      userId,
+      null,
       fileDuplicates,
       invalid,
     );

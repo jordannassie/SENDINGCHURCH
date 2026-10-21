@@ -28,7 +28,7 @@ export async function importLeads(
   writer: LeadWriter,
   leads: ParsedLead[],
   sourceFile: string,
-  importedBy: string,
+  importedBy: string | null,
   fileDuplicates: number,
   invalid: number,
 ): Promise<ImportSummary> {

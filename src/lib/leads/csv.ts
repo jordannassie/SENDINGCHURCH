@@ -175,7 +175,7 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
 export function toInsertRow(
   lead: ParsedLead,
   sourceFile: string,
-  importedBy: string,
+  importedBy: string | null,
 ) {
   return {
     full_name: lead.fullName,

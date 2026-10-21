@@ -97,11 +97,11 @@ export function DashboardShell({
   const nav = leadAdmin
     ? [
         NAV[0],
-        { href: "/dashboard/leads", label: "Leads", icon: ClipboardList, match: "/dashboard/leads" },
+        { href: "/csv", label: "Leads", icon: ClipboardList, match: "/csv" },
         ...NAV.slice(1),
       ]
     : NAV;
-  const homeHref = variant === "leads" ? "/dashboard/leads" : "/dashboard";
+  const homeHref = variant === "leads" ? "/csv" : "/dashboard";
 
   return (
     <div className="min-h-screen bg-[var(--sending-bg)]">

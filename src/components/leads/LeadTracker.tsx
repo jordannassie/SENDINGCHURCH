@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
-import { DashboardShell } from "@/components/layout/DashboardShell";
 import { ActionButton } from "@/components/leads/ActionButton";
 import { CsvImport } from "@/components/leads/CsvImport";
 import { invitationText, leadSearchOr, leadsToCsv, pageRange, phonesForBulkCopy } from "@/lib/leads/csv";
@@ -35,7 +34,7 @@ function checkedStatus(status: LeadStatus) {
   return status !== "new";
 }
 
-export function LeadTracker({ email, userId }: { email: string; userId: string }) {
+export function LeadTracker() {
   const [leads, setLeads] = useState<SendingLead[]>([]);
   const [total, setTotal] = useState(0);
   const [counts, setCounts] = useState({ total: 0, new: 0, contacted: 0, coming: 0, attended: 0 });
@@ -211,10 +210,9 @@ export function LeadTracker({ email, userId }: { email: string; userId: string }
   };
 
   return (
-    <DashboardShell variant="leads" accountEmail={email}>
-      <div className="mx-auto max-w-6xl">
+    <>
+    <div className="mx-auto max-w-6xl">
         <h1 className="text-3xl font-semibold tracking-tight">Frisco Bible Group Leads.</h1>
-        <p className="mt-2 text-sm text-[#666]">Signed in as {email}</p>
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
           {(
@@ -234,7 +232,7 @@ export function LeadTracker({ email, userId }: { email: string; userId: string }
         </div>
 
         <div className="mt-6">
-          <CsvImport userId={userId} onImported={() => void load()} />
+          <CsvImport onImported={() => void load()} />
         </div>
 
         <div className="mt-6 rounded-3xl border border-black/10 bg-white p-5">
@@ -420,7 +418,7 @@ export function LeadTracker({ email, userId }: { email: string; userId: string }
           </div>
         </div>
       ) : null}
-    </DashboardShell>
+    </>
   );
 }
 
