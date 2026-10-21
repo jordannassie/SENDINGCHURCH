@@ -1,0 +1,276 @@
+import Papa from "papaparse";
+import { parseEmail, normalizeUsPhone } from "./phone";
+import type { ParsedLead, InvalidRow } from "./types";
+
+export type LeadField =
+  | "full_name"
+  | "first_name"
+  | "last_name"
+  | "phone"
+  | "email"
+  | "lead_id"
+  | "created_time";
+
+export type ColumnMapping = Partial<Record<LeadField, string>>;
+
+const ALIASES: Record<LeadField, string[]> = {
+  full_name: ["full_name", "name", "fullname"],
+  first_name: ["first_name", "firstname", "first"],
+  last_name: ["last_name", "lastname", "last"],
+  phone: ["phone_number", "phone", "mobile", "mobile_number", "cell", "cell_phone"],
+  email: ["email", "email_address", "e_mail"],
+  lead_id: ["id", "lead_id", "meta_lead_id"],
+  created_time: ["created_time", "created_at", "date_created", "created"],
+};
+
+export function normalizeHeader(header: string) {
+  return header
+    .replace(/^\uFEFF/, "")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
+}
+
+export function suggestMapping(headers: string[]): {
+  mapping: ColumnMapping;
+  ambiguous: LeadField[];
+} {
+  const mapping: ColumnMapping = {};
+  const ambiguous: LeadField[] = [];
+
+  for (const field of Object.keys(ALIASES) as LeadField[]) {
+    const matches = headers.filter((header) => ALIASES[field].includes(header));
+    if (matches.length === 1) mapping[field] = matches[0];
+    if (matches.length > 1) ambiguous.push(field);
+  }
+
+  return { mapping, ambiguous };
+}
+
+export function mappingIsComplete(mapping: ColumnMapping) {
+  const hasName = Boolean(mapping.full_name || (mapping.first_name && mapping.last_name));
+  return hasName && Boolean(mapping.phone);
+}
+
+export function missingMappingLabels(mapping: ColumnMapping) {
+  const missing: string[] = [];
+  if (!mapping.full_name && !(mapping.first_name && mapping.last_name)) {
+    missing.push("name");
+  }
+  if (!mapping.phone) missing.push("phone");
+  return missing;
+}
+
+function cell(row: Record<string, string>, key: string | undefined) {
+  if (!key) return "";
+  return String(row[key] ?? "").trim();
+}
+
+export function parseCreatedTime(raw: string) {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+  const date = new Date(trimmed);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toISOString();
+}
+
+export function isBlankRow(row: Record<string, string>) {
+  return Object.values(row).every((value) => String(value ?? "").trim() === "");
+}
+
+export type CsvAnalysis = {
+  headers: string[];
+  mapping: ColumnMapping;
+  ambiguous: LeadField[];
+  needsMapping: boolean;
+  valid: ParsedLead[];
+  invalid: InvalidRow[];
+  blankCount: number;
+  fileDuplicateCount: number;
+  emailWarningCount: number;
+  preview: ParsedLead[];
+};
+
+export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAnalysis {
+  const parsed = Papa.parse<Record<string, string>>(text, {
+    header: true,
+    skipEmptyLines: false,
+    transformHeader: normalizeHeader,
+  });
+
+  const headers = (parsed.meta.fields ?? []).map(normalizeHeader).filter(Boolean);
+  const suggested = suggestMapping(headers);
+  const mapping = mappingOverride ?? suggested.mapping;
+  const needsMapping =
+    !mappingOverride &&
+    (suggested.ambiguous.length > 0 || !mappingIsComplete(suggested.mapping));
+
+  const valid: ParsedLead[] = [];
+  const invalid: InvalidRow[] = [];
+  let blankCount = 0;
+  let fileDuplicateCount = 0;
+  let emailWarningCount = 0;
+  const seen = new Set<string>();
+
+  if (!needsMapping) {
+    parsed.data.forEach((row, index) => {
+      const rowNumber = index + 2;
+      if (isBlankRow(row)) {
+        blankCount += 1;
+        return;
+      }
+
+      const fullName = mapping.full_name
+        ? cell(row, mapping.full_name)
+        : [cell(row, mapping.first_name), cell(row, mapping.last_name)]
+            .filter(Boolean)
+            .join(" ")
+            .trim();
+      const phoneRaw = cell(row, mapping.phone);
+      const reasons: string[] = [];
+      if (!fullName) reasons.push("Name is missing.");
+      const phone = normalizeUsPhone(phoneRaw);
+      if (!phone.ok) reasons.push(phone.reason);
+
+      if (reasons.length || !phone.ok) {
+        invalid.push({ rowNumber, reason: reasons.join(" ") });
+        return;
+      }
+
+      if (seen.has(phone.digits)) {
+        fileDuplicateCount += 1;
+        return;
+      }
+      seen.add(phone.digits);
+
+      const email = parseEmail(cell(row, mapping.email));
+      if (email.warning) emailWarningCount += 1;
+
+      valid.push({
+        rowNumber,
+        fullName,
+        phone: phone.digits,
+        email: email.email,
+        emailWarning: email.warning,
+        metaLeadId: cell(row, mapping.lead_id) || null,
+        leadCreatedAt: parseCreatedTime(cell(row, mapping.created_time)),
+      });
+    });
+  }
+
+  return {
+    headers,
+    mapping,
+    ambiguous: mappingOverride ? [] : suggested.ambiguous,
+    needsMapping,
+    valid,
+    invalid,
+    blankCount,
+    fileDuplicateCount,
+    emailWarningCount,
+    preview: valid.slice(0, 10),
+  };
+}
+
+export function toInsertRow(
+  lead: ParsedLead,
+  sourceFile: string,
+  importedBy: string,
+) {
+  return {
+    full_name: lead.fullName,
+    phone: lead.phone,
+    email: lead.email,
+    status: "new" as const,
+    source: "Meta CSV",
+    source_file: sourceFile,
+    meta_lead_id: lead.metaLeadId,
+    lead_created_at: lead.leadCreatedAt,
+    imported_by: importedBy,
+  };
+}
+
+export function accountBatch(
+  requested: number,
+  inserted: number | null,
+  failed: boolean,
+) {
+  if (failed || inserted === null) {
+    return { added: 0, existing: 0, failed: requested };
+  }
+  return {
+    added: inserted,
+    existing: Math.max(0, requested - inserted),
+    failed: 0,
+  };
+}
+
+export function leadSearchOr(raw: string) {
+  const term = raw.trim().replace(/[%_,]/g, "");
+  if (!term) return null;
+  const clauses = [
+    `full_name.ilike.%${term}%`,
+    `phone_normalized.ilike.%${term}%`,
+    `email.ilike.%${term}%`,
+  ];
+  const digits = term.replace(/\D/g, "");
+  if (digits.length >= 3 && digits !== term) {
+    clauses.push(`phone_normalized.ilike.%${digits}%`);
+  }
+  return clauses.join(",");
+}
+
+export function pageRange(page: number, pageSize: number) {
+  const from = page * pageSize;
+  const to = from + pageSize - 1;
+  return { from, to };
+}
+
+export function invitationText(template: string, fullName: string) {
+  const first = fullName.trim().split(/\s+/)[0] ?? "";
+  return template.replaceAll("{first_name}", first);
+}
+
+export function excelSafe(value: string) {
+  if (/^[=+\-@\t\r]/.test(value)) return `'${value}`;
+  return value;
+}
+
+export function leadsToCsv(
+  rows: {
+    full_name: string;
+    phone: string;
+    email: string | null;
+    status: string;
+    notes: string | null;
+    contacted_at: string | null;
+  }[],
+) {
+  const header = ["full_name", "phone", "email", "status", "notes", "contacted_at"];
+  const lines = rows.map((row) =>
+    [
+      row.full_name,
+      row.phone,
+      row.email ?? "",
+      row.status,
+      row.notes ?? "",
+      row.contacted_at ?? "",
+    ]
+      .map((value) => {
+        const safe = excelSafe(value);
+        return /[",\n]/.test(safe) ? `"${safe.replaceAll('"', '""')}"` : safe;
+      })
+      .join(","),
+  );
+  return [header.join(","), ...lines].join("\n");
+}
+
+export function phonesForBulkCopy(
+  leads: { phone: string; status: string; selected: boolean }[],
+  format: (phone: string) => string,
+) {
+  return leads
+    .filter((lead) => lead.selected && lead.status !== "do_not_contact")
+    .map((lead) => format(lead.phone))
+    .join("\n");
+}

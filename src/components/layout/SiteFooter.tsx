@@ -12,6 +12,7 @@ export function SiteFooter() {
           <Link href="/#how-it-works">How It Works</Link>
           <Link href="/#pastors">Pastor</Link>
           <Link href="/#launch-hub">Join</Link>
+          <Link href="/dashboard/leads">CSV</Link>
         </nav>
         <div className="flex flex-col items-start gap-3 md:items-end">
           <SocialLinks size={40} className="text-white" />

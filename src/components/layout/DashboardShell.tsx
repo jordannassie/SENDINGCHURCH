@@ -9,6 +9,7 @@ import {
   Calendar,
   CheckSquare,
   Church,
+  ClipboardList,
   FileText,
   Home,
   LogOut,
@@ -20,6 +21,8 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { useDemoAuth } from "@/lib/demo/auth";
+import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 const NAV = [
   { href: "/dashboard", label: "Home", icon: Home, match: "/dashboard" },
@@ -33,19 +36,57 @@ const NAV = [
   { href: "/profile", label: "Profile", icon: User, match: "/profile" },
 ];
 
-export function DashboardShell({ children }: { children: React.ReactNode }) {
+export function DashboardShell({
+  children,
+  variant = "demo",
+  accountEmail,
+}: {
+  children: React.ReactNode;
+  variant?: "demo" | "leads";
+  accountEmail?: string;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, ready, logout } = useDemoAuth();
   const [open, setOpen] = useState(false);
+  const [leadAdmin, setLeadAdmin] = useState(variant === "leads");
 
   useEffect(() => {
-    if (ready && !user) {
+    if (variant === "demo" && ready && !user) {
       router.replace("/login");
     }
-  }, [ready, user, router]);
+  }, [variant, ready, user, router]);
 
-  if (!ready || !user) {
+  useEffect(() => {
+    if (variant === "leads" || !isSupabaseConfigured()) return;
+    let cancelled = false;
+    const supabase = createClient();
+    void supabase.auth.getUser().then(async ({ data }) => {
+      if (!data.user || cancelled) return;
+      const { data: admin } = await supabase
+        .from("sending_lead_admins")
+        .select("user_id")
+        .eq("user_id", data.user.id)
+        .maybeSingle();
+      if (!cancelled) setLeadAdmin(Boolean(admin));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [variant]);
+
+  async function signOut() {
+    if (variant === "leads") {
+      if (isSupabaseConfigured()) {
+        await createClient().auth.signOut();
+      }
+    } else {
+      logout();
+    }
+    router.push("/");
+  }
+
+  if (variant === "demo" && (!ready || !user)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--sending-bg)] text-sm text-[#777]">
         Loading…
@@ -53,12 +94,21 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
     );
   }
 
+  const nav = leadAdmin
+    ? [
+        NAV[0],
+        { href: "/dashboard/leads", label: "Leads", icon: ClipboardList, match: "/dashboard/leads" },
+        ...NAV.slice(1),
+      ]
+    : NAV;
+  const homeHref = variant === "leads" ? "/dashboard/leads" : "/dashboard";
+
   return (
     <div className="min-h-screen bg-[var(--sending-bg)]">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[220px] flex-col border-r border-[#eee] bg-white px-4 py-5 md:flex">
-        <Logo href="/dashboard" />
+        <Logo href={homeHref} />
         <nav className="mt-8 flex flex-1 flex-col gap-1">
-          {NAV.map((item) => {
+          {nav.map((item) => {
             const Icon = item.icon;
             const active = item.match === pathname;
             return (
@@ -79,10 +129,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         </nav>
         <button
           type="button"
-          onClick={() => {
-            logout();
-            router.push("/");
-          }}
+          onClick={() => void signOut()}
           className="flex items-center gap-3 rounded-2xl px-3 py-2.5 text-left text-sm text-[#666] hover:bg-[#f7f7f7]"
         >
           <LogOut size={18} />
@@ -93,15 +140,12 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       <div className="md:pl-[220px]">
         <div className="flex items-center justify-between px-5 py-4 md:px-8">
           <div className="md:hidden">
-            <Logo href="/dashboard" />
+            <Logo href={homeHref} />
           </div>
           <div className="ml-auto flex items-center gap-2 sm:gap-3">
             <button
               type="button"
-              onClick={() => {
-                logout();
-                router.push("/");
-              }}
+              onClick={() => void signOut()}
               className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-3 py-2 text-sm font-medium text-white md:hidden"
             >
               <LogOut size={15} />
@@ -110,11 +154,20 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             <button type="button" className="rounded-full p-2 text-[#888]" aria-label="Notifications">
               <Bell size={18} />
             </button>
-            <img
-              src={user.avatar}
-              alt={user.name}
-              className="h-9 w-9 rounded-full object-cover"
-            />
+            {variant === "demo" && user ? (
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="h-9 w-9 rounded-full object-cover"
+              />
+            ) : (
+              <span
+                className="flex h-9 w-9 items-center justify-center rounded-full bg-[#f3f3f3] text-xs font-medium"
+                aria-label={accountEmail}
+              >
+                {(accountEmail ?? "?").slice(0, 1).toUpperCase()}
+              </span>
+            )}
             <button
               type="button"
               className="rounded-full p-2 text-[#111] md:hidden"
@@ -128,7 +181,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
 
         {open ? (
           <div className="space-y-1 border-y border-[#eee] bg-white px-4 py-3 md:hidden">
-            {NAV.map((item) => (
+            {nav.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}

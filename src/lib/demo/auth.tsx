@@ -1,20 +1,12 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useCallback, useContext, useMemo, useSyncExternalStore } from "react";
 import { DEMO_USER } from "./data";
-
-// TODO: Replace demo auth with Supabase Google OAuth.
 
 const STORAGE_KEY = "sending-demo-auth";
 
 type DemoUser = typeof DEMO_USER;
+type StoredAuth = boolean | "pending";
 
 type AuthContextValue = {
   user: DemoUser | null;
@@ -24,32 +16,42 @@ type AuthContextValue = {
 };
 
 const AuthContext = createContext<AuthContextValue | null>(null);
+const listeners = new Set<() => void>();
+
+function emit() {
+  listeners.forEach((listener) => listener());
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  window.addEventListener("storage", listener);
+  return () => {
+    listeners.delete(listener);
+    window.removeEventListener("storage", listener);
+  };
+}
+
+function readSignedIn(): StoredAuth {
+  return window.localStorage.getItem(STORAGE_KEY) === "1";
+}
 
 export function DemoAuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<DemoUser | null>(null);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (stored === "1") {
-      setUser(DEMO_USER);
-    }
-    setReady(true);
-  }, []);
+  const signedIn = useSyncExternalStore<StoredAuth>(subscribe, readSignedIn, () => "pending");
+  const user = signedIn === true ? DEMO_USER : null;
 
   const login = useCallback(() => {
     window.localStorage.setItem(STORAGE_KEY, "1");
-    setUser(DEMO_USER);
+    emit();
   }, []);
 
   const logout = useCallback(() => {
     window.localStorage.removeItem(STORAGE_KEY);
-    setUser(null);
+    emit();
   }, []);
 
   const value = useMemo(
-    () => ({ user, ready, login, logout }),
-    [user, ready, login, logout]
+    () => ({ user, ready: signedIn !== "pending", login, logout }),
+    [user, signedIn, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
