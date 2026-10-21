@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { FormEvent, useRef, useState } from "react";
 import { ArrowRight, MapPin, Phone, User } from "lucide-react";
-import { STAR_IMAGE } from "@/lib/demo/data";
+import { PASTORS, STAR_IMAGE } from "@/lib/demo/data";
 import { formatTimeRange, getLocations } from "@/lib/locations";
 import type { SendingLocation } from "@/lib/locations/types";
 import { rsvpConfirmationText } from "@/lib/rsvp/messages";
@@ -149,20 +149,26 @@ export function SundayRsvp() {
             </a>
           </div>
           {location.leader_name ? (
-            <p className="mt-3 flex items-center gap-2 text-sm text-[#333]">
-              {location.leader_photo_url ? (
+            <p className="mt-3 flex items-center gap-3 text-sm text-[#333]">
+              <span className="flex shrink-0 items-center gap-2">
+                {location.leader_photo_url ? (
+                  <Image
+                    src={location.leader_photo_url}
+                    alt=""
+                    width={128}
+                    height={128}
+                    className="h-16 w-16 rounded-full object-cover"
+                  />
+                ) : null}
                 <Image
-                  src={location.leader_photo_url}
+                  src={PASTORS.susieImage}
                   alt=""
                   width={128}
                   height={128}
-                  className="h-16 w-16 shrink-0 rounded-full object-cover"
+                  className="h-16 w-16 rounded-full object-cover"
                 />
-              ) : null}
-              <span>
-                {location.leader_name}
-                {location.leader_title ? ` · ${location.leader_title}` : ""}
               </span>
+              <span>Jordan &amp; Susie</span>
             </p>
           ) : null}
 
