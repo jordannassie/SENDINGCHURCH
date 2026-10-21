@@ -98,38 +98,37 @@ describe("CSV import", () => {
 
   it("builds insert rows without generated or existing-lead fields", () => {
     const [lead] = analyzeCsv("name,phone\nA,2145550199\n").valid;
-    const row = toInsertRow(lead!, "leads.csv", "user-1");
+    const row = toInsertRow(lead!, "leads.csv");
     assert.equal(row.phone, "2145550199");
     assert.equal(row.source, "Meta CSV");
     assert.equal(row.source_file, "leads.csv");
     assert.equal("phone_normalized" in row, false);
     assert.equal("notes" in row, false);
     assert.equal("contacted_at" in row, false);
-    assert.equal(row.imported_by, "user-1");
+    assert.equal("imported_by" in row, false);
     assert.equal(UPSERT_OPTIONS.ignoreDuplicates, true);
     assert.equal(UPSERT_OPTIONS.onConflict, "phone_normalized");
   });
 
-  it("does not insert when there is no signed-in user", async () => {
-    const leads = analyzeCsv("name,phone\nA,2145550199\n").valid;
-    let called = false;
+  it("saves without a signed-in user and does not send imported_by", async () => {
+    const leads = analyzeCsv("name,phone\nA,p:+44 7700 900123\n").valid;
+    let sent: unknown[] = [];
     const summary = await importLeads(
       {
-        upsertLeads: async () => {
-          called = true;
+        upsertLeads: async (rows) => {
+          sent = rows;
           return { data: [{ id: "1" }], error: null };
         },
       },
       leads,
       "leads.csv",
-      "",
       0,
       0,
     );
-    assert.equal(called, false);
-    assert.equal(summary.added, 0);
-    assert.equal(summary.failed, 1);
-    assert.equal(summary.errors[0], "Sign in to import");
+    assert.equal(summary.added, 1);
+    assert.equal(summary.failed, 0);
+    assert.equal("imported_by" in (sent[0] as object), false);
+    assert.equal((sent[0] as { phone: string }).phone, "+44 7700 900123");
   });
 });
 
@@ -142,7 +141,6 @@ describe("saving", () => {
       },
       leads,
       "leads.csv",
-      "user-1",
       0,
       0,
     );
@@ -163,7 +161,6 @@ describe("saving", () => {
       },
       leads,
       "leads.csv",
-      "user-1",
       1,
       2,
     );

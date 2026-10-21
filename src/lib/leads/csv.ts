@@ -193,11 +193,7 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
   };
 }
 
-export function toInsertRow(
-  lead: ParsedLead,
-  sourceFile: string,
-  importedBy: string,
-) {
+export function toInsertRow(lead: ParsedLead, sourceFile: string) {
   return {
     full_name: lead.fullName,
     phone: lead.phone,
@@ -207,7 +203,6 @@ export function toInsertRow(
     source_file: sourceFile,
     meta_lead_id: lead.metaLeadId,
     lead_created_at: lead.leadCreatedAt,
-    imported_by: importedBy,
   };
 }
 

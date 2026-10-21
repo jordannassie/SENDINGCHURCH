@@ -85,6 +85,7 @@ create policy "csv page can update leads"
 
 -- Existing databases: drop the 10-digit checks and keep the CSV phone,
 -- including a leading +, after removing only a leading "p:" and surrounding whitespace.
+alter table public.sending_leads alter column imported_by drop not null;
 alter table public.sending_leads drop constraint if exists sending_leads_valid_us_phone;
 alter table public.sending_leads drop constraint if exists sending_leads_phone_normalized_check;
 alter table public.sending_leads drop constraint if exists sending_leads_phone_normalized_key;

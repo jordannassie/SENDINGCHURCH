@@ -1,19 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { analyzeCsv, decodeLeadFile, missingMappingLabels } from "@/lib/leads/csv";
 import { databaseFailureText, importSummaryText } from "@/lib/leads/import";
 
-export function CsvImport({
-  signedIn,
-  isAdmin,
-  onImported,
-}: {
-  signedIn: boolean;
-  isAdmin: boolean;
-  onImported: () => void;
-}) {
+export function CsvImport({ onImported }: { onImported: () => void }) {
   const [summary, setSummary] = useState("");
   const [rowProblems, setRowProblems] = useState<string[]>([]);
   const [databaseProblem, setDatabaseProblem] = useState("");
@@ -32,18 +23,6 @@ export function CsvImport({
     }
 
     const problemsForRows = analysis.invalid.map((row) => `Row ${row.rowNumber}: ${row.reason}`);
-    if (!signedIn) {
-      setDatabaseProblem("Sign in to import");
-      setRowProblems(problemsForRows);
-      setBusy(false);
-      return;
-    }
-    if (!isAdmin) {
-      setDatabaseProblem("This account cannot import leads.");
-      setRowProblems(problemsForRows);
-      setBusy(false);
-      return;
-    }
     if (analysis.valid.length === 0) {
       const duplicates = analysis.fileDuplicateCount;
       if (duplicates > 0) setSummary(`0 added · ${duplicates} duplicates skipped`);
@@ -74,12 +53,6 @@ export function CsvImport({
       errors?: string[];
       error?: string;
     };
-    if (response.status === 401) {
-      setDatabaseProblem("Sign in to import");
-      setRowProblems(problemsForRows);
-      setBusy(false);
-      return;
-    }
     const saved = {
       added: result.added ?? 0,
       fileDuplicates: analysis.fileDuplicateCount,
@@ -110,16 +83,6 @@ export function CsvImport({
 
   return (
     <section>
-      {!signedIn ? (
-        <p className="mb-4 text-sm font-medium">
-          <Link href="/login?next=/csv" className="text-[var(--sending-orange)]">
-            Sign in to import
-          </Link>
-        </p>
-      ) : null}
-      {signedIn && !isAdmin ? (
-        <p className="mb-4 text-sm text-[#9a3412]">This account cannot import leads.</p>
-      ) : null}
       <label
         className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-3xl border border-dashed border-black/15 bg-white px-4 text-center"
         onDragOver={(event) => event.preventDefault()}

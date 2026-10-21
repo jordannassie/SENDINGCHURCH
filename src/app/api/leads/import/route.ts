@@ -15,24 +15,6 @@ type IncomingLead = {
 
 export async function POST(request: Request) {
   const supabase = await createClient();
-  const { data: auth, error: authError } = await supabase.auth.getUser();
-  if (authError || !auth.user) {
-    return NextResponse.json({ error: "Sign in to import" }, { status: 401 });
-  }
-
-  const { data: admin, error: adminError } = await supabase
-    .from("sending_lead_admins")
-    .select("user_id")
-    .eq("user_id", auth.user.id)
-    .maybeSingle();
-
-  if (adminError) {
-    return NextResponse.json({ error: adminError.message }, { status: 403 });
-  }
-  if (!admin) {
-    return NextResponse.json({ error: "This account cannot import leads." }, { status: 403 });
-  }
-
   const body = (await request.json()) as { fileName?: string; leads?: IncomingLead[] };
   const fileName = body.fileName?.trim() || "leads.csv";
   const incoming = Array.isArray(body.leads) ? body.leads : [];
@@ -70,7 +52,6 @@ export async function POST(request: Request) {
     },
     leads,
     fileName,
-    auth.user.id,
     0,
     rejected.length,
   );
