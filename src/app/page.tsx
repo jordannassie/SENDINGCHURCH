@@ -130,7 +130,10 @@ export default function HomePage() {
             </article>
 
             <article className="flex flex-col rounded-[28px] bg-white p-6 sm:p-8">
-              <p className="text-xs font-semibold tracking-[0.18em] text-[#9a9a9a]">
+              <p className="inline-flex w-fit rounded-full bg-[var(--sending-orange)] px-3.5 py-1.5 text-sm font-medium text-white">
+                Free when you visit on Sunday
+              </p>
+              <p className="mt-4 text-xs font-semibold tracking-[0.18em] text-[#9a9a9a]">
                 DURING THE WEEK
               </p>
               <h3 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -148,10 +151,9 @@ export default function HomePage() {
                   className="aspect-[16/10] w-full object-cover object-center"
                 />
               </div>
-              <p className="mt-5 text-sm text-[#666]">Free when you visit on Sunday.</p>
               <Link
                 href="/#foundations"
-                className={`mt-3 inline-flex items-center gap-1 self-start rounded-sm text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)] ${FOCUS}`}
+                className={`mt-5 inline-flex items-center gap-1 self-start rounded-sm text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)] ${FOCUS}`}
               >
                 Explore Foundations
                 <ArrowUpRight size={16} aria-hidden />
