@@ -38,6 +38,8 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
         fileName,
         leads: analysis.valid.map((lead) => ({
           fullName: lead.fullName,
+          firstName: lead.firstName,
+          lastName: lead.lastName,
           phone: lead.phone,
           email: lead.email,
           metaLeadId: lead.metaLeadId,

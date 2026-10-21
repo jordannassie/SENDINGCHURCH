@@ -59,8 +59,39 @@ export function missingMappingLabels(mapping: ColumnMapping) {
   return missing;
 }
 
+export function splitLeadName(fullName: string) {
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
+  return { firstName: parts[0] ?? "", lastName: parts.slice(1).join(" ") };
+}
+
+export function storedLeadName(firstName: string, lastName: string) {
+  return `${firstName.trim()}\u001f${lastName.trim()}`;
+}
+
+export function leadNameFields(lead: {
+  full_name?: string | null;
+  first_name?: string | null;
+  last_name?: string | null;
+}) {
+  if (typeof lead.first_name === "string" || typeof lead.last_name === "string") {
+    return {
+      firstName: (lead.first_name ?? "").trim(),
+      lastName: (lead.last_name ?? "").trim(),
+    };
+  }
+  const fullName = lead.full_name ?? "";
+  const marker = fullName.indexOf("\u001f");
+  if (marker >= 0) {
+    return {
+      firstName: fullName.slice(0, marker).trim(),
+      lastName: fullName.slice(marker + 1).trim(),
+    };
+  }
+  return splitLeadName(fullName);
+}
+
 export function firstName(fullName: string) {
-  return fullName.trim().split(/\s+/)[0] ?? "";
+  return leadNameFields({ full_name: fullName }).firstName;
 }
 
 function cell(row: Record<string, string>, key: string | undefined) {
@@ -141,15 +172,14 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
         return;
       }
 
-      const fullName = mapping.full_name
-        ? cell(row, mapping.full_name)
-        : [cell(row, mapping.first_name), cell(row, mapping.last_name)]
-            .filter(Boolean)
-            .join(" ")
-            .trim();
+      const explicitName = Boolean(mapping.first_name || mapping.last_name);
+      const name = explicitName
+        ? { firstName: cell(row, mapping.first_name), lastName: cell(row, mapping.last_name) }
+        : splitLeadName(cell(row, mapping.full_name));
+      const fullName = [name.firstName, name.lastName].filter(Boolean).join(" ");
       const phoneRaw = cell(row, mapping.phone);
       const reasons: string[] = [];
-      if (!fullName) reasons.push("Name is missing.");
+      if (!name.firstName && !name.lastName) reasons.push("Name is missing.");
       const phone = cleanLeadPhone(phoneRaw);
       if (!phone.ok) reasons.push(phone.reason);
 
@@ -170,6 +200,8 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
       valid.push({
         rowNumber,
         fullName,
+        firstName: name.firstName,
+        lastName: name.lastName,
         phone: phone.phone,
         email: email.email,
         emailWarning: email.warning,
@@ -193,9 +225,17 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
   };
 }
 
+export function withoutLeadNameColumns<T extends { first_name?: string | null; last_name?: string | null }>(row: T) {
+  return Object.fromEntries(
+    Object.entries(row).filter(([key]) => key !== "first_name" && key !== "last_name"),
+  ) as Omit<T, "first_name" | "last_name">;
+}
+
 export function toInsertRow(lead: ParsedLead, sourceFile: string) {
   return {
-    full_name: lead.fullName,
+    full_name: storedLeadName(lead.firstName, lead.lastName),
+    first_name: lead.firstName,
+    last_name: lead.lastName,
     phone: lead.phone,
     email: lead.email,
     status: "new" as const,

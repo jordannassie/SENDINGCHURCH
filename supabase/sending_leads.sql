@@ -97,4 +97,7 @@ alter table public.sending_leads
 alter table public.sending_leads
   add constraint sending_leads_phone_normalized_key unique (phone_normalized);
 
+alter table public.sending_leads add column if not exists first_name text;
+alter table public.sending_leads add column if not exists last_name text;
+
 notify pgrst, 'reload schema';

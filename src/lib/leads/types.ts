@@ -19,6 +19,8 @@ export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
 export type SendingLead = {
   id: string;
   full_name: string;
+  first_name?: string | null;
+  last_name?: string | null;
   phone: string;
   phone_normalized: string;
   email: string | null;
@@ -37,6 +39,8 @@ export type SendingLead = {
 export type ParsedLead = {
   rowNumber: number;
   fullName: string;
+  firstName: string;
+  lastName: string;
   phone: string;
   email: string | null;
   emailWarning: string | null;

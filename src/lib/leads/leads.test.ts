@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadSearchOr, pageRange, phonesForBulkCopy, toInsertRow } from "./csv";
+import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadNameFields, leadSearchOr, pageRange, phonesForBulkCopy, storedLeadName, toInsertRow } from "./csv";
 import { databaseFailureText, importLeads, importSummaryText } from "./import";
 import { cleanLeadPhone, formatUsPhone } from "./phone";
 import { UPSERT_OPTIONS } from "./types";
@@ -48,6 +48,8 @@ describe("CSV import", () => {
     assert.equal(analysis.invalid.length, 0);
     assert.equal(analysis.emailWarningCount, 1);
     assert.equal(analysis.valid[0]?.phone, "(214) 555-0199");
+    assert.equal(analysis.valid[0]?.firstName, "Jordan");
+    assert.equal(analysis.valid[0]?.lastName, "Nassie");
     assert.equal(analysis.valid[1]?.phone, "1-214-555-0199");
     assert.equal(analysis.valid[3]?.phone, "ext 99");
     assert.equal(analysis.valid[2]?.email, null);
@@ -83,6 +85,8 @@ describe("CSV import", () => {
     assert.equal(analysis.mapping.full_name, undefined);
     assert.equal(analysis.valid.length, 2);
     assert.equal(analysis.valid[0]?.fullName, "Jordan");
+    assert.equal(analysis.valid[0]?.firstName, "Jordan");
+    assert.equal(analysis.valid[0]?.lastName, "");
     assert.equal(analysis.valid[0]?.phone, "(214) 555-0199");
     assert.equal(analysis.valid[1]?.phone, "+44 7700 900123");
     assert.equal(analysis.invalid.length, 0);
@@ -93,13 +97,37 @@ describe("CSV import", () => {
     assert.equal(analysis.valid.length, 1);
     assert.equal(analysis.fileDuplicateCount, 1);
     assert.equal(analysis.valid[0]?.phone, "+44 7700 900123");
+    assert.equal(analysis.valid[0]?.firstName, "Pat");
+    assert.equal(analysis.valid[0]?.lastName, "");
     assert.equal(analysis.invalid.length, 0);
+  });
+
+  it("keeps a multi-word first name when the CSV has separate name columns", () => {
+    const analysis = analyzeCsv("first_name,last_name,phone\nMary Ann,Smith,2145550199\n");
+    assert.equal(analysis.valid[0]?.firstName, "Mary Ann");
+    assert.equal(analysis.valid[0]?.lastName, "Smith");
+    const full = analyzeCsv("full_name,phone\nMary Ann Smith,2145550100\nOnly,2145550101\n");
+    assert.equal(full.valid[0]?.firstName, "Mary");
+    assert.equal(full.valid[0]?.lastName, "Ann Smith");
+    assert.equal(full.valid[1]?.firstName, "Only");
+    assert.equal(full.valid[1]?.lastName, "");
+    assert.deepEqual(leadNameFields({ full_name: storedLeadName("Mary Ann", "") }), {
+      firstName: "Mary Ann",
+      lastName: "",
+    });
+    assert.deepEqual(leadNameFields({ full_name: "Jordan Nassie" }), {
+      firstName: "Jordan",
+      lastName: "Nassie",
+    });
   });
 
   it("builds insert rows without generated or existing-lead fields", () => {
     const [lead] = analyzeCsv("name,phone\nA,2145550199\n").valid;
     const row = toInsertRow(lead!, "leads.csv");
     assert.equal(row.phone, "2145550199");
+    assert.equal(row.first_name, "A");
+    assert.equal(row.last_name, "");
+    assert.equal(row.full_name, storedLeadName("A", ""));
     assert.equal(row.source, "Meta CSV");
     assert.equal(row.source_file, "leads.csv");
     assert.equal("phone_normalized" in row, false);

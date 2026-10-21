@@ -1,11 +1,14 @@
 import { NextResponse } from "next/server";
 import { importLeads } from "@/lib/leads/import";
+import { splitLeadName, withoutLeadNameColumns } from "@/lib/leads/csv";
 import { parseEmail, cleanLeadPhone } from "@/lib/leads/phone";
 import { UPSERT_OPTIONS, type ParsedLead } from "@/lib/leads/types";
 import { createClient } from "@/lib/supabase/server";
 
 type IncomingLead = {
   fullName?: string;
+  firstName?: string;
+  lastName?: string;
   phone?: string;
   email?: string | null;
   metaLeadId?: string | null;
@@ -22,9 +25,13 @@ export async function POST(request: Request) {
   const rejected: string[] = [];
 
   incoming.forEach((lead, index) => {
-    const fullName = lead.fullName?.trim() ?? "";
+    const provided = lead.firstName != null || lead.lastName != null;
+    const name = provided
+      ? { firstName: lead.firstName?.trim() ?? "", lastName: lead.lastName?.trim() ?? "" }
+      : splitLeadName(lead.fullName ?? "");
+    const fullName = [name.firstName, name.lastName].filter(Boolean).join(" ");
     const phone = cleanLeadPhone(lead.phone ?? "");
-    if (!fullName || !phone.ok) {
+    if ((!name.firstName && !name.lastName) || !phone.ok) {
       rejected.push(`Row ${lead.rowNumber ?? index + 2} could not be saved.`);
       return;
     }
@@ -32,6 +39,8 @@ export async function POST(request: Request) {
     leads.push({
       rowNumber: lead.rowNumber ?? index + 2,
       fullName,
+      firstName: name.firstName,
+      lastName: name.lastName,
       phone: phone.phone,
       email: email.email,
       emailWarning: email.warning,
@@ -43,11 +52,15 @@ export async function POST(request: Request) {
   const summary = await importLeads(
     {
       upsertLeads: async (rows) => {
-        const { data, error } = await supabase
-          .from("sending_leads")
-          .upsert(rows, UPSERT_OPTIONS)
-          .select("id");
-        return { data, error: error ? { message: error.message } : null };
+        const write = async (payload: Record<string, unknown>[]) => {
+          const { data, error } = await supabase.from("sending_leads").upsert(payload, UPSERT_OPTIONS).select("id");
+          return { data, error };
+        };
+        let result = await write(rows);
+        if (result.error && /first_name|last_name/i.test(result.error.message)) {
+          result = await write(rows.map((row) => withoutLeadNameColumns(row)));
+        }
+        return { data: result.data, error: result.error ? { message: result.error.message } : null };
       },
     },
     leads,
