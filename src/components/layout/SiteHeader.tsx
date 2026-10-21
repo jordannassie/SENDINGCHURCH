@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
+import { SocialLinks } from "@/components/brand/SocialLinks";
 import { useDemoAuth } from "@/lib/demo/auth";
 
 const NAV = [
@@ -35,7 +36,8 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
+          <SocialLinks size={18} className="hidden text-[#111] md:flex" />
           <Link
             href="/#sunday"
             className={`hidden items-center gap-1 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] md:inline-flex ${focus}`}
@@ -76,6 +78,7 @@ export function SiteHeader() {
               {account.label}
             </Link>
           ) : null}
+          <SocialLinks size={22} className="pt-3 text-[#111]" />
           <Link
             href="/#sunday"
             className={`mt-2 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-orange)] px-4 py-3 text-sm font-medium text-white ${focus}`}
