@@ -133,30 +133,30 @@ export function SundayRsvp() {
               alt="The Star in Frisco"
               width={280}
               height={180}
-              className="h-16 w-24 shrink-0 rounded-xl object-cover"
+              className="h-16 w-24 shrink-0 rounded-xl border-2 border-white object-cover"
             />
             <a
               href={location.map_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-w-0 rounded-sm text-sm text-white/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]"
+              className="min-w-0 rounded-sm text-sm text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]"
             >
               <span className="flex items-center gap-1.5 font-medium text-white">
                 <MapPin aria-hidden size={14} className="shrink-0 text-[var(--sending-orange)]" />
                 {location.venue_name}
               </span>
-              <span className="mt-0.5 block text-white/65">{location.address}</span>
+              <span className="mt-0.5 block text-white">{location.address}</span>
             </a>
           </div>
           {location.leader_name ? (
-            <p className="mt-3 flex items-center gap-2 text-sm text-white/55">
+            <p className="mt-3 flex items-center gap-2 text-sm text-white">
               {location.leader_photo_url ? (
                 <Image
                   src={location.leader_photo_url}
                   alt=""
                   width={64}
                   height={64}
-                  className="h-8 w-8 shrink-0 rounded-full object-cover"
+                  className="h-8 w-8 shrink-0 rounded-full border-2 border-white object-cover"
                 />
               ) : null}
               <span>
@@ -231,7 +231,7 @@ export function SundayRsvp() {
                   {error}
                 </p>
               ) : (
-                <p id="sunday-rsvp-note" className="text-sm leading-relaxed text-white/55">
+                <p id="sunday-rsvp-note" className="text-sm leading-relaxed text-white">
                   We’ll text you the location details and a reminder before Sunday.
                 </p>
               )}
@@ -246,7 +246,7 @@ export function SundayRsvp() {
               </button>
             </form>
           )}
-          <p className="mt-5 text-sm text-white/55">Come as you are. We’d love to meet you.</p>
+          <p className="mt-5 text-sm text-white">Come as you are. We’d love to meet you.</p>
         </div>
       </div>
     </section>
