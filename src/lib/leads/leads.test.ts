@@ -92,8 +92,31 @@ describe("CSV import", () => {
     assert.equal("phone_normalized" in row, false);
     assert.equal("notes" in row, false);
     assert.equal("contacted_at" in row, false);
+    assert.equal(row.imported_by, "user-1");
     assert.equal(UPSERT_OPTIONS.ignoreDuplicates, true);
     assert.equal(UPSERT_OPTIONS.onConflict, "phone_normalized");
+  });
+
+  it("does not insert when there is no signed-in user", async () => {
+    const leads = analyzeCsv("name,phone\nA,2145550199\n").valid;
+    let called = false;
+    const summary = await importLeads(
+      {
+        upsertLeads: async () => {
+          called = true;
+          return { data: [{ id: "1" }], error: null };
+        },
+      },
+      leads,
+      "leads.csv",
+      "",
+      0,
+      0,
+    );
+    assert.equal(called, false);
+    assert.equal(summary.added, 0);
+    assert.equal(summary.failed, 1);
+    assert.equal(summary.errors[0], "Sign in to import");
   });
 });
 

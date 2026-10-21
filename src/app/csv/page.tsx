@@ -2,6 +2,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { LeadTracker } from "@/components/leads/LeadTracker";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
@@ -17,12 +18,32 @@ function ConfigError() {
   );
 }
 
-export default function CsvPage() {
+export default async function CsvPage() {
+  let signedIn = false;
+  let isAdmin = false;
+  if (isSupabaseConfigured()) {
+    const supabase = await createClient();
+    const { data: auth } = await supabase.auth.getUser();
+    signedIn = Boolean(auth.user);
+    if (auth.user) {
+      const { data: admin } = await supabase
+        .from("sending_lead_admins")
+        .select("user_id")
+        .eq("user_id", auth.user.id)
+        .maybeSingle();
+      isAdmin = Boolean(admin);
+    }
+  }
+
   return (
     <>
       <SiteHeader />
       <main className="bg-[var(--sending-bg)] px-5 py-8">
-        {isSupabaseConfigured() ? <LeadTracker /> : <ConfigError />}
+        {isSupabaseConfigured() ? (
+          <LeadTracker signedIn={signedIn} isAdmin={isAdmin} />
+        ) : (
+          <ConfigError />
+        )}
       </main>
       <SiteFooter />
     </>

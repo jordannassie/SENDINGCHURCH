@@ -7,7 +7,13 @@ export default async function LoginPage({
   searchParams: Promise<{ next?: string; error?: string }>;
 }) {
   const params = await searchParams;
-  const leadsReturn = safeLeadsReturnPath(params.next ?? null) === "/dashboard/leads";
+  const nextPath = safeLeadsReturnPath(params.next ?? null);
 
-  return <LoginForm leadsReturn={leadsReturn} googleError={params.error === "google"} />;
+  return (
+    <LoginForm
+      leadsReturn={Boolean(nextPath)}
+      nextPath={nextPath ?? "/csv"}
+      googleError={params.error === "google"}
+    />
+  );
 }

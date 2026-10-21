@@ -28,7 +28,7 @@ export async function importLeads(
   writer: LeadWriter,
   leads: ParsedLead[],
   sourceFile: string,
-  importedBy: string | null,
+  importedBy: string,
   fileDuplicates: number,
   invalid: number,
 ): Promise<ImportSummary> {
@@ -41,6 +41,13 @@ export async function importLeads(
     failedLeads: [],
     errors: [],
   };
+
+  if (!importedBy) {
+    summary.failed = leads.length;
+    summary.failedLeads = leads;
+    summary.errors = ["Sign in to import"];
+    return summary;
+  }
 
   for (let index = 0; index < leads.length; index += BATCH_SIZE) {
     const slice = leads.slice(index, index + BATCH_SIZE);

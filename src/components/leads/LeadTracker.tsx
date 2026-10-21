@@ -8,7 +8,7 @@ import { firstName, pageRange } from "@/lib/leads/csv";
 import { PAGE_SIZE, type SendingLead } from "@/lib/leads/types";
 import { createClient } from "@/lib/supabase/client";
 
-export function LeadTracker() {
+export function LeadTracker({ signedIn, isAdmin }: { signedIn: boolean; isAdmin: boolean }) {
   const [leads, setLeads] = useState<SendingLead[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(0);
@@ -79,7 +79,7 @@ export function LeadTracker() {
     <div className="mx-auto max-w-3xl">
       <h1 className="text-3xl font-semibold tracking-tight">Frisco Bible Group Leads.</h1>
       <div className="mt-6">
-        <CsvImport onImported={() => void load()} />
+        <CsvImport signedIn={signedIn} isAdmin={isAdmin} onImported={() => void load()} />
       </div>
       {error ? (
         <p className="mt-4 rounded-2xl bg-[#fff4ec] px-4 py-3 text-sm text-[#9a3412]" role="alert">

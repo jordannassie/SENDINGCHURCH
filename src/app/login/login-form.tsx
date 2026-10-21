@@ -9,9 +9,11 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 export function LoginForm({
   leadsReturn,
+  nextPath,
   googleError,
 }: {
   leadsReturn: boolean;
+  nextPath: string;
   googleError: boolean;
 }) {
   const router = useRouter();
@@ -32,7 +34,7 @@ export function LoginForm({
       return;
     }
     setBusy(true);
-    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent("/dashboard/leads")}`;
+    const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
     const { error } = await createClient().auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo },

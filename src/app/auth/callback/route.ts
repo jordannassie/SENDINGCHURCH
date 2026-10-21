@@ -17,7 +17,7 @@ export async function GET(request: Request) {
 
   const login = new URL("/login", url.origin);
   login.searchParams.set("error", "google");
-  if (next.startsWith("/dashboard/leads")) {
+  if (safeLeadsReturnPath(next)) {
     login.searchParams.set("next", next);
   }
   return NextResponse.redirect(login);

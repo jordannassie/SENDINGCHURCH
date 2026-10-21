@@ -1,5 +1,6 @@
+const LEAD_PATHS = new Set(["/csv", "/dashboard/leads"]);
+
 export function safeLeadsReturnPath(value: string | null) {
-  if (!value) return null;
-  if (value !== "/dashboard/leads") return null;
+  if (!value || !LEAD_PATHS.has(value)) return null;
   return value;
 }

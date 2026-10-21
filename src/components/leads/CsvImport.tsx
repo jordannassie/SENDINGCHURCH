@@ -1,12 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
-import { analyzeCsv, decodeLeadFile, missingMappingLabels, toInsertRow } from "@/lib/leads/csv";
-import { databaseFailureText, importLeads, importSummaryText } from "@/lib/leads/import";
-import { UPSERT_OPTIONS } from "@/lib/leads/types";
+import Link from "next/link";
+import { analyzeCsv, decodeLeadFile, missingMappingLabels } from "@/lib/leads/csv";
+import { databaseFailureText, importSummaryText } from "@/lib/leads/import";
 
-export function CsvImport({ onImported }: { onImported: () => void }) {
+export function CsvImport({
+  signedIn,
+  isAdmin,
+  onImported,
+}: {
+  signedIn: boolean;
+  isAdmin: boolean;
+  onImported: () => void;
+}) {
   const [summary, setSummary] = useState("");
   const [rowProblems, setRowProblems] = useState<string[]>([]);
   const [databaseProblem, setDatabaseProblem] = useState("");
@@ -25,6 +32,18 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
     }
 
     const problemsForRows = analysis.invalid.map((row) => `Row ${row.rowNumber}: ${row.reason}`);
+    if (!signedIn) {
+      setDatabaseProblem("Sign in to import");
+      setRowProblems(problemsForRows);
+      setBusy(false);
+      return;
+    }
+    if (!isAdmin) {
+      setDatabaseProblem("This account cannot import leads.");
+      setRowProblems(problemsForRows);
+      setBusy(false);
+      return;
+    }
     if (analysis.valid.length === 0) {
       const duplicates = analysis.fileDuplicateCount;
       if (duplicates > 0) setSummary(`0 added · ${duplicates} duplicates skipped`);
@@ -33,33 +52,51 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
       return;
     }
 
-    const supabase = createClient();
-    const result = await importLeads(
-      {
-        upsertLeads: async (rows: ReturnType<typeof toInsertRow>[]) => {
-          const { data, error } = await supabase
-            .from("sending_leads")
-            .upsert(rows, UPSERT_OPTIONS)
-            .select("id");
-          return { data, error: error ? { message: error.message } : null };
-        },
-      },
-      analysis.valid,
-      fileName,
-      null,
-      analysis.fileDuplicateCount,
-      analysis.invalid.length,
-    );
-
-    const duplicates = result.fileDuplicates + result.existingDuplicates;
-    const savedSomething = result.added > 0 || duplicates > 0;
-    if (result.failed > 0) {
-      setDatabaseProblem(databaseFailureText(result.errors));
+    const response = await fetch("/api/leads/import", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        fileName,
+        leads: analysis.valid.map((lead) => ({
+          fullName: lead.fullName,
+          phone: lead.phone,
+          email: lead.email,
+          metaLeadId: lead.metaLeadId,
+          leadCreatedAt: lead.leadCreatedAt,
+          rowNumber: lead.rowNumber,
+        })),
+      }),
+    });
+    const result = (await response.json()) as {
+      added?: number;
+      existingDuplicates?: number;
+      failed?: number;
+      errors?: string[];
+      error?: string;
+    };
+    if (response.status === 401) {
+      setDatabaseProblem("Sign in to import");
+      setRowProblems(problemsForRows);
+      setBusy(false);
+      return;
     }
-    if (savedSomething) setSummary(importSummaryText(result));
+    const saved = {
+      added: result.added ?? 0,
+      fileDuplicates: analysis.fileDuplicateCount,
+      existingDuplicates: result.existingDuplicates ?? 0,
+      failed: result.failed ?? (response.ok ? 0 : analysis.valid.length),
+      errors: result.error ? [result.error] : (result.errors ?? []),
+    };
+
+    const duplicates = saved.fileDuplicates + saved.existingDuplicates;
+    const savedSomething = saved.added > 0 || duplicates > 0;
+    if (saved.failed > 0 || saved.errors.length > 0) {
+      setDatabaseProblem(databaseFailureText(saved.errors));
+    }
+    if (savedSomething) setSummary(importSummaryText(saved));
     setRowProblems(problemsForRows);
     setBusy(false);
-    if (result.added > 0) onImported();
+    if (saved.added > 0) onImported();
   }
 
   function readFile(file: File) {
@@ -73,6 +110,16 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
 
   return (
     <section>
+      {!signedIn ? (
+        <p className="mb-4 text-sm font-medium">
+          <Link href="/login?next=/csv" className="text-[var(--sending-orange)]">
+            Sign in to import
+          </Link>
+        </p>
+      ) : null}
+      {signedIn && !isAdmin ? (
+        <p className="mb-4 text-sm text-[#9a3412]">This account cannot import leads.</p>
+      ) : null}
       <label
         className="flex min-h-36 cursor-pointer flex-col items-center justify-center rounded-3xl border border-dashed border-black/15 bg-white px-4 text-center"
         onDragOver={(event) => event.preventDefault()}
