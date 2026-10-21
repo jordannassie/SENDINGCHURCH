@@ -131,8 +131,8 @@ export function SundayRsvp() {
             <Image
               src={STAR_IMAGE}
               alt="The Star in Frisco"
-              width={280}
-              height={180}
+              width={560}
+              height={360}
               className="h-32 w-48 shrink-0 rounded-xl object-cover"
             />
             <a
@@ -154,8 +154,8 @@ export function SundayRsvp() {
                 <Image
                   src={location.leader_photo_url}
                   alt=""
-                  width={64}
-                  height={64}
+                  width={128}
+                  height={128}
                   className="h-16 w-16 shrink-0 rounded-full object-cover"
                 />
               ) : null}
