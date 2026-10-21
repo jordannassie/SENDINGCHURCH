@@ -1,7 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import { FormEvent, useRef, useState } from "react";
 import { ArrowRight, MapPin, Phone, User } from "lucide-react";
+import { STAR_IMAGE } from "@/lib/demo/data";
 import { formatTimeRange, getLocations } from "@/lib/locations";
 import type { SendingLocation } from "@/lib/locations/types";
 import { rsvpConfirmationText } from "@/lib/rsvp/messages";
@@ -125,22 +127,42 @@ export function SundayRsvp() {
           <p className="mt-3 text-lg font-semibold tracking-tight">
             {location.church_day} · {sundayTime(location)}
           </p>
-          <a
-            href={location.map_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 inline-flex items-start gap-2 rounded-sm text-sm text-white/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]"
-          >
-            <MapPin aria-hidden size={16} className="mt-0.5 shrink-0 text-[var(--sending-orange)]" />
-            <span>
-              {location.venue_name}
-              <span className="mt-0.5 block">{location.address}</span>
-            </span>
-          </a>
+          <div className="mt-3 flex items-center gap-3">
+            <Image
+              src={STAR_IMAGE}
+              alt="The Star in Frisco"
+              width={280}
+              height={180}
+              className="h-16 w-24 shrink-0 rounded-xl object-cover"
+            />
+            <a
+              href={location.map_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="min-w-0 rounded-sm text-sm text-white/65 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]"
+            >
+              <span className="flex items-center gap-1.5 font-medium text-white">
+                <MapPin aria-hidden size={14} className="shrink-0 text-[var(--sending-orange)]" />
+                {location.venue_name}
+              </span>
+              <span className="mt-0.5 block text-white/65">{location.address}</span>
+            </a>
+          </div>
           {location.leader_name ? (
-            <p className="mt-3 text-sm text-white/55">
-              {location.leader_name}
-              {location.leader_title ? ` · ${location.leader_title}` : ""}
+            <p className="mt-3 flex items-center gap-2 text-sm text-white/55">
+              {location.leader_photo_url ? (
+                <Image
+                  src={location.leader_photo_url}
+                  alt=""
+                  width={64}
+                  height={64}
+                  className="h-8 w-8 shrink-0 rounded-full object-cover"
+                />
+              ) : null}
+              <span>
+                {location.leader_name}
+                {location.leader_title ? ` · ${location.leader_title}` : ""}
+              </span>
             </p>
           ) : null}
 
