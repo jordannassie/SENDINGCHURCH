@@ -9,7 +9,7 @@ import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
-import { BOOK_IMAGE, GATHERING_IMAGE, HERO_IMAGE, HERO_VIDEO, PASTORS, SEE_DO_SEND_IMAGE } from "@/lib/demo/data";
+import { BOOK_IMAGE, GATHERING_IMAGE, HERO_VIDEO, PASTORS, SEE_DO_SEND_IMAGE, STAR_IMAGE } from "@/lib/demo/data";
 import { formatTimeRange, getLocations } from "@/lib/locations";
 
 const FOCUS =
@@ -53,12 +53,12 @@ export default function HomePage() {
 
       <section className="relative isolate overflow-hidden bg-white">
         <Image
-          src={HERO_IMAGE}
+          src={STAR_IMAGE}
           alt=""
           fill
           priority
           sizes="100vw"
-          className="object-cover object-[68%_center]"
+          className="object-cover object-center"
         />
         <div
           aria-hidden
