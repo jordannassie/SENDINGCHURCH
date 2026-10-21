@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { preload } from "react-dom";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, MapPin, Phone } from "lucide-react";
 import { Beliefs } from "@/components/home/Beliefs";
 import { HeroVideo } from "@/components/home/HeroVideo";
 import { SundayRsvp } from "@/components/home/SundayRsvp";
@@ -9,7 +9,7 @@ import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
-import { GATHERING_IMAGE, HERO_VIDEO, SEE_DO_SEND_IMAGE } from "@/lib/demo/data";
+import { GATHERING_IMAGE, HERO_IMAGE, HERO_VIDEO, PASTORS, SEE_DO_SEND_IMAGE } from "@/lib/demo/data";
 import { formatTimeRange, getLocations } from "@/lib/locations";
 
 const FOCUS =
@@ -51,8 +51,32 @@ export default function HomePage() {
       <link rel="preload" as="video" href={HERO_VIDEO} type="video/quicktime" />
       <SiteHeader />
 
-      <section className="bg-white">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
+      <section className="relative isolate overflow-hidden bg-white">
+        <Image
+          src={HERO_IMAGE}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[68%_center]"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 md:hidden"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0.9) 42%, rgba(255,255,255,0.55) 68%, rgba(255,255,255,0.2) 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 hidden md:block"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.96) 40%, rgba(255,255,255,0.7) 54%, rgba(255,255,255,0.22) 72%, rgba(255,255,255,0.06) 100%)",
+          }}
+        />
+        <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
           <div className="min-w-0">
             <h1 className="text-[3.25rem] font-semibold leading-[0.9] tracking-[-0.045em] sm:text-7xl lg:text-[5.15rem]">
               <span className="block">Come as</span>
@@ -130,6 +154,67 @@ export default function HomePage() {
                 <ArrowUpRight size={16} aria-hidden />
               </Link>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-16 sm:py-20 lg:grid-cols-[auto_1fr] lg:gap-16">
+          <div className="flex items-end justify-center lg:justify-start">
+            <div className="relative z-10 overflow-hidden rounded-full border-4 border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
+              <Image
+                src={PASTORS.jordanImage}
+                alt="Pastor Jordan"
+                width={320}
+                height={320}
+                className="h-36 w-36 object-cover object-center sm:h-48 sm:w-48"
+              />
+            </div>
+            <div className="relative z-20 -ml-8 overflow-hidden rounded-full border-4 border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:-ml-10">
+              <Image
+                src={PASTORS.susieImage}
+                alt="Susie"
+                width={320}
+                height={320}
+                className="h-36 w-36 object-cover object-center sm:h-48 sm:w-48"
+              />
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold tracking-[0.18em] text-[#9a9a9a]">WELCOME</p>
+            <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
+              From Pastor Jordan and Susie
+            </h2>
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#555]">
+              Jordan and Susie have spent their lives helping people know Jesus,
+              start churches, and reach their communities. Together, they have
+              helped plant 180 churches across 23 nations and have seen more
+              than 2 million people make decisions for Christ. Their passion is
+              simple: help everyday Christians share Jesus, make disciples, and
+              start simple Bible-centered churches wherever they live.
+            </p>
+            <div className="mt-6 space-y-3 text-sm text-[#444]">
+              <p className="flex items-center gap-2">
+                <MapPin size={16} className="text-[var(--sending-orange)]" aria-hidden />
+                {PASTORS.address}
+              </p>
+              <p className="flex items-center gap-2">
+                <Phone size={16} className="text-[var(--sending-orange)]" aria-hidden />
+                <a href={PASTORS.phoneHref} className={`rounded-sm hover:text-[#111] ${FOCUS}`}>
+                  {PASTORS.phone}
+                </a>
+              </p>
+            </div>
+            <div className="mt-8">
+              <div className="flex flex-wrap items-center gap-3">
+                <Button href={PASTORS.giveUrl}>Give</Button>
+                <img src={PASTORS.tithelyLogo} alt="Tithe.ly" className="h-6 w-auto" />
+              </div>
+              <p className="mt-3.5 max-w-[420px] text-[13px] leading-relaxed text-[#999]">
+                Your gift is tax-deductible and processed through Daily Church, a 501(c)(3)
+                nonprofit ministry. EIN: 84-2372867
+              </p>
+            </div>
           </div>
         </div>
       </section>
