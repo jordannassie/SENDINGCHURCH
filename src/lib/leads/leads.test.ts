@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadNameFields, leadSearchOr, pageRange, phonesForBulkCopy, storedLeadName, toInsertRow } from "./csv";
+import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadNameFields, leadSearchOr, pageRange, phonesForBulkCopy, sortLeadsForList, storedLeadName, toInsertRow } from "./csv";
 import { databaseFailureText, importLeads, importSummaryText } from "./import";
 import { cleanLeadPhone, formatUsPhone } from "./phone";
 import { UPSERT_OPTIONS } from "./types";
@@ -227,6 +227,16 @@ describe("outreach helpers", () => {
   it("strips filter characters from search", () => {
     assert.equal(leadSearchOr("%"), null);
     assert.equal(leadSearchOr("a,status.eq.new"), leadSearchOr("astatus.eq.new"));
+  });
+
+  it("moves checked leads to the bottom", () => {
+    const sorted = sortLeadsForList([
+      { id: "new-old", status: "new", created_at: "2026-10-01T00:00:00Z", contacted_at: null },
+      { id: "done-new", status: "contacted", created_at: "2026-10-03T00:00:00Z", contacted_at: "2026-10-21T00:00:00Z" },
+      { id: "new-new", status: "new", created_at: "2026-10-20T00:00:00Z", contacted_at: null },
+      { id: "done-old", status: "contacted", created_at: "2026-10-02T00:00:00Z", contacted_at: "2026-10-04T00:00:00Z" },
+    ]);
+    assert.deepEqual(sorted.map((lead) => lead.id), ["new-new", "new-old", "done-old", "done-new"]);
   });
 
   it("pages through every row", () => {

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { ActionButton } from "@/components/leads/ActionButton";
 import { CsvImport } from "@/components/leads/CsvImport";
-import { leadNameFields, pageRange, storedLeadName, withoutLeadNameColumns } from "@/lib/leads/csv";
+import { leadNameFields, pageRange, sortLeadsForList, storedLeadName, withoutLeadNameColumns } from "@/lib/leads/csv";
 import { PAGE_SIZE, type SendingLead } from "@/lib/leads/types";
 import { createClient } from "@/lib/supabase/client";
 
@@ -37,7 +37,7 @@ export function LeadTracker() {
       setLoading(false);
       return;
     }
-    setLeads((data ?? []) as SendingLead[]);
+    setLeads(sortLeadsForList((data ?? []) as SendingLead[]));
     setTotal(count ?? 0);
     setLoading(false);
   }, [page]);
@@ -54,7 +54,9 @@ export function LeadTracker() {
   async function persist(lead: SendingLead, patch: Partial<SendingLead>) {
     setSavingId(lead.id);
     setError("");
-    setLeads((current) => current.map((item) => (item.id === lead.id ? { ...item, ...patch } : item)));
+    setLeads((current) =>
+      sortLeadsForList(current.map((item) => (item.id === lead.id ? { ...item, ...patch } : item))),
+    );
     const supabase = createClient();
     const write = (body: Partial<SendingLead>) =>
       supabase.from("sending_leads").update(body).eq("id", lead.id);
@@ -64,7 +66,7 @@ export function LeadTracker() {
     }
     setSavingId(null);
     if (writeError) {
-      setLeads((current) => current.map((item) => (item.id === lead.id ? lead : item)));
+      setLeads((current) => sortLeadsForList(current.map((item) => (item.id === lead.id ? lead : item))));
       setError(writeError.message);
     }
   }
@@ -91,7 +93,7 @@ export function LeadTracker() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto max-w-3xl">
       <h1 className="text-3xl font-semibold tracking-tight">Frisco Bible Group Leads.</h1>
       <div className="mt-6">
         <CsvImport onImported={() => void load()} />
@@ -107,30 +109,24 @@ export function LeadTracker() {
       ) : null}
       {leads.length > 0 ? (
         <div className="mt-4 overflow-x-auto rounded-3xl border border-black/10 bg-white">
-          <div className="min-w-[44rem]">
-            <div className="grid grid-cols-[3.5rem_1.4fr_1.4fr_1.3fr] gap-2 border-b border-black/5 px-3 py-2 text-xs font-medium uppercase tracking-wide text-[#666]">
-              <span>Done</span>
-              <span>First name</span>
-              <span>Last name</span>
-              <span>Phone</span>
-            </div>
-            <ul className="divide-y divide-black/5">
-              {leads.map((lead) => {
-                const names = leadNameFields(lead);
-                return (
-                  <li key={lead.id}>
-                    <LeadRow
-                      key={`${names.firstName}\u001f${names.lastName}`}
-                      lead={lead}
-                      saving={savingId === lead.id}
-                      onDone={(checked) => toggleDone(lead, checked)}
-                      onSaveNames={(firstName, lastName) => saveNames(lead, firstName, lastName)}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
+          <div className="grid grid-cols-[3.5rem_1fr_1fr] gap-2 border-b border-black/5 px-3 py-2 text-xs font-medium uppercase tracking-wide text-[#666]">
+            <span>Done</span>
+            <span>First name</span>
+            <span>Phone</span>
           </div>
+          <ul className="divide-y divide-black/5">
+            {leads.map((lead) => (
+              <li key={lead.id}>
+                <LeadRow
+                  key={leadNameFields(lead).firstName}
+                  lead={lead}
+                  saving={savingId === lead.id}
+                  onDone={(checked) => toggleDone(lead, checked)}
+                  onSaveName={(firstName) => saveNames(lead, firstName, leadNameFields(lead).lastName)}
+                />
+              </li>
+            ))}
+          </ul>
         </div>
       ) : null}
       {total > PAGE_SIZE ? (
@@ -158,24 +154,19 @@ function LeadRow({
   lead,
   saving,
   onDone,
-  onSaveNames,
+  onSaveName,
 }: {
   lead: SendingLead;
   saving: boolean;
   onDone: (checked: boolean) => void;
-  onSaveNames: (firstName: string, lastName: string) => void;
+  onSaveName: (firstName: string) => void;
 }) {
-  const names = leadNameFields(lead);
-  const [firstName, setFirstName] = useState(names.firstName);
-  const [lastName, setLastName] = useState(names.lastName);
+  const savedName = leadNameFields(lead).firstName;
+  const [firstName, setFirstName] = useState(savedName);
   const phone = lead.phone;
 
-  function commitNames() {
-    onSaveNames(firstName.trim(), lastName.trim());
-  }
-
   return (
-    <div className="grid grid-cols-[3.5rem_1.4fr_1.4fr_1.3fr] items-center gap-2 px-3 py-2">
+    <div className="grid grid-cols-[3.5rem_1fr_1fr] items-center gap-2 px-3 py-2">
       <label className="flex h-11 w-11 items-center justify-center">
         <input
           type="checkbox"
@@ -190,18 +181,11 @@ function LeadRow({
         value={firstName}
         label="First name"
         onChange={setFirstName}
-        onCommit={commitNames}
-        disabled={saving}
-      />
-      <Field
-        value={lastName}
-        label="Last name"
-        onChange={setLastName}
-        onCommit={commitNames}
+        onCommit={() => onSaveName(firstName.trim())}
         disabled={saving}
       />
       <div className="flex min-w-0 items-center gap-1">
-        <span className="min-w-0 flex-1 truncate tabular-nums">{phone}</span>
+        <span className="min-w-0 flex-1 tabular-nums">{phone}</span>
         <CopyButton value={phone} label={`Copy phone ${phone}`} />
       </div>
     </div>

@@ -276,6 +276,18 @@ export function leadSearchOr(raw: string) {
   return clauses.join(",");
 }
 
+export function sortLeadsForList<T extends { status: string; created_at: string; contacted_at?: string | null }>(
+  leads: T[],
+) {
+  return [...leads].sort((a, b) => {
+    const aDone = a.status !== "new";
+    const bDone = b.status !== "new";
+    if (aDone !== bDone) return aDone ? 1 : -1;
+    if (aDone) return (a.contacted_at ?? "").localeCompare(b.contacted_at ?? "");
+    return b.created_at.localeCompare(a.created_at);
+  });
+}
+
 export function pageRange(page: number, pageSize: number) {
   const from = page * pageSize;
   const to = from + pageSize - 1;
