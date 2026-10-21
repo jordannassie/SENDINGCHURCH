@@ -85,17 +85,17 @@ export function SundayRsvp() {
       aria-labelledby="sunday-heading"
       className="scroll-mt-20 bg-black text-white"
     >
-      <div className="mx-auto grid max-w-6xl items-start gap-12 px-5 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
+      <div className="mx-auto flex max-w-xl flex-col items-center px-5 py-16 lg:py-24">
         <h2
           id="sunday-heading"
-          className="max-w-xl text-5xl font-semibold tracking-[-0.04em] text-white sm:text-7xl sm:leading-[0.92]"
+          className="text-center text-5xl font-semibold tracking-[-0.04em] text-white sm:text-7xl sm:leading-[0.92]"
         >
           Start with a Sunday.
         </h2>
 
         <div
           id="sunday-rsvp"
-          className="rounded-[28px] border border-white/12 bg-[#141414] p-6 sm:p-8"
+          className="mt-10 w-full rounded-[28px] border border-white/12 bg-[#141414] p-6 sm:p-8"
         >
           {locations.length > 1 ? (
             <label className="mb-5 block">

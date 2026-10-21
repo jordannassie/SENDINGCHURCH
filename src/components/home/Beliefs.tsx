@@ -262,12 +262,10 @@ export function Beliefs() {
                 <h4 className="text-base font-semibold tracking-tight text-white">
                   Our Nine DNA Values
                 </h4>
-                <ol className="mt-3 space-y-2">
-                  {DNA.map(([title, body], index) => (
-                    <li key={title}>
-                      <span className="font-semibold text-white">
-                        {index + 1}. {title}
-                      </span>
+                <ol className="mt-3 list-decimal space-y-2 pl-5 marker:font-semibold marker:text-white">
+                  {DNA.map(([title, body]) => (
+                    <li key={title} className="pl-1">
+                      <span className="font-semibold text-white">{title}</span>
                       {" — "}
                       {body}
                     </li>
@@ -284,8 +282,13 @@ export function Beliefs() {
                   leaders who can start new Sending Churches.
                 </p>
                 <p className="mt-2">
-                  Our 12-week training equips believers to know Jesus, follow
-                  Jesus, lead like Jesus, and multiply.
+                  Gather on Sundays. Grow through Foundations. Learn to lead
+                  through See → Do → Send.
+                </p>
+                <p className="mt-2">
+                  Foundations is 52 weekly lessons over one year. People can
+                  participate, serve, and develop while completing Foundations.
+                  Completing the course alone does not qualify someone to lead.
                 </p>
                 <p className="mt-2">
                   We measure success not simply by how many people gather, but

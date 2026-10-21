@@ -9,7 +9,7 @@ import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
-import { GATHERING_IMAGE, HERO_IMAGE, HERO_VIDEO, PASTORS, SEE_DO_SEND_IMAGE } from "@/lib/demo/data";
+import { BOOK_IMAGE, GATHERING_IMAGE, HERO_IMAGE, HERO_VIDEO, PASTORS, SEE_DO_SEND_IMAGE } from "@/lib/demo/data";
 import { formatTimeRange, getLocations } from "@/lib/locations";
 
 const FOCUS =
@@ -87,13 +87,13 @@ export default function HomePage() {
               Follow Jesus. Grow together.
               <span className="block">Help others do the same.</span>
             </p>
-            <Link
-              href="/#sunday"
+            <a
+              href="#sunday"
               className={`mt-8 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-orange)] px-5 py-3.5 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] sm:w-auto ${FOCUS}`}
             >
               Come this Sunday
               <ArrowUpRight size={16} aria-hidden />
-            </Link>
+            </a>
             <p className="mt-4 text-sm text-[#6b6b6b]">{sundayLine}</p>
           </div>
           <HeroVideo />
@@ -138,13 +138,14 @@ export default function HomePage() {
               <p className="mt-3 max-w-md text-base leading-relaxed text-[#555]">
                 One lesson a week. With a friend or mentor. Put your faith into practice.
               </p>
-              <div className="mt-6 flex aspect-[16/10] flex-col justify-end rounded-2xl bg-[#f3efe9] p-6 sm:p-8">
-                <p className="text-sm font-semibold tracking-[0.16em] text-[var(--sending-orange)]">
-                  FOUNDATIONS
-                </p>
-                <p className="mt-3 max-w-xs text-3xl font-semibold tracking-tight text-[#111] sm:text-4xl">
-                  One lesson a week.
-                </p>
+              <div className="mt-6 overflow-hidden rounded-2xl bg-[#f3efe9]">
+                <Image
+                  src={BOOK_IMAGE}
+                  alt="Sending book: Save the Lost. Train the Saved. Send the Trained."
+                  width={1400}
+                  height={900}
+                  className="aspect-[16/10] w-full object-cover object-center"
+                />
               </div>
               <Link
                 href="/#foundations"
