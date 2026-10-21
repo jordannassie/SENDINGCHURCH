@@ -7,9 +7,15 @@ type LogoProps = {
   href?: string;
   invert?: boolean;
   className?: string;
+  imageClassName?: string;
 };
 
-export function Logo({ href = "/", invert = false, className = "" }: LogoProps) {
+export function Logo({
+  href = "/",
+  invert = false,
+  className = "",
+  imageClassName = "h-10",
+}: LogoProps) {
   return (
     <Link href={href} className={`inline-flex items-center ${className}`}>
       <Image
@@ -17,7 +23,7 @@ export function Logo({ href = "/", invert = false, className = "" }: LogoProps) 
         alt="Sending"
         width={2001}
         height={447}
-        className={`h-10 w-auto ${invert ? "brightness-0 invert" : ""}`}
+        className={`${imageClassName} w-auto ${invert ? "brightness-0 invert" : ""}`}
         priority
       />
     </Link>

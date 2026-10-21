@@ -69,8 +69,8 @@ function Dropdown({
   children: ReactNode;
 }) {
   return (
-    <details className="group rounded-[24px] border border-[#eee] bg-white open:border-[#ffd8c2]">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-5 text-lg font-semibold tracking-tight text-[#111] sm:px-7 sm:text-xl [&::-webkit-details-marker]:hidden">
+    <details className="group rounded-[24px] border border-white/15 bg-transparent open:border-white/30">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-5 text-lg font-semibold tracking-tight text-white sm:px-7 sm:text-xl [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]">
         {title}
         <ChevronDown
           aria-hidden
@@ -85,8 +85,8 @@ function Dropdown({
 
 function Scripture({ children }: { children: ReactNode }) {
   return (
-    <p className="mt-2 text-sm text-[#999]">
-      <span className="font-medium text-[#666]">Scripture: </span>
+    <p className="mt-2 text-sm text-white/45">
+      <span className="font-medium text-white/60">Scripture: </span>
       {children}
     </p>
   );
@@ -94,9 +94,9 @@ function Scripture({ children }: { children: ReactNode }) {
 
 export function Beliefs() {
   return (
-    <section id="beliefs" className="scroll-mt-[73px] bg-white py-16 sm:py-20">
+    <section id="beliefs" className="scroll-mt-20 bg-black py-16 text-white sm:py-20">
       <div className="mx-auto max-w-3xl px-5">
-        <p className="text-xs font-medium tracking-[0.2em] text-[#999] uppercase">
+        <p className="text-xs font-medium tracking-[0.2em] text-white/45 uppercase">
           Sending Church
         </p>
         <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
@@ -105,10 +105,10 @@ export function Beliefs() {
 
         <div className="mt-10 space-y-4">
           <Dropdown title="Our Beliefs">
-            <h3 className="text-sm font-semibold tracking-[0.16em] text-[#111] uppercase">
+            <h3 className="text-sm font-semibold tracking-[0.16em] text-white uppercase">
               Our Statement of Faith
             </h3>
-            <p className="mt-4 text-base leading-relaxed text-[#444]">
+            <p className="mt-4 text-base leading-relaxed text-white/80">
               We believe the Bible is God&apos;s Word, Jesus Christ is Lord, and
               every believer is called to follow Jesus, make disciples, and
               share the gospel with the world.
@@ -116,10 +116,10 @@ export function Beliefs() {
             <ol className="mt-8 space-y-6">
               {BELIEFS.map((item, index) => (
                 <li key={item.title}>
-                  <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                  <h4 className="text-base font-semibold tracking-tight text-white">
                     {index + 1}. {item.title}
                   </h4>
-                  <p className="mt-1 text-sm leading-relaxed text-[#555]">
+                  <p className="mt-1 text-sm leading-relaxed text-white/75">
                     {item.body}
                   </p>
                   <Scripture>{item.scripture}</Scripture>
@@ -129,27 +129,27 @@ export function Beliefs() {
           </Dropdown>
 
           <Dropdown title="Church Structure">
-            <h3 className="text-sm font-semibold tracking-[0.16em] text-[#111] uppercase">
+            <h3 className="text-sm font-semibold tracking-[0.16em] text-white uppercase">
               Our Sending Church Structure
             </h3>
-            <p className="mt-4 text-base font-semibold tracking-tight text-[#111]">
+            <p className="mt-4 text-base font-semibold tracking-tight text-white">
               One Movement. Many Autonomous Churches.
             </p>
-            <p className="mt-3 text-sm leading-relaxed text-[#555]">
+            <p className="mt-3 text-sm leading-relaxed text-white/75">
               Sending Church is a movement of simple, Bible-centered,
               multiplying churches led by ordinary believers who follow Jesus
               and help others do the same.
             </p>
-            <p className="mt-4 text-sm text-[#555]">Our mission is:</p>
-            <p className="mt-3 space-y-1 text-sm font-semibold tracking-tight text-[#111]">
+            <p className="mt-4 text-sm text-white/75">Our mission is:</p>
+            <p className="mt-3 space-y-1 text-sm font-semibold tracking-tight text-white">
               <span className="block">SAVE THE LOST.</span>
               <span className="block">TRAIN THE SAVED.</span>
               <span className="block">SEND THE TRAINED.</span>
             </p>
 
-            <div className="mt-8 space-y-7 text-sm leading-relaxed text-[#555]">
+            <div className="mt-8 space-y-7 text-sm leading-relaxed text-white/75">
               <div>
-                <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                <h4 className="text-base font-semibold tracking-tight text-white">
                   Autonomous Local Churches
                 </h4>
                 <p className="mt-2">
@@ -170,7 +170,7 @@ export function Beliefs() {
               </div>
 
               <div>
-                <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                <h4 className="text-base font-semibold tracking-tight text-white">
                   Connected and Accountable
                 </h4>
                 <p className="mt-2">
@@ -186,7 +186,7 @@ export function Beliefs() {
               </div>
 
               <div>
-                <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                <h4 className="text-base font-semibold tracking-tight text-white">
                   Biblical Leadership
                 </h4>
                 <p className="mt-2">
@@ -207,7 +207,7 @@ export function Beliefs() {
               </div>
 
               <div>
-                <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                <h4 className="text-base font-semibold tracking-tight text-white">
                   Biblical Accountability and Church Discipline
                 </h4>
                 <p className="mt-2">
@@ -233,14 +233,14 @@ export function Beliefs() {
               </div>
 
               <div>
-                <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                <h4 className="text-base font-semibold tracking-tight text-white">
                   How Our Churches Gather
                 </h4>
                 <p className="mt-2">
                   Sending Churches follow a simple, reproducible one-hour
                   gathering:
                 </p>
-                <p className="mt-2 font-semibold tracking-tight text-[#111]">
+                <p className="mt-2 font-semibold tracking-tight text-white">
                   WELCOME → READ → DISCUSS → OBEY → SEND → PRAY
                 </p>
                 <p className="mt-2">
@@ -248,7 +248,7 @@ export function Beliefs() {
                   keeping Jesus and Scripture at the center.
                 </p>
                 <p className="mt-2">Every group shares the gospel using:</p>
-                <p className="mt-2 font-semibold tracking-tight text-[#111]">
+                <p className="mt-2 font-semibold tracking-tight text-white">
                   LOVE → SIN → JESUS → PRAY
                 </p>
                 <p className="mt-2">
@@ -259,13 +259,13 @@ export function Beliefs() {
               </div>
 
               <div>
-                <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                <h4 className="text-base font-semibold tracking-tight text-white">
                   Our Nine DNA Values
                 </h4>
                 <ol className="mt-3 space-y-2">
                   {DNA.map(([title, body], index) => (
                     <li key={title}>
-                      <span className="font-semibold text-[#111]">
+                      <span className="font-semibold text-white">
                         {index + 1}. {title}
                       </span>
                       {" — "}
@@ -276,7 +276,7 @@ export function Beliefs() {
               </div>
 
               <div>
-                <h4 className="text-base font-semibold tracking-tight text-[#111]">
+                <h4 className="text-base font-semibold tracking-tight text-white">
                   Our Commitment to Multiplication
                 </h4>
                 <p className="mt-2">
@@ -292,11 +292,11 @@ export function Beliefs() {
                   by disciples made, believers baptized, leaders developed, and
                   new churches started.
                 </p>
-                <p className="mt-4 font-semibold tracking-tight text-[#111]">
+                <p className="mt-4 font-semibold tracking-tight text-white">
                   Every believer equipped. Every church locally led. Every
                   church multiplying.
                 </p>
-                <p className="mt-3 font-semibold tracking-tight text-[#111]">
+                <p className="mt-3 font-semibold tracking-tight text-white">
                   SAVE THE LOST. TRAIN THE SAVED. SEND THE TRAINED.
                 </p>
               </div>

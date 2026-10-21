@@ -2,17 +2,18 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
-import { SocialLinks } from "@/components/brand/SocialLinks";
 import { useDemoAuth } from "@/lib/demo/auth";
 
 const NAV = [
-  { href: "/#vision", label: "Vision" },
-  { href: "/#how-it-works", label: "How It Works" },
-  { href: "/#pastors", label: "Pastor" },
-  { href: "/#launch-hub", label: "Join" },
+  { href: "/#sunday", label: "Sundays" },
+  { href: "/#foundations", label: "Foundations" },
+  { href: "/#learn", label: "Learn to lead" },
 ];
+
+const focus =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -22,44 +23,32 @@ export function SiteHeader() {
     : { href: "/login", label: "Login" };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-[#f0f0f0] bg-white/90 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <Logo />
+    <header className="sticky top-0 z-40 border-b border-black/5 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
+        <Logo imageClassName="h-7" />
 
-        <nav className="hidden items-center gap-8 text-sm text-[#6b6b6b] md:flex">
+        <nav className="hidden items-center gap-8 text-sm text-[#444] md:flex">
           {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="transition-colors hover:text-[#111]"
-            >
+            <Link key={item.href} href={item.href} className={`rounded-sm transition-colors hover:text-[#111] ${focus}`}>
               {item.label}
             </Link>
           ))}
-          {ready ? (
-            <Link
-              href={account.href}
-              className="transition-colors hover:text-[#111]"
-            >
-              {account.label}
-            </Link>
-          ) : null}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <SocialLinks size={22} className="text-[#111]" />
+        <div className="flex items-center gap-2">
           <Link
             href="/#sunday"
-            className="hidden items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white md:inline-flex"
+            className={`hidden items-center gap-1 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] md:inline-flex ${focus}`}
           >
-            Come This Sunday
-            <ArrowRight size={14} />
+            Come this Sunday
+            <ArrowUpRight size={15} aria-hidden />
           </Link>
           <button
             type="button"
-            className="rounded-full p-2 text-[#111] md:hidden"
+            className={`rounded-full p-2 text-[#111] md:hidden ${focus}`}
             onClick={() => setOpen((value) => !value)}
-            aria-label="Toggle menu"
+            aria-expanded={open}
+            aria-label={open ? "Close menu" : "Open menu"}
           >
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -67,12 +56,12 @@ export function SiteHeader() {
       </div>
 
       {open ? (
-        <div className="space-y-1 border-t border-[#f0f0f0] px-5 py-4 md:hidden">
+        <div className="space-y-1 border-t border-black/5 px-5 py-4 md:hidden">
           {NAV.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="block py-2 text-sm text-[#333]"
+              className={`block rounded-sm py-2 text-sm text-[#222] ${focus}`}
               onClick={() => setOpen(false)}
             >
               {item.label}
@@ -81,23 +70,20 @@ export function SiteHeader() {
           {ready ? (
             <Link
               href={account.href}
-              className="block py-2 text-sm text-[#333]"
+              className={`block rounded-sm py-2 text-sm text-[#222] ${focus}`}
               onClick={() => setOpen(false)}
             >
               {account.label}
             </Link>
           ) : null}
-          <div className="mt-2 flex items-center gap-3">
-            <SocialLinks size={22} className="text-[#111]" />
-            <Link
-              href="/#sunday"
-              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white"
-              onClick={() => setOpen(false)}
-            >
-              Come This Sunday
-              <ArrowRight size={14} />
-            </Link>
-          </div>
+          <Link
+            href="/#sunday"
+            className={`mt-2 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-orange)] px-4 py-3 text-sm font-medium text-white ${focus}`}
+            onClick={() => setOpen(false)}
+          >
+            Come this Sunday
+            <ArrowUpRight size={15} aria-hidden />
+          </Link>
         </div>
       ) : null}
     </header>

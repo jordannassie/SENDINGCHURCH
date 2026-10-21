@@ -270,6 +270,12 @@ export const OMNI_IMAGE =
 export const START_WITH_TWO_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/2.png";
 
+export const GATHERING_IMAGE =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/8299d76d-4aff-4190-8b61-f21b24a8d5fc.png";
+
+export const SEE_DO_SEND_IMAGE =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Seedosend.png";
+
 export const BOOK_IMAGE =
   "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Book1.png";
 

@@ -38,13 +38,14 @@ export function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [muted, setMutedState] = useState(true);
   const [pinned, setPinned] = useState(false);
+  const [needsPlay, setNeedsPlay] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
     video.muted = true;
     const start = () => {
-      void video.play().catch(() => {});
+      void video.play().then(() => setNeedsPlay(false)).catch(() => setNeedsPlay(true));
     };
     start();
     video.addEventListener("canplay", start);
@@ -67,39 +68,50 @@ export function HeroVideo() {
     applyMuted(nextMuted);
   }
 
+  function playFromTap() {
+    const video = videoRef.current;
+    if (!video) return;
+    void video.play().then(() => setNeedsPlay(false)).catch(() => setNeedsPlay(true));
+  }
+
   return (
-    <section className="bg-black">
-      <div className="mx-auto max-w-6xl px-5 py-10 md:py-14">
-        <div
-          className="relative overflow-hidden rounded-[28px] bg-black"
-          onMouseEnter={() => applyMuted(false)}
-          onMouseLeave={() => {
-            if (!pinned) applyMuted(true);
-          }}
+    <div
+      className="relative aspect-[4/3] overflow-hidden rounded-[28px] bg-black"
+      onMouseEnter={() => applyMuted(false)}
+      onMouseLeave={() => {
+        if (!pinned) applyMuted(true);
+      }}
+    >
+      <video
+        ref={videoRef}
+        src={HERO_VIDEO}
+        className="h-full w-full bg-black object-cover"
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        aria-label="Sending Church video"
+      />
+      {needsPlay ? (
+        <button
+          type="button"
+          onClick={playFromTap}
+          className="absolute inset-0 flex items-center justify-center bg-black/25 text-sm font-medium text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         >
-          <video
-            ref={videoRef}
-            src={HERO_VIDEO}
-            className="block w-full bg-black"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            aria-label="Sending Church video"
-          />
-          <button
-            type="button"
-            onClick={toggleSound}
-            className={`absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full ${
-              muted ? "bg-[#ff2d2d]" : "bg-[#22c55e]"
-            }`}
-            aria-label={muted ? "Turn sound on" : "Turn sound off"}
-          >
-            {muted ? <SpeakerOffIcon /> : <SpeakerOnIcon />}
-          </button>
-        </div>
-      </div>
-    </section>
+          Play video
+        </button>
+      ) : null}
+      <button
+        type="button"
+        onClick={toggleSound}
+        className={`absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
+          muted ? "bg-[#ff2d2d]" : "bg-[#22c55e]"
+        }`}
+        aria-label={muted ? "Turn sound on" : "Turn sound off"}
+      >
+        {muted ? <SpeakerOffIcon /> : <SpeakerOnIcon />}
+      </button>
+    </div>
   );
 }

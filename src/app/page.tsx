@@ -1,394 +1,199 @@
 import Image from "next/image";
 import Link from "next/link";
 import { preload } from "react-dom";
-import {
-  ArrowRight,
-  Calendar,
-  Church,
-  Droplets,
-  Globe,
-  MapPin,
-  Phone,
-  Radio,
-  Users,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { Beliefs } from "@/components/home/Beliefs";
-import { DownloadGuideButton } from "@/components/home/DownloadGuideButton";
 import { HeroVideo } from "@/components/home/HeroVideo";
-import { HowItWorks } from "@/components/home/HowItWorks";
-import { StarVisit } from "@/components/home/StarVisit";
 import { SundayRsvp } from "@/components/home/SundayRsvp";
-import { WhySending } from "@/components/home/Vision";
-import { WhyWeExist } from "@/components/home/WhyWeExist";
 import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Button } from "@/components/ui/Button";
-import {
-  BOOK_AMAZON_LOGO,
-  BOOK_AMAZON_URL,
-  BOOK_IMAGE,
-  CHURCH_GUIDE_IMAGE,
-  GATHERING_STEPS,
-  HERO_VIDEO,
-  IMPACT_STATS,
-  PASTORS,
-  OMNI_IMAGE,
-  STAR_IMAGE,
-  START_FLOW,
-  START_WITH_TWO_IMAGE,
-} from "@/lib/demo/data";
+import { GATHERING_IMAGE, HERO_VIDEO, SEE_DO_SEND_IMAGE } from "@/lib/demo/data";
+import { formatTimeRange, getLocations } from "@/lib/locations";
 
-const IMPACT_ICONS = [Church, Globe, Users, Droplets, Radio];
+const FOCUS =
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]";
+
+const PATHWAY = [
+  {
+    number: "01",
+    title: "Know Jesus",
+    body: "Know who Jesus is and what it means to follow Him.",
+  },
+  {
+    number: "02",
+    title: "Grow in faith",
+    body: "Build healthy habits and a deeper love for God's Word.",
+  },
+  {
+    number: "03",
+    title: "Live your faith",
+    body: "Put your faith into practice in everyday life.",
+  },
+  {
+    number: "04",
+    title: "Help others follow Jesus",
+    body: "Share what you're learning and help others take a next step.",
+  },
+] as const;
 
 export default function HomePage() {
   preload(HERO_VIDEO, { as: "video" });
+  const location = getLocations()[0];
+  const sundayTime = location
+    ? formatTimeRange(location.church_start_time, location.church_end_time)
+    : "9:00–10:00 AM";
+  const sundayLine = `Sundays · ${sundayTime} · ${location?.city ?? "Frisco"}, TX`;
 
   return (
-    <div className="bg-white">
+    <div className="overflow-x-hidden bg-white text-[#111]">
       <link rel="preload" as="video" href={HERO_VIDEO} type="video/quicktime" />
       <SiteHeader />
-      <SundayRsvp />
 
-      <StarVisit />
-
-      <section className="bg-black">
-        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-5 py-12 sm:grid-cols-3 lg:grid-cols-5">
-          {IMPACT_STATS.map((stat, index) => {
-            const Icon = IMPACT_ICONS[index];
-            return (
-              <div key={stat.label} className="text-center">
-                <Icon className="mx-auto text-[var(--sending-orange)]" size={22} />
-                <p className="mt-3 text-2xl font-semibold tracking-tight text-white">
-                  {stat.value}
-                </p>
-                <p className="mt-1 text-sm text-white/55">{stat.label}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <HeroVideo />
-
-      <WhySending />
-
-      <WhyWeExist />
-
-      <HowItWorks />
-
-      <section className="bg-white py-20">
-        <div className="mx-auto max-w-6xl px-5">
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-            Church Hour Format
-          </p>
-          <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-            One Hour. One Mission. Completely Repeatable.
-          </h2>
-          <p className="mt-5 max-w-2xl text-base leading-relaxed text-[#666]">
-            Start with two people. Meet anywhere. Follow the same simple format
-            every week.
-          </p>
-
-          <div className="mt-10 overflow-hidden rounded-3xl border border-[#eee] bg-white">
-            <div className="hidden grid-cols-[140px_220px_1fr] bg-[#f7f7f7] px-6 py-3 text-xs font-medium tracking-[0.16em] uppercase text-[#888] md:grid">
-              <span>Time</span>
-              <span>Part</span>
-              <span>What Happens</span>
-            </div>
-            {GATHERING_STEPS.map((row) => (
-              <div
-                key={row.part}
-                className="grid gap-1 border-t border-[#eee] px-6 py-3.5 md:grid-cols-[140px_220px_1fr] md:items-center"
-              >
-                <p className="text-sm font-medium text-[var(--sending-orange)]">{row.time}</p>
-                <p className="text-sm font-semibold tracking-wide">{row.part}</p>
-                <p className="text-sm leading-snug text-[#666]">{row.happens}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-6 text-sm text-[#666]">
-            After 60 minutes: stay for coffee, fellowship, conversation, and prayer.
-          </p>
-        </div>
-      </section>
-
-      <section id="book" className="scroll-mt-[73px] bg-[#fafafa] py-12">
-        <div className="mx-auto max-w-6xl px-5">
-          <p className="text-xs font-medium tracking-[0.2em] text-[#999] uppercase">
-            The Book
-          </p>
-          <h2 className="mt-3 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl">
-            Buy the book. Print the guide.
-          </h2>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[#666] sm:text-base">
-            Take Sending home, and give your church members the one-hour guide
-            to follow together.
-          </p>
-
-          <div className="mx-auto mt-8 grid w-full max-w-xl items-stretch gap-4 sm:grid-cols-2">
-            <article className="flex h-full flex-col overflow-hidden rounded-[28px] border border-[#eee] bg-white">
-              <div className="relative aspect-square">
-                <Image
-                  src={BOOK_IMAGE}
-                  alt="Sending book: Save the Lost. Train the Saved. Send the Trained."
-                  fill
-                  className="object-cover"
-                  sizes="280px"
-                />
-              </div>
-              <div className="flex flex-1 flex-col px-4 py-4 sm:px-5">
-                <h3 className="text-lg font-semibold tracking-tight">Sending</h3>
-                <p className="mt-1 text-xs leading-relaxed text-[#666] sm:text-sm">
-                  Save the Lost. Train the Saved. Send the Trained.
-                </p>
-                <p className="mt-3 text-2xl font-semibold tracking-tight">$5.00</p>
-                <a
-                  href={BOOK_AMAZON_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Buy Sending on Amazon for $5.00"
-                  className="mt-3 inline-flex h-11 w-fit items-center justify-center rounded-full bg-black px-4"
-                >
-                  <Image
-                    src={BOOK_AMAZON_LOGO}
-                    alt=""
-                    width={1024}
-                    height={373}
-                    className="h-5 w-auto"
-                  />
-                </a>
-              </div>
-            </article>
-
-            <article className="flex h-full flex-col overflow-hidden rounded-[28px] border border-[#eee] bg-white">
-              <div className="relative aspect-square bg-[#f6f6f6]">
-                <div className="absolute inset-4 sm:inset-6">
-                  <Image
-                    src={CHURCH_GUIDE_IMAGE}
-                    alt="Sending Church guide with the one-hour gathering format"
-                    fill
-                    className="object-contain"
-                    sizes="280px"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-1 flex-col px-4 py-4 sm:px-5">
-                <h3 className="text-lg font-semibold tracking-tight">
-                  Sending Church Guide
-                </h3>
-                <p className="mt-1 text-xs leading-relaxed text-[#666] sm:text-sm">
-                  The same one-hour format, ready to print and hand to your
-                  church members.
-                </p>
-                <div className="mt-auto pt-4">
-                  <DownloadGuideButton />
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-20 lg:grid-cols-2">
-        <div className="overflow-hidden rounded-[28px]">
-          <Image
-            src={START_WITH_TWO_IMAGE}
-            alt="Two people praying together"
-            width={1400}
-            height={900}
-            className="h-full min-h-[280px] w-full object-cover"
-          />
-        </div>
-        <div>
-          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">Start With Two.</h2>
-          <p className="mt-5 text-base leading-relaxed text-[#666]">
-            You do not need a building, stage, staff, or large crowd. Find one
-            other person. Meet in a home, coffee shop, workplace, campus,
-            restaurant, or anywhere people can gather. Follow the 60-minute
-            Sending Church format. Then multiply.
-          </p>
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            {START_FLOW.map((item, index) => (
-              <div key={item} className="flex items-center gap-3">
-                <span className="rounded-full border border-[#eee] bg-white px-4 py-2 text-sm font-medium">
-                  {item}
-                </span>
-                {index < START_FLOW.length - 1 ? (
-                  <ArrowRight size={16} className="text-[var(--sending-orange)]" />
-                ) : null}
-              </div>
-            ))}
-          </div>
-          <div className="mt-8">
-            <Button href="/login" className="w-full sm:w-auto">
-              Start a Sending Church
-              <ArrowRight size={15} />
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <section id="launch-hub" className="mx-auto grid max-w-6xl items-center gap-10 px-5 pb-20 lg:grid-cols-2">
-        <div>
-          <div className="overflow-hidden rounded-[28px]">
-            <Image
-              src={STAR_IMAGE}
-              alt="The Star in Frisco"
-              width={1400}
-              height={900}
-              className="h-full min-h-[280px] w-full object-cover"
-            />
-          </div>
-          <div className="mt-4 w-[68%] overflow-hidden rounded-[22px]">
-            <Image
-              src={OMNI_IMAGE}
-              alt="Omni Coffee Shop"
-              width={900}
-              height={600}
-              className="h-40 w-full object-cover sm:h-44"
-            />
-          </div>
-        </div>
-        <div>
-          <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
-            Our launch hub
-          </p>
-          <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
-            Dallas / Frisco, Texas
-          </h2>
-          <p className="mt-5 text-base leading-relaxed text-[#666]">
-            Our launch hub meets every Sunday at The Star in Frisco. This is
-            where we are building, testing, and multiplying the Sending Church
-            model.
-          </p>
-          <div className="mt-6 space-y-4 text-sm text-[#444]">
-            <div>
-              <p className="flex items-center gap-2 font-medium">
-                <Calendar size={16} className="text-[var(--sending-orange)]" />
-                Sunday Gathering
-              </p>
-              <div className="mt-3 space-y-3 pl-6">
-                <div>
-                  <p className="font-medium text-[#111]">12-Week Training</p>
-                  <p className="mt-0.5 text-[var(--sending-orange)]">8:00–9:00 AM</p>
-                </div>
-                <div>
-                  <p className="font-medium text-[#111]">Sending Church</p>
-                  <p className="mt-0.5 text-[#111]">9:00–10:00 AM · Free</p>
-                </div>
-              </div>
-            </div>
-            <p className="flex items-center gap-2">
-              <MapPin size={16} className="text-[var(--sending-orange)]" />
-              The Star · {PASTORS.address}
+      <section className="bg-white">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
+          <div className="min-w-0">
+            <h1 className="text-[3.25rem] font-semibold leading-[0.9] tracking-[-0.045em] sm:text-7xl lg:text-[5.15rem]">
+              <span className="block">Come as</span>
+              <span className="block">you are.</span>
+              <span className="mt-2 block text-[var(--sending-orange)]">Be sent.</span>
+            </h1>
+            <p className="mt-6 max-w-sm text-lg leading-snug text-[#3a3a3a] sm:text-xl">
+              Follow Jesus. Grow together.
+              <span className="block">Help others do the same.</span>
             </p>
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Button href="/#sunday" className="w-full sm:w-auto">
-              Come This Sunday
-              <ArrowRight size={15} />
-            </Button>
-            <Button
-              href="/#12-weeks"
-              variant="secondary"
-              className="w-full sm:w-auto"
+            <Link
+              href="/#sunday"
+              className={`mt-8 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-orange)] px-5 py-3.5 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] sm:w-auto ${FOCUS}`}
             >
-              Explore the Training
-              <ArrowRight size={15} />
-            </Button>
+              Come this Sunday
+              <ArrowUpRight size={16} aria-hidden />
+            </Link>
+            <p className="mt-4 text-sm text-[#6b6b6b]">{sundayLine}</p>
+          </div>
+          <HeroVideo />
+        </div>
+      </section>
+
+      <section className="bg-[#f7f6f4]">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
+          <h2 className="text-center text-3xl font-semibold tracking-tight sm:text-4xl">
+            Together on Sunday. Growing all week.
+          </h2>
+          <div className="mt-10 grid gap-5 lg:grid-cols-2">
+            <article className="flex flex-col rounded-[28px] bg-white p-6 sm:p-8">
+              <p className="text-xs font-semibold tracking-[0.18em] text-[#9a9a9a]">
+                SUNDAY MORNINGS
+              </p>
+              <h3 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Find your church family.
+              </h3>
+              <p className="mt-3 max-w-md text-base leading-relaxed text-[#555]">
+                Read a book of the Bible together. Talk honestly. Pray and take a next step.
+              </p>
+              <div className="mt-6 overflow-hidden rounded-2xl">
+                <Image
+                  src={GATHERING_IMAGE}
+                  alt="People gathered around a table with an open Bible"
+                  width={1200}
+                  height={800}
+                  className="aspect-[16/10] w-full object-cover"
+                />
+              </div>
+              <p className="mt-5 text-sm text-[#666]">One hour. Everyone welcome.</p>
+            </article>
+
+            <article className="flex flex-col rounded-[28px] bg-white p-6 sm:p-8">
+              <p className="text-xs font-semibold tracking-[0.18em] text-[#9a9a9a]">
+                DURING THE WEEK
+              </p>
+              <h3 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+                Build your Foundations.
+              </h3>
+              <p className="mt-3 max-w-md text-base leading-relaxed text-[#555]">
+                One lesson a week. With a friend or mentor. Put your faith into practice.
+              </p>
+              <div className="mt-6 flex aspect-[16/10] flex-col justify-end rounded-2xl bg-[#f3efe9] p-6 sm:p-8">
+                <p className="text-sm font-semibold tracking-[0.16em] text-[var(--sending-orange)]">
+                  FOUNDATIONS
+                </p>
+                <p className="mt-3 max-w-xs text-3xl font-semibold tracking-tight text-[#111] sm:text-4xl">
+                  One lesson a week.
+                </p>
+              </div>
+              <Link
+                href="/#foundations"
+                className={`mt-5 inline-flex items-center gap-1 self-start rounded-sm text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)] ${FOCUS}`}
+              >
+                Explore Foundations
+                <ArrowUpRight size={16} aria-hidden />
+              </Link>
+            </article>
           </div>
         </div>
       </section>
 
-      <section id="pastors" className="bg-[#fafafa] py-20">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="flex items-center justify-center">
-            <div className="flex items-end">
-              <div className="relative z-10 overflow-hidden rounded-full border-4 border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)]">
-                <Image
-                  src={PASTORS.jordanImage}
-                  alt="Pastor Jordan"
-                  width={320}
-                  height={320}
-                  className="h-40 w-40 object-cover object-center sm:h-52 sm:w-52"
-                />
+      <section id="foundations" className="scroll-mt-20 bg-white">
+        <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">
+          <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
+            A year of following Jesus.
+          </h2>
+          <p className="mt-4 max-w-xl text-lg text-[#555]">
+            Foundations supports your everyday walk with Jesus.
+          </p>
+          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {PATHWAY.map((step) => (
+              <div key={step.number}>
+                <p className="text-sm font-semibold tracking-[0.12em] text-[var(--sending-orange)]">
+                  {step.number}
+                </p>
+                <h3 className="mt-3 text-xl font-semibold tracking-tight">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-[#666]">{step.body}</p>
               </div>
-              <div className="relative z-20 -ml-8 overflow-hidden rounded-full border-4 border-white shadow-[0_12px_40px_rgba(0,0,0,0.08)] sm:-ml-10">
-                <Image
-                  src={PASTORS.susieImage}
-                  alt="Susie"
-                  width={320}
-                  height={320}
-                  className="h-40 w-40 object-cover object-center sm:h-52 sm:w-52"
-                />
-              </div>
-            </div>
+            ))}
           </div>
+          <p className="mt-12 text-sm text-[#666]">
+            Start where you are. Take your next step when you are ready.
+          </p>
+        </div>
+      </section>
 
+      <section id="learn" className="scroll-mt-20 bg-white px-5 pb-16 sm:pb-20">
+        <div className="mx-auto grid max-w-6xl items-center gap-8 rounded-[32px] bg-[#f6f3ef] px-6 py-10 sm:px-10 lg:grid-cols-2 lg:gap-12 lg:py-14">
           <div>
-            <h2 className="text-4xl font-semibold tracking-tight sm:text-5xl">
-              Pastor Jordan and Susie
+            <p className="text-xs font-semibold tracking-[0.18em] text-[#9a9a9a]">LEARN TO LEAD</p>
+            <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
+              Ready to help others grow?
             </h2>
-            <p className="mt-5 text-base leading-relaxed text-[#666]">
-              Jordan and Susie have spent their lives helping people know Jesus,
-              start churches, and reach their communities. Together, they have
-              helped plant 180 churches across 23 nations and have seen more
-              than 2 million people make decisions for Christ. Their passion is
-              simple: help everyday Christians share Jesus, make disciples, and
-              start simple Bible-centered churches wherever they live.
+            <p className="mt-4 max-w-md text-lg text-[#444]">
+              See it. Practice it. Help others do the same.
             </p>
-            <div className="mt-6 space-y-3 text-sm text-[#444]">
-              <p className="flex items-center gap-2">
-                <MapPin size={16} className="text-[var(--sending-orange)]" />
-                {PASTORS.address}
-              </p>
-              <p className="flex items-center gap-2">
-                <Phone size={16} className="text-[var(--sending-orange)]" />
-                <a href={PASTORS.phoneHref} className="hover:text-[#111]">
-                  {PASTORS.phone}
-                </a>
-              </p>
-            </div>
-            <div className="mt-8">
-              <div className="flex flex-wrap items-center gap-3">
-                <Button href={PASTORS.giveUrl}>Give</Button>
-                <img
-                  src={PASTORS.tithelyLogo}
-                  alt="Tithe.ly"
-                  className="h-6 w-auto"
-                />
-              </div>
-              <p className="mt-3.5 max-w-[420px] text-[13px] leading-relaxed text-[#999]">
-                Your gift is tax-deductible and processed through Daily Church,
-                a 501(c)(3) nonprofit ministry. EIN: 84-2372867
-              </p>
-            </div>
           </div>
+          <Image
+            src={SEE_DO_SEND_IMAGE}
+            alt="See, Do, Send, and Multiply. Watch a Bible group, practice leading together, and send with support."
+            width={1400}
+            height={1400}
+            className="h-auto w-full object-contain"
+          />
         </div>
       </section>
 
       <WorldGlobe />
-
+      <SundayRsvp />
       <Beliefs />
 
-      <section className="bg-[var(--sending-orange)]">
-        <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-5 py-14 md:flex-row md:items-center">
+      <section className="bg-[var(--sending-orange)] text-white">
+        <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
-              This Sunday
-            </p>
-            <h2 className="mt-3 text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-              Come as you are.
-            </h2>
+            <p className="text-sm font-medium text-white/85">This Sunday</p>
+            <p className="mt-1 text-4xl font-semibold tracking-tight sm:text-5xl">Come as you are.</p>
           </div>
-          <Link
-            href="/#sunday"
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-medium text-[#111] md:w-auto"
-          >
-            Come This Sunday
-            <ArrowRight size={15} />
-          </Link>
+          <Button href="/#sunday" variant="white" className={`w-full sm:w-auto ${FOCUS}`}>
+            Come this Sunday
+            <ArrowRight size={16} aria-hidden />
+          </Button>
         </div>
       </section>
 

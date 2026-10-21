@@ -163,12 +163,12 @@ export function WorldGlobe() {
         <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/45">
           Around the world
         </p>
-        <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-5xl">
-          People meeting everywhere.
+        <h2 className="mt-3 max-w-3xl text-4xl font-semibold tracking-tight text-white sm:text-6xl sm:leading-[0.95]">
+          Find your people.
+          <span className="block">Wherever you are.</span>
         </h2>
         <p className="mt-5 max-w-xl text-base leading-relaxed text-white/65">
-          Ordinary believers gathering in cities, villages, and homes to share
-          Jesus and start simple churches.
+          Explore Sending groups and connect with a church family near you.
         </p>
       </div>
 
