@@ -4,6 +4,7 @@ import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadNam
 import { databaseFailureText, importLeads, importSummaryText } from "./import";
 import { cleanLeadPhone, formatUsPhone } from "./phone";
 import { UPSERT_OPTIONS } from "./types";
+import { isWebsiteLead, saveWebsiteSignups, signupsNotYetSynced, websiteLeadRows } from "./website";
 
 describe("lead phones", () => {
   it("removes only a leading p: and surrounding whitespace", () => {
@@ -202,6 +203,64 @@ describe("saving", () => {
   it("does not treat a failed request as a successful insert", () => {
     assert.deepEqual(accountBatch(4, null, true), { added: 0, existing: 0, failed: 4 });
     assert.deepEqual(accountBatch(4, 4, false), { added: 4, existing: 0, failed: 0 });
+  });
+});
+
+describe("website signups", () => {
+  it("stores a new unchecked website lead and skips a duplicate phone", () => {
+    const rows = websiteLeadRows([
+      { firstName: "  Ada  ", mobile: " p: +44 7700 900123 ", createdAt: "2026-10-20T15:00:00-05:00" },
+      { firstName: "Ada Again", mobile: "+44 7700 900123", createdAt: "2026-10-21T15:00:00Z" },
+      { firstName: "Bea", mobile: "(214) 555-0177", createdAt: "not-a-date" },
+      { firstName: "", mobile: "2145550100" },
+      { firstName: "Short", mobile: "ext 99" },
+    ]);
+    assert.equal(rows.length, 2);
+    assert.equal(rows[0]?.first_name, "Ada");
+    assert.equal(rows[0]?.last_name, "");
+    assert.equal(rows[0]?.phone, "+44 7700 900123");
+    assert.equal(rows[0]?.status, "new");
+    assert.equal(rows[0]?.source, "website");
+    assert.equal(rows[0]?.created_at, "2026-10-20T20:00:00.000Z");
+    assert.equal(rows[1]?.first_name, "Bea");
+    assert.equal("created_at" in (rows[1] as object), false);
+    assert.equal("phone_normalized" in (rows[0] as object), false);
+    assert.equal("imported_by" in (rows[0] as object), false);
+    assert.equal(isWebsiteLead(rows[0]?.source), true);
+    assert.equal(isWebsiteLead("Meta CSV"), false);
+    assert.deepEqual(signupsNotYetSynced(
+      [{ firstName: "Ada", mobile: "p:+44 7700 900123" }, { firstName: "Bea", mobile: "2145550177" }],
+      ["+44 7700 900123"],
+    ).map((signup) => signup.firstName), ["Bea"]);
+  });
+
+  it("treats a failed website save as unsuccessful", async () => {
+    let sent = "";
+    const saved = await saveWebsiteSignups(
+      [{ firstName: "Ada", mobile: "p: 2145550199" }],
+      async (_url, init) => {
+        sent = String(init?.body);
+        return new Response(JSON.stringify({ ok: true, phones: ["2145550199"] }), { status: 200 });
+      },
+    );
+    assert.equal(saved.ok, true);
+    if (saved.ok) assert.deepEqual(saved.phones, ["2145550199"]);
+    assert.equal(sent.includes('"source"'), false);
+    assert.equal(sent.includes("2145550199"), true);
+
+    const failed = await saveWebsiteSignups(
+      [{ firstName: "Ada", mobile: "2145550199" }],
+      async () => new Response(JSON.stringify({ ok: false }), { status: 500 }),
+    );
+    assert.equal(failed.ok, false);
+
+    const offline = await saveWebsiteSignups(
+      [{ firstName: "Ada", mobile: "2145550199" }],
+      async () => {
+        throw new Error("offline");
+      },
+    );
+    assert.equal(offline.ok, false);
   });
 });
 

@@ -1,18 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { ArrowRight, MapPin, Phone, User } from "lucide-react";
 import { PASTORS, STAR_IMAGE } from "@/lib/demo/data";
 import { formatTimeRange, getLocations } from "@/lib/locations";
 import type { SendingLocation } from "@/lib/locations/types";
+import { isWebsitePhone } from "@/lib/leads/website";
 import { rsvpConfirmationText } from "@/lib/rsvp/messages";
-import { saveSundayRsvp } from "@/lib/rsvp/save";
-
-function isValidMobile(value: string) {
-  const digits = value.replace(/\D/g, "");
-  return digits.length >= 10 && digits.length <= 15;
-}
+import { submitSundayRsvp, syncStoredSundayRsvps } from "@/lib/rsvp/save";
 
 function sundayTime(location: SendingLocation) {
   return formatTimeRange(
@@ -34,6 +30,10 @@ export function SundayRsvp() {
   const location =
     locations.find((item) => item.location_id === locationId) ?? locations[0];
 
+  useEffect(() => {
+    void syncStoredSundayRsvps();
+  }, []);
+
   if (!location) return null;
 
   function resetSubmission() {
@@ -43,7 +43,7 @@ export function SundayRsvp() {
     setError("");
   }
 
-  function onSubmit(event: FormEvent<HTMLFormElement>) {
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (submittingRef.current) return;
 
@@ -55,7 +55,7 @@ export function SundayRsvp() {
       return;
     }
 
-    if (!isValidMobile(phone)) {
+    if (!isWebsitePhone(phone)) {
       setError("Enter a valid mobile number.");
       return;
     }
@@ -65,11 +65,17 @@ export function SundayRsvp() {
     setError("");
 
     try {
-      saveSundayRsvp({
+      const saved = await submitSundayRsvp({
         first_name: name,
         mobile: phone,
         location_id: location.location_id,
       });
+      if (!saved) {
+        submittingRef.current = false;
+        setSubmitting(false);
+        setError("Something went wrong. Please try again.");
+        return;
+      }
       setSavedName(name);
     } catch {
       submittingRef.current = false;

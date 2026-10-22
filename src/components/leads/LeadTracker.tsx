@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, Globe } from "lucide-react";
 import { ActionButton } from "@/components/leads/ActionButton";
 import { CsvImport } from "@/components/leads/CsvImport";
 import { leadNameFields, pageRange, sortLeadsForList, storedLeadName, withoutLeadNameColumns } from "@/lib/leads/csv";
 import { PAGE_SIZE, type SendingLead } from "@/lib/leads/types";
+import { isWebsiteLead } from "@/lib/leads/website";
 import { createClient } from "@/lib/supabase/client";
 
 export function LeadTracker() {
@@ -116,7 +117,7 @@ export function LeadTracker() {
           </div>
           <ul className="divide-y divide-black/5">
             {leads.map((lead) => (
-              <li key={lead.id}>
+              <li key={lead.id} data-source={lead.source ?? ""}>
                 <LeadRow
                   key={leadNameFields(lead).firstName}
                   lead={lead}
@@ -180,6 +181,7 @@ function LeadRow({
       <Field
         value={firstName}
         label="First name"
+        website={isWebsiteLead(lead.source)}
         onChange={setFirstName}
         onCommit={() => onSaveName(firstName.trim())}
         disabled={saving}
@@ -195,18 +197,35 @@ function LeadRow({
 function Field({
   value,
   label,
+  website,
   onChange,
   onCommit,
   disabled,
 }: {
   value: string;
   label: string;
+  website: boolean;
   onChange: (value: string) => void;
   onCommit: () => void;
   disabled: boolean;
 }) {
   return (
     <div className="flex min-w-0 items-center gap-1">
+      {website ? (
+        <span
+          title="Website"
+          aria-label="Website"
+          className="group/website relative inline-flex h-11 w-6 shrink-0 items-center justify-center text-[var(--sending-orange)]"
+        >
+          <Globe size={15} aria-hidden="true" />
+          <span
+            role="tooltip"
+            className="pointer-events-none absolute top-1/2 left-full z-10 ml-1 hidden -translate-y-1/2 rounded-md bg-[#111] px-2 py-1 text-xs font-medium whitespace-nowrap text-white group-hover/website:block"
+          >
+            Website
+          </span>
+        </span>
+      ) : null}
       <input
         value={value}
         aria-label={label}
