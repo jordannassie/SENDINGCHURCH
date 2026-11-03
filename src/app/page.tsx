@@ -324,7 +324,7 @@ export default function HomePage() {
           </div>
           <Image
             src={SEE_DO_SEND_IMAGE}
-            alt="See, Do, and Send around Multiply. Watch a Bible group, practice leading together, and be sent with support."
+            alt="Join, Do, and Send around Multiply. Join a Bible group, practice leading together, and be sent with support."
             width={1254}
             height={1254}
             className="h-auto w-full object-contain"
