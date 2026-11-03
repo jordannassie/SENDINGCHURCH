@@ -102,7 +102,7 @@ export default function HomePage() {
                 <ArrowUpRight size={16} aria-hidden />
               </a>
               <Link
-                href="/start-a-church"
+                href="/login"
                 className={`inline-flex w-full items-center justify-center rounded-full border border-[var(--sending-blue)] bg-white px-5 py-3.5 text-sm font-medium text-[var(--sending-blue)] hover:border-[var(--sending-blue-hover)] hover:text-[var(--sending-blue-hover)] active:border-[var(--sending-blue-hover)] active:text-[var(--sending-blue-hover)] sm:w-auto ${FOCUS}`}
               >
                 Start Your Bible Study
