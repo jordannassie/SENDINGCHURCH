@@ -16,6 +16,14 @@ export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
   do_not_contact: "Do Not Contact",
 };
 
+export const LEAD_CATEGORIES = ["join", "start"] as const;
+
+export type LeadCategory = (typeof LEAD_CATEGORIES)[number];
+
+export function leadCategory(value: string | null | undefined): LeadCategory {
+  return value === "start" ? "start" : "join";
+}
+
 export type SendingLead = {
   id: string;
   full_name: string;
@@ -32,6 +40,8 @@ export type SendingLead = {
   meta_lead_id: string | null;
   lead_created_at: string | null;
   imported_by: string | null;
+  category?: LeadCategory | null;
+  location?: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -42,6 +52,7 @@ export type ParsedLead = {
   firstName: string;
   lastName: string;
   phone: string;
+  location: string | null;
   email: string | null;
   emailWarning: string | null;
   metaLeadId: string | null;
@@ -59,6 +70,11 @@ export const DEFAULT_INVITATION =
 export const PAGE_SIZE = 50;
 
 export const UPSERT_OPTIONS = {
+  onConflict: "phone_normalized,category",
+  ignoreDuplicates: true,
+} as const;
+
+export const LEGACY_UPSERT_OPTIONS = {
   onConflict: "phone_normalized",
   ignoreDuplicates: true,
 } as const;

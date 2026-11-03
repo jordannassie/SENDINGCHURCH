@@ -1,5 +1,5 @@
 import { accountBatch, toInsertRow } from "./csv";
-import type { ParsedLead } from "./types";
+import type { LeadCategory, ParsedLead } from "./types";
 
 const BATCH_SIZE = 100;
 
@@ -30,6 +30,7 @@ export async function importLeads(
   sourceFile: string,
   fileDuplicates: number,
   invalid: number,
+  category: LeadCategory = "join",
 ): Promise<ImportSummary> {
   const summary: ImportSummary = {
     added: 0,
@@ -43,7 +44,7 @@ export async function importLeads(
 
   for (let index = 0; index < leads.length; index += BATCH_SIZE) {
     const slice = leads.slice(index, index + BATCH_SIZE);
-    const rows = slice.map((lead) => toInsertRow(lead, sourceFile));
+    const rows = slice.map((lead) => toInsertRow(lead, sourceFile, category));
     let result: UpsertResult;
     try {
       result = await writer.upsertLeads(rows);
@@ -78,8 +79,8 @@ export function databaseFailureText(errors: string[]) {
 }
 
 export function importSummaryText(
-  summary: Pick<ImportSummary, "added" | "fileDuplicates" | "existingDuplicates">,
+  summary: Pick<ImportSummary, "added" | "fileDuplicates" | "existingDuplicates" | "invalid">,
 ) {
   const duplicates = summary.fileDuplicates + summary.existingDuplicates;
-  return `${summary.added} added · ${duplicates} duplicates skipped`;
+  return `${summary.added} imported · ${duplicates} duplicates · ${summary.invalid} invalid`;
 }

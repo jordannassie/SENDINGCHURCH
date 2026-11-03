@@ -1,12 +1,16 @@
 import Papa from "papaparse";
 import { parseEmail, cleanLeadPhone } from "./phone";
-import type { ParsedLead, InvalidRow } from "./types";
+import type { LeadCategory, ParsedLead, InvalidRow } from "./types";
 
 export type LeadField =
   | "full_name"
   | "first_name"
   | "last_name"
   | "phone"
+  | "location"
+  | "city"
+  | "region"
+  | "country"
   | "email"
   | "lead_id"
   | "created_time";
@@ -18,6 +22,10 @@ const ALIASES: Record<LeadField, string[]> = {
   first_name: ["first_name", "firstname", "first"],
   last_name: ["last_name", "lastname", "last"],
   phone: ["phone_number", "phone", "mobile", "mobile_number", "cell", "cell_phone"],
+  location: ["location", "city_state_country", "full_address", "address"],
+  city: ["city", "town"],
+  region: ["state", "region", "province", "state_region", "county"],
+  country: ["country", "nation"],
   email: ["email", "email_address", "e_mail"],
   lead_id: ["id", "lead_id", "meta_lead_id"],
   created_time: ["created_time", "created_at", "date_created", "created"],
@@ -57,6 +65,21 @@ export function missingMappingLabels(mapping: ColumnMapping) {
   if (!mapping.full_name && !mapping.first_name) missing.push("name");
   if (!mapping.phone) missing.push("phone");
   return missing;
+}
+
+export function formatLeadLocation(parts: {
+  location?: string;
+  city?: string;
+  region?: string;
+  country?: string;
+}) {
+  const combined = parts.location?.trim();
+  if (combined) return combined.slice(0, 300);
+  const pieces = [parts.city, parts.region, parts.country]
+    .map((part) => part?.trim())
+    .filter((part): part is string => Boolean(part));
+  if (pieces.length === 0) return null;
+  return pieces.join(", ").slice(0, 300);
 }
 
 export function splitLeadName(fullName: string) {
@@ -203,6 +226,12 @@ export function analyzeCsv(text: string, mappingOverride?: ColumnMapping): CsvAn
         firstName: name.firstName,
         lastName: name.lastName,
         phone: phone.phone,
+        location: formatLeadLocation({
+          location: cell(row, mapping.location),
+          city: cell(row, mapping.city),
+          region: cell(row, mapping.region),
+          country: cell(row, mapping.country),
+        }),
         email: email.email,
         emailWarning: email.warning,
         metaLeadId: cell(row, mapping.lead_id) || null,
@@ -231,18 +260,30 @@ export function withoutLeadNameColumns<T extends { first_name?: string | null; l
   ) as Omit<T, "first_name" | "last_name">;
 }
 
-export function toInsertRow(lead: ParsedLead, sourceFile: string) {
+export function withoutCategoryColumns<T extends { category?: string | null; location?: string | null }>(row: T) {
+  return Object.fromEntries(
+    Object.entries(row).filter(([key]) => key !== "category" && key !== "location"),
+  ) as Omit<T, "category" | "location">;
+}
+
+export function missingCategoryColumn(message: string) {
+  return /category|location|on conflict|42P10|42703/i.test(message);
+}
+
+export function toInsertRow(lead: ParsedLead, sourceFile: string, category: LeadCategory = "join") {
   return {
     full_name: storedLeadName(lead.firstName, lead.lastName),
     first_name: lead.firstName,
     last_name: lead.lastName,
     phone: lead.phone,
     email: lead.email,
+    location: lead.location,
     status: "new" as const,
     source: "Meta CSV",
     source_file: sourceFile,
     meta_lead_id: lead.metaLeadId,
     lead_created_at: lead.leadCreatedAt,
+    category,
   };
 }
 

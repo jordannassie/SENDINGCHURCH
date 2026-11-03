@@ -20,6 +20,8 @@ export type WebsiteLeadInsert = {
   source_file: null;
   meta_lead_id: null;
   lead_created_at: null;
+  category: "join";
+  location: null;
   created_at?: string;
 };
 
@@ -61,6 +63,8 @@ export function websiteLeadRows(signups: WebsiteSignup[]): WebsiteLeadInsert[] {
       source_file: null,
       meta_lead_id: null,
       lead_created_at: null,
+      category: "join",
+      location: null,
       ...(createdAt ? { created_at: createdAt } : {}),
     });
   }

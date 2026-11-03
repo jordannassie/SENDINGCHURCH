@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, BookOpen, Building2, DollarSign, MapPin, Phon
 import { Beliefs } from "@/components/home/Beliefs";
 import { InstagramReels } from "@/components/home/InstagramReels";
 import { HeroVideo } from "@/components/home/HeroVideo";
+import { StartBibleStudy } from "@/components/home/StartBibleStudy";
 import { SundayRsvp } from "@/components/home/SundayRsvp";
 import { WorldGlobe } from "@/components/home/WorldGlobe";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -102,7 +103,7 @@ export default function HomePage() {
                 <ArrowUpRight size={16} aria-hidden />
               </a>
               <Link
-                href="/login"
+                href="#start-bible-study"
                 className={`inline-flex w-full items-center justify-center rounded-full border border-[var(--sending-blue)] bg-white px-5 py-3.5 text-sm font-medium text-[var(--sending-blue)] hover:border-[var(--sending-blue-hover)] hover:text-[var(--sending-blue-hover)] active:border-[var(--sending-blue-hover)] active:text-[var(--sending-blue-hover)] sm:w-auto ${FOCUS}`}
               >
                 Start Your Bible Study
@@ -146,6 +147,8 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      <StartBibleStudy />
 
       <section className="bg-[#f7f6f4]">
         <div className="mx-auto max-w-6xl px-5 py-16 sm:py-20">

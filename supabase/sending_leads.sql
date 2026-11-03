@@ -100,4 +100,17 @@ alter table public.sending_leads
 alter table public.sending_leads add column if not exists first_name text;
 alter table public.sending_leads add column if not exists last_name text;
 
+-- Join leads are Sunday guests. Start leads want to begin a Bible study church.
+-- The same phone may exist once in each category. Existing rows stay join.
+alter table public.sending_leads add column if not exists category text not null default 'join';
+alter table public.sending_leads drop constraint if exists sending_leads_category_check;
+alter table public.sending_leads
+  add constraint sending_leads_category_check check (category in ('join', 'start'));
+alter table public.sending_leads add column if not exists location text;
+
+alter table public.sending_leads drop constraint if exists sending_leads_phone_normalized_key;
+alter table public.sending_leads drop constraint if exists sending_leads_phone_category_key;
+alter table public.sending_leads
+  add constraint sending_leads_phone_category_key unique (phone_normalized, category);
+
 notify pgrst, 'reload schema';

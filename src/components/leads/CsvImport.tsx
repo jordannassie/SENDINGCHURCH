@@ -1,33 +1,74 @@
 "use client";
 
 import { useState } from "react";
-import { analyzeCsv, decodeLeadFile, missingMappingLabels } from "@/lib/leads/csv";
+import { analyzeCsv, decodeLeadFile, type ColumnMapping, type CsvAnalysis, type LeadField } from "@/lib/leads/csv";
 import { databaseFailureText, importSummaryText } from "@/lib/leads/import";
+import type { LeadCategory } from "@/lib/leads/types";
 
-export function CsvImport({ onImported }: { onImported: () => void }) {
+const FIELD_LABELS: { field: LeadField; label: string }[] = [
+  { field: "full_name", label: "Full name" },
+  { field: "first_name", label: "First name" },
+  { field: "last_name", label: "Last name" },
+  { field: "phone", label: "Phone number" },
+  { field: "location", label: "Location" },
+  { field: "city", label: "City" },
+  { field: "region", label: "State / region" },
+  { field: "country", label: "Country" },
+];
+
+const DESTINATION: Record<LeadCategory, string> = {
+  join: "Join a Bible Group",
+  start: "New Bible Groups",
+};
+
+export function CsvImport({
+  category,
+  onImported,
+}: {
+  category: LeadCategory;
+  onImported: () => void;
+}) {
   const [summary, setSummary] = useState("");
   const [rowProblems, setRowProblems] = useState<string[]>([]);
   const [databaseProblem, setDatabaseProblem] = useState("");
   const [busy, setBusy] = useState(false);
+  const [pending, setPending] = useState<{ fileName: string; text: string; analysis: CsvAnalysis } | null>(null);
 
-  async function importText(fileName: string, text: string) {
+  function chooseFile(file: File) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const bytes = new Uint8Array(reader.result as ArrayBuffer);
+      const text = decodeLeadFile(bytes);
+      setSummary("");
+      setRowProblems([]);
+      setDatabaseProblem("");
+      setPending({ fileName: file.name, text, analysis: analyzeCsv(text) });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function updateMapping(field: LeadField, header: string) {
+    if (!pending) return;
+    const mapping: ColumnMapping = { ...pending.analysis.mapping };
+    if (header) mapping[field] = header;
+    else delete mapping[field];
+    setPending({ ...pending, analysis: analyzeCsv(pending.text, mapping) });
+  }
+
+  async function confirmImport() {
+    if (!pending || pending.analysis.needsMapping || busy) return;
     setBusy(true);
     setSummary("");
-    setRowProblems([]);
     setDatabaseProblem("");
-    const analysis = analyzeCsv(text);
-    if (analysis.needsMapping) {
-      setRowProblems(missingMappingLabels(analysis.mapping).map((label) => `Couldn't find a ${label} column.`));
-      setBusy(false);
-      return;
-    }
-
+    const analysis = pending.analysis;
     const problemsForRows = analysis.invalid.map((row) => `Row ${row.rowNumber}: ${row.reason}`);
+
     if (analysis.valid.length === 0) {
       const duplicates = analysis.fileDuplicateCount;
-      if (duplicates > 0) setSummary(`0 added · ${duplicates} duplicates skipped`);
+      setSummary(importSummaryText({ added: 0, fileDuplicates: duplicates, existingDuplicates: 0, invalid: analysis.invalid.length }));
       setRowProblems(problemsForRows);
       setBusy(false);
+      setPending(null);
       return;
     }
 
@@ -35,12 +76,14 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({
-        fileName,
+        fileName: pending.fileName,
+        category,
         leads: analysis.valid.map((lead) => ({
           fullName: lead.fullName,
           firstName: lead.firstName,
           lastName: lead.lastName,
           phone: lead.phone,
+          location: lead.location,
           email: lead.email,
           metaLeadId: lead.metaLeadId,
           leadCreatedAt: lead.leadCreatedAt,
@@ -52,6 +95,7 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
       added?: number;
       existingDuplicates?: number;
       failed?: number;
+      invalid?: number;
       errors?: string[];
       error?: string;
     };
@@ -59,29 +103,22 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
       added: result.added ?? 0,
       fileDuplicates: analysis.fileDuplicateCount,
       existingDuplicates: result.existingDuplicates ?? 0,
+      invalid: analysis.invalid.length + (result.invalid ?? 0),
       failed: result.failed ?? (response.ok ? 0 : analysis.valid.length),
       errors: result.error ? [result.error] : (result.errors ?? []),
     };
 
-    const duplicates = saved.fileDuplicates + saved.existingDuplicates;
-    const savedSomething = saved.added > 0 || duplicates > 0;
     if (saved.failed > 0 || saved.errors.length > 0) {
       setDatabaseProblem(databaseFailureText(saved.errors));
     }
-    if (savedSomething) setSummary(importSummaryText(saved));
+    setSummary(importSummaryText(saved));
     setRowProblems(problemsForRows);
     setBusy(false);
+    setPending(null);
     if (saved.added > 0) onImported();
   }
 
-  function readFile(file: File) {
-    const reader = new FileReader();
-    reader.onload = () => {
-      const bytes = new Uint8Array(reader.result as ArrayBuffer);
-      void importText(file.name, decodeLeadFile(bytes));
-    };
-    reader.readAsArrayBuffer(file);
-  }
+  const analysis = pending?.analysis;
 
   return (
     <section>
@@ -91,7 +128,7 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
         onDrop={(event) => {
           event.preventDefault();
           const file = event.dataTransfer.files[0];
-          if (file) readFile(file);
+          if (file) chooseFile(file);
         }}
       >
         <span className="text-base font-medium">{busy ? "Importing…" : "Drop a Meta leads CSV"}</span>
@@ -105,10 +142,84 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
           onChange={(event) => {
             const file = event.target.files?.[0];
             event.target.value = "";
-            if (file) readFile(file);
+            if (file) chooseFile(file);
           }}
         />
       </label>
+
+      {analysis ? (
+        <div className="mt-4 rounded-3xl border border-black/10 bg-white p-4">
+          <p className="text-sm font-medium">
+            These leads will be added to {DESTINATION[category]}.
+          </p>
+          {analysis.needsMapping ? (
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {FIELD_LABELS.map((item) => (
+                <label key={item.field} className="block text-sm">
+                  <span className="font-medium">{item.label}</span>
+                  <select
+                    className="mt-1 h-11 w-full rounded-2xl border border-[#e6e6e6] bg-[#f7f7f7] px-3"
+                    value={analysis.mapping[item.field] ?? ""}
+                    onChange={(event) => updateMapping(item.field, event.target.value)}
+                  >
+                    <option value="">Not in this file</option>
+                    {analysis.headers.map((header) => (
+                      <option key={header} value={header}>
+                        {header}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              ))}
+              <p className="text-sm text-[#9a3412] sm:col-span-2">
+                Choose the name and phone columns before importing.
+              </p>
+            </div>
+          ) : null}
+          {analysis.preview.length > 0 ? (
+            <div className="mt-4 overflow-x-auto">
+              <p className="text-xs font-medium uppercase tracking-wide text-[#666]">Preview</p>
+              <ul className="mt-2 divide-y divide-black/5 text-sm">
+                {analysis.preview.map((lead) => (
+                  <li key={`${lead.rowNumber}-${lead.phone}`} className="grid gap-1 py-2 sm:grid-cols-3">
+                    <span>{lead.fullName}</span>
+                    <span className="tabular-nums">{lead.phone}</span>
+                    <span>{lead.location || "No location"}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {analysis.invalid.length > 0 ? (
+            <ul className="mt-3 space-y-1 text-sm text-[#9a3412]">
+              {analysis.invalid.map((row) => (
+                <li key={`${row.rowNumber}-${row.reason}`}>
+                  Row {row.rowNumber}: {row.reason}
+                </li>
+              ))}
+            </ul>
+          ) : null}
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button
+              type="button"
+              disabled={busy || analysis.needsMapping}
+              onClick={() => void confirmImport()}
+              className="rounded-full bg-[var(--sending-blue)] px-5 py-2.5 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {busy ? "Importing…" : `Import ${analysis.valid.length} ${analysis.valid.length === 1 ? "lead" : "leads"}`}
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => setPending(null)}
+              className="rounded-full border border-[#e6e6e6] px-5 py-2.5 text-sm font-medium"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       {summary ? <p className="mt-4 text-sm font-medium">{summary}</p> : null}
       {databaseProblem ? (
         <p className="mt-3 rounded-2xl bg-[#fff4ec] px-4 py-3 text-sm text-[#9a3412]" role="alert">

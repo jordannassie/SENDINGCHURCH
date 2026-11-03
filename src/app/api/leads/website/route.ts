@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { withoutLeadNameColumns } from "@/lib/leads/csv";
-import { UPSERT_OPTIONS } from "@/lib/leads/types";
+import { missingCategoryColumn, withoutCategoryColumns, withoutLeadNameColumns } from "@/lib/leads/csv";
+import { LEGACY_UPSERT_OPTIONS, UPSERT_OPTIONS } from "@/lib/leads/types";
 import { websiteLeadRows, type WebsiteSignup } from "@/lib/leads/website";
 import { createClient } from "@/lib/supabase/server";
 
@@ -36,14 +36,25 @@ export async function POST(request: Request) {
   if (rows.length === 0) return NextResponse.json({ ok: false }, { status: 400 });
 
   const supabase = await createClient();
-  const write = async (payload: Record<string, unknown>[]) => {
-    const { error } = await supabase.from("sending_leads").upsert(payload, UPSERT_OPTIONS);
+  const write = async (
+    payload: Record<string, unknown>[],
+    options: typeof UPSERT_OPTIONS | typeof LEGACY_UPSERT_OPTIONS,
+  ) => {
+    const { error } = await supabase.from("sending_leads").upsert(payload, options);
     return { error };
   };
 
-  let result = await write(rows);
+  let payload: Record<string, unknown>[] = rows;
+  let options: typeof UPSERT_OPTIONS | typeof LEGACY_UPSERT_OPTIONS = UPSERT_OPTIONS;
+  let result = await write(payload, options);
+  if (result.error && missingCategoryColumn(result.error.message)) {
+    payload = payload.map((row) => withoutCategoryColumns(row));
+    options = LEGACY_UPSERT_OPTIONS;
+    result = await write(payload, options);
+  }
   if (result.error && /first_name|last_name/i.test(result.error.message)) {
-    result = await write(rows.map((row) => withoutLeadNameColumns(row)));
+    payload = payload.map((row) => withoutLeadNameColumns(row));
+    result = await write(payload, options);
   }
   if (result.error) return NextResponse.json({ ok: false }, { status: 500 });
 

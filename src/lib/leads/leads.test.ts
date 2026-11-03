@@ -3,6 +3,7 @@ import { describe, it } from "node:test";
 import { analyzeCsv, accountBatch, decodeLeadFile, excelSafe, firstName, leadNameFields, leadSearchOr, pageRange, phonesForBulkCopy, sortLeadsForList, storedLeadName, toInsertRow } from "./csv";
 import { databaseFailureText, importLeads, importSummaryText } from "./import";
 import { cleanLeadPhone, formatUsPhone } from "./phone";
+import { startLeadRows, saveStartSignup } from "./start";
 import { UPSERT_OPTIONS } from "./types";
 import { isWebsiteLead, saveWebsiteSignups, signupsNotYetSynced, websiteLeadRows } from "./website";
 
@@ -135,8 +136,10 @@ describe("CSV import", () => {
     assert.equal("notes" in row, false);
     assert.equal("contacted_at" in row, false);
     assert.equal("imported_by" in row, false);
+    assert.equal(row.category, "join");
+    assert.equal(row.location, null);
     assert.equal(UPSERT_OPTIONS.ignoreDuplicates, true);
-    assert.equal(UPSERT_OPTIONS.onConflict, "phone_normalized");
+    assert.equal(UPSERT_OPTIONS.onConflict, "phone_normalized,category");
   });
 
   it("saves without a signed-in user and does not send imported_by", async () => {
@@ -177,7 +180,7 @@ describe("saving", () => {
     assert.equal(summary.existingDuplicates, 0);
     assert.equal(summary.failed, 2);
     assert.equal(summary.failedLeads.length, 2);
-    assert.equal(importSummaryText(summary), "0 added · 0 duplicates skipped");
+    assert.equal(importSummaryText(summary), "0 imported · 0 duplicates · 0 invalid");
     assert.equal(databaseFailureText(summary.errors), "Import could not save. permission denied");
     assert.equal(summary.errors[0], "permission denied");
   });
@@ -197,7 +200,7 @@ describe("saving", () => {
     assert.equal(summary.existingDuplicates, 1);
     assert.equal(summary.fileDuplicates, 1);
     assert.equal(summary.invalid, 2);
-    assert.equal(importSummaryText(summary), "1 added · 2 duplicates skipped");
+    assert.equal(importSummaryText(summary), "1 imported · 2 duplicates · 2 invalid");
   });
 
   it("does not treat a failed request as a successful insert", () => {
@@ -221,6 +224,8 @@ describe("website signups", () => {
     assert.equal(rows[0]?.phone, "+44 7700 900123");
     assert.equal(rows[0]?.status, "new");
     assert.equal(rows[0]?.source, "website");
+    assert.equal(rows[0]?.category, "join");
+    assert.equal(rows[0]?.location, null);
     assert.equal(rows[0]?.created_at, "2026-10-20T20:00:00.000Z");
     assert.equal(rows[1]?.first_name, "Bea");
     assert.equal("created_at" in (rows[1] as object), false);
@@ -261,6 +266,69 @@ describe("website signups", () => {
       },
     );
     assert.equal(offline.ok, false);
+  });
+});
+
+describe("start signups and locations", () => {
+  it("keeps an older attendee CSV that has no location", () => {
+    const analysis = analyzeCsv("full_name,phone_number\nAda,2145550199\n");
+    assert.equal(analysis.needsMapping, false);
+    assert.equal(analysis.valid[0]?.location, null);
+  });
+
+  it("combines city, region, and country, and prefers a location column", () => {
+    const parts = analyzeCsv("first_name,phone,city,state,country\nAda,+44 7700 900123,Frisco,Texas,USA\n");
+    assert.equal(parts.valid[0]?.location, "Frisco, Texas, USA");
+    assert.equal(parts.valid[0]?.phone, "+44 7700 900123");
+    const combined = analyzeCsv("name,phone,location,city\nBea,2145550100,\"Nairobi, Kenya\",Nairobi\n");
+    assert.equal(combined.valid[0]?.location, "Nairobi, Kenya");
+  });
+
+  it("asks for a mapping when the phone column is not recognized", () => {
+    const analysis = analyzeCsv("person,mobile_digits\nAda,2145550199\n");
+    assert.equal(analysis.needsMapping, true);
+    const mapped = analyzeCsv("person,mobile_digits\nAda,2145550199\n", {
+      full_name: "person",
+      phone: "mobile_digits",
+    });
+    assert.equal(mapped.needsMapping, false);
+    assert.equal(mapped.valid[0]?.firstName, "Ada");
+  });
+
+  it("saves a start lead separately from a join lead with the same phone", () => {
+    const start = startLeadRows([
+      { name: "  Ada Lovelace  ", mobile: " +44 7700 900123 ", location: " Frisco, Texas, USA " },
+      { name: "Ada Again", mobile: "+44 7700 900123", location: "Dallas, Texas, USA" },
+      { name: "No Place", mobile: "2145550199", location: "  " },
+    ]);
+    assert.equal(start.length, 1);
+    assert.equal(start[0]?.category, "start");
+    assert.equal(start[0]?.first_name, "Ada Lovelace");
+    assert.equal(start[0]?.phone, "+44 7700 900123");
+    assert.equal(start[0]?.location, "Frisco, Texas, USA");
+    assert.equal(start[0]?.source, "website");
+    const join = websiteLeadRows([{ firstName: "Ada Lovelace", mobile: "+44 7700 900123" }]);
+    assert.equal(join[0]?.category, "join");
+    assert.equal(join[0]?.phone, start[0]?.phone);
+  });
+
+  it("does not show start success unless the saved phone comes back", async () => {
+    const saved = await saveStartSignup(
+      { name: "Ada", mobile: "2145550199", location: "Frisco, Texas, USA" },
+      async () => new Response(JSON.stringify({ ok: true, phones: ["2145550199"] }), { status: 200 }),
+    );
+    assert.equal(saved.ok, true);
+    const missing = await saveStartSignup(
+      { name: "Ada", mobile: "2145550199", location: "Frisco, Texas, USA" },
+      async () => new Response(JSON.stringify({ ok: true, phones: [] }), { status: 200 }),
+    );
+    assert.equal(missing.ok, true);
+    if (missing.ok) assert.deepEqual(missing.phones, []);
+    const failed = await saveStartSignup(
+      { name: "Ada", mobile: "2145550199", location: "Frisco, Texas, USA" },
+      async () => new Response(JSON.stringify({ ok: false }), { status: 500 }),
+    );
+    assert.equal(failed.ok, false);
   });
 });
 

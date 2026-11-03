@@ -5,7 +5,7 @@ import { Check, Copy, Globe } from "lucide-react";
 import { ActionButton } from "@/components/leads/ActionButton";
 import { CsvImport } from "@/components/leads/CsvImport";
 import { leadNameFields, pageRange, sortLeadsForList, storedLeadName, withoutLeadNameColumns } from "@/lib/leads/csv";
-import { PAGE_SIZE, type SendingLead } from "@/lib/leads/types";
+import { PAGE_SIZE, leadCategory, type LeadCategory, type SendingLead } from "@/lib/leads/types";
 import { isWebsiteLead } from "@/lib/leads/website";
 import { createClient } from "@/lib/supabase/client";
 
@@ -16,16 +16,32 @@ export function LeadTracker() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [tab, setTab] = useState<LeadCategory>("join");
+  const [schemaReady, setSchemaReady] = useState(true);
 
   const load = useCallback(async () => {
     setError("");
     const supabase = createClient();
     const { from, to } = pageRange(page, PAGE_SIZE);
-    const { data, error: readError, count } = await supabase
-      .from("sending_leads")
-      .select("*", { count: "exact" })
-      .order("created_at", { ascending: false })
-      .range(from, to);
+    const base = () =>
+      supabase.from("sending_leads").select("*", { count: "exact" }).order("created_at", { ascending: false });
+    const filtered =
+      tab === "start"
+        ? base().eq("category", "start")
+        : base().or("category.eq.join,category.is.null");
+    let { data, error: readError, count } = await filtered.range(from, to);
+    if (readError && /category/i.test(readError.message)) {
+      setSchemaReady(false);
+      if (tab === "start") {
+        setLeads([]);
+        setTotal(0);
+        setLoading(false);
+        return;
+      }
+      ({ data, error: readError, count } = await base().range(from, to));
+    } else if (!readError) {
+      setSchemaReady(true);
+    }
 
     if (readError) {
       const missing = /schema cache|could not find the table/i.test(readError.message);
@@ -41,7 +57,7 @@ export function LeadTracker() {
     setLeads(sortLeadsForList((data ?? []) as SendingLead[]));
     setTotal(count ?? 0);
     setLoading(false);
-  }, [page]);
+  }, [page, tab]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -95,9 +111,35 @@ export function LeadTracker() {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h1 className="text-3xl font-semibold tracking-tight">Frisco Bible Group Leads.</h1>
+      <h1 className="text-3xl font-semibold tracking-tight">Bible Study Church Leads.</h1>
+      <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Lead types">
+        {(
+          [
+            ["join", "Join a Bible Group"],
+            ["start", "New Bible Groups"],
+          ] as const
+        ).map(([value, label]) => (
+          <button
+            key={value}
+            type="button"
+            role="tab"
+            aria-selected={tab === value}
+            onClick={() => {
+              setTab(value);
+              setPage(0);
+            }}
+            className={`rounded-full px-4 py-2 text-sm font-medium ${
+              tab === value
+                ? "bg-[var(--sending-blue)] text-white"
+                : "border border-black/10 bg-white text-[#111]"
+            }`}
+          >
+            {label}
+          </button>
+        ))}
+      </div>
       <div className="mt-6">
-        <CsvImport onImported={() => void load()} />
+        <CsvImport category={tab} onImported={() => void load()} />
       </div>
       {error ? (
         <p className="mt-4 rounded-2xl bg-[#fff4ec] px-4 py-3 text-sm text-[#9a3412]" role="alert">
@@ -105,25 +147,44 @@ export function LeadTracker() {
         </p>
       ) : null}
       {loading ? <p className="mt-6 text-sm text-[#666]">Loading leads…</p> : null}
-      {!loading && leads.length === 0 ? (
-        <p className="mt-6 text-sm text-[#666]">No leads yet.</p>
+      {!loading && !schemaReady && tab === "start" ? (
+        <p className="mt-6 text-sm text-[#666]">
+          New Bible Groups will show here after the leads database update is applied.
+        </p>
+      ) : null}
+      {!loading && leads.length === 0 && (schemaReady || tab === "join") ? (
+        <p className="mt-6 text-sm text-[#666]">
+          {tab === "start" ? "No new Bible study churches yet." : "No leads yet."}
+        </p>
       ) : null}
       {leads.length > 0 ? (
         <div className="mt-4 overflow-x-auto rounded-3xl border border-black/10 bg-white">
-          <div className="grid grid-cols-[3.5rem_1fr_1fr] gap-2 border-b border-black/5 px-3 py-2 text-xs font-medium uppercase tracking-wide text-[#666]">
+          <div
+            className={`grid gap-2 border-b border-black/5 px-3 py-2 text-xs font-medium uppercase tracking-wide text-[#666] ${
+              tab === "start" ? "min-w-[40rem] grid-cols-[3.5rem_1.2fr_1fr_1.2fr]" : "grid-cols-[3.5rem_1fr_1fr]"
+            }`}
+          >
             <span>Done</span>
-            <span>First name</span>
+            <span>{tab === "start" ? "Name" : "First name"}</span>
             <span>Phone</span>
+            {tab === "start" ? <span>Location</span> : null}
           </div>
           <ul className="divide-y divide-black/5">
             {leads.map((lead) => (
               <li key={lead.id} data-source={lead.source ?? ""}>
                 <LeadRow
-                  key={leadNameFields(lead).firstName}
+                  key={`${lead.id}-${leadCategory(lead.category)}`}
                   lead={lead}
+                  wide={tab === "start"}
                   saving={savingId === lead.id}
                   onDone={(checked) => toggleDone(lead, checked)}
-                  onSaveName={(firstName) => saveNames(lead, firstName, leadNameFields(lead).lastName)}
+                  onSaveName={(firstName) =>
+                    saveNames(
+                      lead,
+                      firstName,
+                      tab === "start" ? "" : leadNameFields(lead).lastName,
+                    )
+                  }
                 />
               </li>
             ))}
@@ -153,21 +214,29 @@ export function LeadTracker() {
 
 function LeadRow({
   lead,
+  wide,
   saving,
   onDone,
   onSaveName,
 }: {
   lead: SendingLead;
+  wide: boolean;
   saving: boolean;
   onDone: (checked: boolean) => void;
   onSaveName: (firstName: string) => void;
 }) {
-  const savedName = leadNameFields(lead).firstName;
+  const names = leadNameFields(lead);
+  const savedName = wide ? [names.firstName, names.lastName].filter(Boolean).join(" ") : names.firstName;
   const [firstName, setFirstName] = useState(savedName);
   const phone = lead.phone;
+  const location = lead.location?.trim() || "";
 
   return (
-    <div className="grid grid-cols-[3.5rem_1fr_1fr] items-center gap-2 px-3 py-2">
+    <div
+      className={`grid items-center gap-2 px-3 py-2 ${
+        wide ? "min-w-[40rem] grid-cols-[3.5rem_1.2fr_1fr_1.2fr]" : "grid-cols-[3.5rem_1fr_1fr]"
+      }`}
+    >
       <label className="flex h-11 w-11 items-center justify-center">
         <input
           type="checkbox"
@@ -180,7 +249,7 @@ function LeadRow({
       </label>
       <Field
         value={firstName}
-        label="First name"
+        label={wide ? "Name" : "First name"}
         website={isWebsiteLead(lead.source)}
         onChange={setFirstName}
         onCommit={() => onSaveName(firstName.trim())}
@@ -190,6 +259,12 @@ function LeadRow({
         <span className="min-w-0 flex-1 tabular-nums">{phone}</span>
         <CopyButton value={phone} label={`Copy phone ${phone}`} />
       </div>
+      {wide ? (
+        <div className="flex min-w-0 items-center gap-1">
+          <span className="min-w-0 flex-1">{location || "—"}</span>
+          {location ? <CopyButton value={location} label={`Copy location ${location}`} /> : null}
+        </div>
+      ) : null}
     </div>
   );
 }
