@@ -16,7 +16,7 @@ const NAV = [
 const focus =
   "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-blue)]";
 
-export function SiteHeader() {
+export function SiteHeader({ largeLogo = false }: { largeLogo?: boolean }) {
   const [open, setOpen] = useState(false);
   const { user, ready } = useDemoAuth();
   const account = user
@@ -25,8 +25,8 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5">
-        <Logo imageClassName="h-7" />
+      <div className={`mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 ${largeLogo ? "h-20" : "h-16"}`}>
+        <Logo imageClassName={largeLogo ? "h-14" : "h-7"} />
 
         <nav className="hidden items-center gap-8 text-sm text-[#444] md:flex">
           {NAV.map((item) => (

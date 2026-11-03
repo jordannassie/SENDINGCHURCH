@@ -50,7 +50,7 @@ export default function HomePage() {
   return (
     <div className="overflow-x-hidden bg-white text-[#111]">
       <link rel="preload" as="video" href={HERO_VIDEO} type="video/quicktime" />
-      <SiteHeader />
+      <SiteHeader largeLogo />
 
       <section className="relative isolate overflow-hidden bg-white">
         <Image

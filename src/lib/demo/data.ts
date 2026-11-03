@@ -282,7 +282,7 @@ export const ONE_BILLION_LOGO =
 export const ONE_BILLION_URL = "https://1Billion.org";
 
 export const BOOK_IMAGE =
-  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/images/Book/Book1.png";
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/Sending2/logos/book2.png";
 
 export const BOOK_AMAZON_URL =
   "https://www.amazon.com/Sending-Church-Movement-Saved-Trained/dp/B0HLRTWFMS";
