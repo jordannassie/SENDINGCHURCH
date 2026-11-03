@@ -196,14 +196,17 @@ export default function HomePage() {
             <h2 className="mt-3 text-4xl font-semibold tracking-tight sm:text-5xl">
               From Pastor Jordan and Susie
             </h2>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-[#555]">
-              Jordan and Susie have spent their lives helping people know Jesus,
-              start churches, and reach their communities. Together, they have
-              helped plant 180 churches across 23 nations and have seen more
-              than 2 million people make decisions for Christ. Their passion is
-              simple: help everyday Christians share Jesus, make disciples, and
-              start simple Bible-centered churches wherever they live.
-            </p>
+            <div className="mt-5 max-w-xl space-y-4 text-base leading-relaxed text-[#555]">
+              <p>
+                Jordan and Susie believe church is meant to be simple: people gathering around God’s Word, following Jesus, and growing together. It doesn’t require a building, a stage, or paid staff. Anyone can open the Bible, invite others, and begin a Bible study.
+              </p>
+              <p>
+                Their passion is simple: help everyday Christians share Jesus, make disciples, and start simple Bible-centered churches wherever they live.
+              </p>
+              <p>
+                Their heart is to help people get back to reading God’s Word through simple, multiplying Bible studies—groups people can find, grow in, and learn to start themselves. They envision a world where Bible studies gather in every home, apartment, village, and street corner, bringing the hope of Jesus to every community.
+              </p>
+            </div>
             <div className="mt-6 space-y-3 text-sm text-[#444]">
               <p className="flex items-center gap-2">
                 <MapPin size={16} className="text-[var(--sending-blue)]" aria-hidden />
@@ -214,16 +217,6 @@ export default function HomePage() {
                 <a href={PASTORS.phoneHref} className={`rounded-sm hover:text-[#111] ${FOCUS}`}>
                   {PASTORS.phone}
                 </a>
-              </p>
-            </div>
-            <div className="mt-8">
-              <div className="flex flex-wrap items-center gap-3">
-                <Button href={PASTORS.giveUrl}>Give</Button>
-                <img src={PASTORS.tithelyLogo} alt="Tithe.ly" className="h-6 w-auto" />
-              </div>
-              <p className="mt-3.5 max-w-[420px] text-[13px] leading-relaxed text-[#999]">
-                Your gift is tax-deductible and processed through Daily Church, a 501(c)(3)
-                nonprofit ministry. EIN: 84-2372867
               </p>
             </div>
           </div>
