@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { preload } from "react-dom";
-import { ArrowRight, ArrowUpRight, MapPin, Phone } from "lucide-react";
+import { ArrowRight, ArrowUpRight, BookOpen, Building2, DollarSign, MapPin, Phone, Slash, User } from "lucide-react";
 import { Beliefs } from "@/components/home/Beliefs";
 import { InstagramReels } from "@/components/home/InstagramReels";
 import { HeroVideo } from "@/components/home/HeroVideo";
@@ -37,6 +37,13 @@ const PATHWAY = [
     title: "Help others follow Jesus",
     body: "Share what you're learning and help others take a next step.",
   },
+] as const;
+
+const SIMPLE_POINTS = [
+  { icon: DollarSign, label: "No Donations.", crossed: true },
+  { icon: User, label: "No Paid Staff.", crossed: false },
+  { icon: Building2, label: "No Building.", crossed: false },
+  { icon: BookOpen, label: "Only the Bible.", crossed: false, accent: true },
 ] as const;
 
 export default function HomePage() {
@@ -104,6 +111,39 @@ export default function HomePage() {
             <p className="mt-4 text-sm text-[#6b6b6b]">{sundayLine}</p>
           </div>
           <HeroVideo />
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16">
+          <h2 className="text-center text-3xl font-semibold tracking-tight sm:text-4xl">
+            Simple enough to go everywhere.
+          </h2>
+          <ul className="mx-auto mt-8 grid max-w-3xl grid-cols-2 gap-x-4 gap-y-8 md:mt-10 md:grid-cols-4 md:gap-8">
+            {SIMPLE_POINTS.map((point) => {
+              const Icon = point.icon;
+              return (
+                <li key={point.label} className="flex flex-col items-center gap-2.5 text-center">
+                  <span className="relative grid h-6 w-6 place-items-center text-[var(--sending-blue)]">
+                    <Icon size={24} strokeWidth={1.5} className="col-start-1 row-start-1" aria-hidden />
+                    {point.crossed ? (
+                      <Slash size={24} strokeWidth={1.5} className="col-start-1 row-start-1" aria-hidden />
+                    ) : null}
+                  </span>
+                  <span
+                    className={`text-sm font-semibold sm:text-base ${
+                      "accent" in point && point.accent ? "text-[var(--sending-blue)]" : "text-[#111]"
+                    }`}
+                  >
+                    {point.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mx-auto mt-8 max-w-2xl text-center text-base leading-relaxed text-[#555] sm:mt-10">
+            Open God’s Word. Gather people. Grow together. Start another Bible study. A simple church can begin wherever you are.
+          </p>
         </div>
       </section>
 
