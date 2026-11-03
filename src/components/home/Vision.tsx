@@ -13,7 +13,7 @@ export function Vision() {
   const [open, setOpen] = useState<"here" | "why" | "faith" | null>(null);
 
   return (
-    <section id="vision" className="bg-[var(--sending-orange)]">
+    <section id="vision" className="bg-[var(--sending-blue)]">
       <div className="mx-auto max-w-6xl px-5 py-20">
         <p className="text-xs font-medium tracking-[0.2em] uppercase text-white/70">
           Vision
@@ -133,7 +133,7 @@ export function Vision() {
                   key={item.number}
                   className="rounded-[24px] bg-white px-5 py-5"
                 >
-                  <p className="text-sm font-semibold text-[var(--sending-orange)]">
+                  <p className="text-sm font-semibold text-[var(--sending-blue)]">
                     {item.number}
                   </p>
                   <h4 className="mt-2 text-sm font-semibold tracking-[0.08em] uppercase">

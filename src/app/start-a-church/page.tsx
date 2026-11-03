@@ -25,7 +25,7 @@ function StartContent({ ctaHref }: { ctaHref: string }) {
               {item}
             </span>
             {index < START_FLOW.length - 1 ? (
-              <ArrowRight size={16} className="text-[var(--sending-orange)]" />
+              <ArrowRight size={16} className="text-[var(--sending-blue)]" />
             ) : null}
           </div>
         ))}
@@ -33,7 +33,7 @@ function StartContent({ ctaHref }: { ctaHref: string }) {
       <ol className="mt-8 space-y-3">
         {START_CHECKLIST.map((item, index) => (
           <li key={item} className="flex items-start gap-3 text-sm">
-            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#fff4ec] text-xs font-semibold text-[var(--sending-orange)]">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--sending-blue-light)] text-xs font-semibold text-[var(--sending-blue)]">
               {index + 1}
             </span>
             <span className="pt-0.5">{item}</span>

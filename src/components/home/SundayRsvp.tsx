@@ -85,7 +85,7 @@ export function SundayRsvp() {
   }
 
   const fieldClass =
-    "h-[52px] w-full rounded-2xl border border-[#e6e6e6] bg-[#f7f7f7] pr-4 pl-11 text-sm text-[#111] outline-none placeholder:text-[#8a8a8a] focus:border-[#ffbfa0] focus:bg-white focus:ring-2 focus:ring-[#ff6a00]/20";
+    "h-[52px] w-full rounded-2xl border border-[#e6e6e6] bg-[#f7f7f7] pr-4 pl-11 text-sm text-[#111] outline-none placeholder:text-[#8a8a8a] focus:border-[var(--sending-blue)] focus:bg-white focus:ring-2 focus:ring-[var(--sending-blue)]/25";
 
   return (
     <section
@@ -116,7 +116,7 @@ export function SundayRsvp() {
                   setLocationId(event.target.value);
                   resetSubmission();
                 }}
-                className="mt-2 h-12 w-full rounded-2xl border border-[#e6e6e6] bg-[#f7f7f7] px-4 text-sm text-[#111] outline-none focus:border-[var(--sending-orange)]"
+                className="mt-2 h-12 w-full rounded-2xl border border-[#e6e6e6] bg-[#f7f7f7] px-4 text-sm text-[#111] outline-none focus:border-[var(--sending-blue)]"
               >
                 {locations.map((item) => (
                   <option key={item.location_id} value={item.location_id}>
@@ -145,10 +145,10 @@ export function SundayRsvp() {
               href={location.map_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="min-w-0 rounded-sm text-sm text-[#333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]"
+              className="min-w-0 rounded-sm text-sm text-[#333] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-blue)]"
             >
               <span className="flex items-center gap-1.5 font-medium text-[#111]">
-                <MapPin aria-hidden size={14} className="shrink-0 text-[var(--sending-orange)]" />
+                <MapPin aria-hidden size={14} className="shrink-0 text-[var(--sending-blue)]" />
                 {location.venue_name}
               </span>
               <span className="mt-0.5 block text-[#333]">{location.address}</span>
@@ -251,7 +251,7 @@ export function SundayRsvp() {
                 type="submit"
                 disabled={submitting}
                 aria-busy={submitting}
-                className="inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-orange)] text-[15px] font-semibold text-white transition-colors hover:bg-[var(--sending-orange-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)] disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-blue)] text-[15px] font-semibold text-white transition-colors hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-blue)] disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {submitting ? "Sending…" : "I’m Coming Sunday"}
                 {submitting ? null : <ArrowRight aria-hidden size={16} />}

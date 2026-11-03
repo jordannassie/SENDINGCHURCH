@@ -22,7 +22,7 @@ export default function TrainingPage() {
       <div className="mt-8 space-y-8">
         {GROUPS.map((group) => (
           <section key={group.key}>
-            <h2 className="text-sm font-medium tracking-[0.18em] uppercase text-[var(--sending-orange)]">
+            <h2 className="text-sm font-medium tracking-[0.18em] uppercase text-[var(--sending-blue)]">
               {group.key}
             </h2>
             <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -31,7 +31,7 @@ export default function TrainingPage() {
                   key={title}
                   className="rounded-[24px] border border-[#eee] bg-white p-5"
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--sending-blue-light)] text-[var(--sending-blue)]">
                     <BookOpen size={18} />
                   </span>
                   <h3 className="mt-4 text-lg font-semibold tracking-tight">{title}</h3>

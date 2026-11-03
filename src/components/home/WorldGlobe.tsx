@@ -95,6 +95,13 @@ export function WorldGlobe() {
     resize();
     window.addEventListener("resize", resize);
 
+    const brand = getComputedStyle(document.documentElement).getPropertyValue("--sending-blue").trim() || "#1877f2";
+    const channel = brand.replace("#", "");
+    const expanded = channel.length === 3 ? channel.split("").map((part) => part + part).join("") : channel;
+    const red = Number.parseInt(expanded.slice(0, 2), 16);
+    const green = Number.parseInt(expanded.slice(2, 4), 16);
+    const blue = Number.parseInt(expanded.slice(4, 6), 16);
+
     const draw = (time: number) => {
       const angle = time * 0.00012;
       const radius = Math.min(width, height) * 0.34;
@@ -104,7 +111,7 @@ export function WorldGlobe() {
       context.clearRect(0, 0, width, height);
       context.beginPath();
       context.arc(cx, cy, radius + 1.5, 0, Math.PI * 2);
-      context.strokeStyle = "rgba(255, 106, 0, 0.55)";
+      context.strokeStyle = `rgba(${red}, ${green}, ${blue}, 0.55)`;
       context.lineWidth = 1.5;
       context.stroke();
 
@@ -135,7 +142,7 @@ export function WorldGlobe() {
 
         if (visible) {
           context.beginPath();
-          context.fillStyle = "#ff6a00";
+          context.fillStyle = brand;
           context.arc(x, y, 3.4, 0, Math.PI * 2);
           context.fill();
         }
@@ -187,7 +194,7 @@ export function WorldGlobe() {
           >
             <div className="min-w-[168px] rounded-2xl bg-[#171717] px-4 py-3 text-white shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
               <div className="flex items-center gap-2">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[var(--sending-blue-light)] text-[var(--sending-blue)]">
                   <Users size={14} />
                 </span>
                 <p className="text-sm font-medium leading-snug">{city.label}</p>

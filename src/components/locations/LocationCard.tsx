@@ -27,14 +27,14 @@ export function LocationCard({
           href={location.map_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 inline-flex text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)]"
+          className="mt-3 inline-flex text-sm font-medium text-[var(--sending-blue)] hover:text-[var(--sending-blue-hover)] active:text-[var(--sending-blue-hover)]"
         >
           Get Directions
         </a>
 
         {location.leader_name ? (
           <div className="mt-5 flex items-center gap-3">
-            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[#fff4ec]">
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-[var(--sending-blue-light)]">
               {location.leader_photo_url ? (
                 <Image
                   src={location.leader_photo_url}

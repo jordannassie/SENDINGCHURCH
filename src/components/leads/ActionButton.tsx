@@ -1,5 +1,5 @@
 const tones = {
-  primary: "bg-[var(--sending-orange)] text-white hover:bg-[var(--sending-orange-hover)]",
+  primary: "bg-[var(--sending-blue)] text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)]",
   secondary: "border border-[#e8e8e8] bg-white text-[#111] hover:border-[#d4d4d4]",
 } as const;
 

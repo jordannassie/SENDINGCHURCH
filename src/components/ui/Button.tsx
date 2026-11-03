@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const variants = {
   primary:
-    "bg-[var(--sending-orange)] text-white hover:bg-[var(--sending-orange-hover)]",
+    "bg-[var(--sending-blue)] text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)]",
   secondary:
     "bg-white text-[#111] border border-[#e8e8e8] hover:border-[#d4d4d4]",
   white: "bg-white text-[#111] hover:bg-white/90",

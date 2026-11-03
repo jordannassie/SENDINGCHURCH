@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const SENDING_LOGO = "/sending-logo.png";
+export const SENDING_LOGO =
+  "https://eeeprmtermreavivzswn.supabase.co/storage/v1/object/public/STORAGE/Sending2/logos/sendinglogo2.png";
 
 type LogoProps = {
   href?: string;
@@ -21,8 +22,8 @@ export function Logo({
       <Image
         src={SENDING_LOGO}
         alt="Sending"
-        width={2001}
-        height={447}
+        width={2172}
+        height={724}
         className={`${imageClassName} w-auto ${invert ? "brightness-0 invert" : ""}`}
         priority
       />

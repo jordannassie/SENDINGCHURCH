@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { PASTORS } from "@/lib/demo/data";
+import { ONE_BILLION_LOGO, ONE_BILLION_URL, PASTORS } from "@/lib/demo/data";
 import { Logo } from "@/components/brand/Logo";
 import { SocialLinks } from "@/components/brand/SocialLinks";
 import { AccountLink } from "@/components/layout/AccountLink";
@@ -15,9 +16,21 @@ const NAV = [
 
 export function SiteFooter() {
   return (
-    <footer className="bg-[var(--sending-orange)] text-white">
+    <footer className="bg-[var(--sending-blue)] text-white">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-5 py-8 md:flex-row md:items-center md:justify-between">
-        <Logo invert href="/" imageClassName="h-7" />
+        <div className="flex flex-col items-start gap-4">
+          <Logo invert href="/" imageClassName="h-7" />
+          <a href={ONE_BILLION_URL} className="inline-flex items-center gap-2.5 text-sm text-white">
+            <span>A ministry of</span>
+            <Image
+              src={ONE_BILLION_LOGO}
+              alt="1Billion"
+              width={200}
+              height={72}
+              className="h-6 w-auto sm:h-8"
+            />
+          </a>
+        </div>
         <nav className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-white/90">
           {NAV.map((item) =>
             item.href.startsWith("tel:") ? (

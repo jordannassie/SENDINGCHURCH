@@ -14,7 +14,7 @@ import { BOOK_IMAGE, GATHERING_IMAGE, HERO_VIDEO, PASTORS, SEE_DO_SEND_IMAGE, ST
 import { formatTimeRange, getLocations } from "@/lib/locations";
 
 const FOCUS =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]";
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-blue)]";
 
 const PATHWAY = [
   {
@@ -82,7 +82,7 @@ export default function HomePage() {
             <h1 className="text-[3.25rem] font-semibold leading-[0.9] tracking-[-0.045em] sm:text-7xl lg:text-[5.15rem]">
               <span className="block">Come as</span>
               <span className="block">you are.</span>
-              <span className="mt-2 block text-[var(--sending-orange)]">Be sent.</span>
+              <span className="mt-2 block text-[var(--sending-blue)]">Be sent.</span>
             </h1>
             <p className="mt-6 max-w-sm text-lg leading-snug text-[#3a3a3a] sm:text-xl">
               Follow Jesus. Grow together.
@@ -90,7 +90,7 @@ export default function HomePage() {
             </p>
             <a
               href="#sunday"
-              className={`mt-8 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-orange)] px-5 py-3.5 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] sm:w-auto ${FOCUS}`}
+              className={`mt-8 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-blue)] px-5 py-3.5 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] sm:w-auto ${FOCUS}`}
             >
               Come this Sunday
               <ArrowUpRight size={16} aria-hidden />
@@ -130,7 +130,7 @@ export default function HomePage() {
             </article>
 
             <article className="flex flex-col rounded-[28px] bg-white p-6 sm:p-8">
-              <p className="inline-flex w-fit rounded-full bg-[var(--sending-orange)] px-3.5 py-1.5 text-sm font-medium text-white">
+              <p className="inline-flex w-fit rounded-full bg-[var(--sending-blue)] px-3.5 py-1.5 text-sm font-medium text-white">
                 Free when you visit on Sunday
               </p>
               <p className="mt-4 text-xs font-semibold tracking-[0.18em] text-[#9a9a9a]">
@@ -153,7 +153,7 @@ export default function HomePage() {
               </div>
               <Link
                 href="/#foundations"
-                className={`mt-5 inline-flex items-center gap-1 self-start rounded-sm text-sm font-medium text-[var(--sending-orange)] hover:text-[var(--sending-orange-hover)] ${FOCUS}`}
+                className={`mt-5 inline-flex items-center gap-1 self-start rounded-sm text-sm font-medium text-[var(--sending-blue)] hover:text-[var(--sending-blue-hover)] active:text-[var(--sending-blue-hover)] ${FOCUS}`}
               >
                 Explore Foundations
                 <ArrowUpRight size={16} aria-hidden />
@@ -200,11 +200,11 @@ export default function HomePage() {
             </p>
             <div className="mt-6 space-y-3 text-sm text-[#444]">
               <p className="flex items-center gap-2">
-                <MapPin size={16} className="text-[var(--sending-orange)]" aria-hidden />
+                <MapPin size={16} className="text-[var(--sending-blue)]" aria-hidden />
                 {PASTORS.address}
               </p>
               <p className="flex items-center gap-2">
-                <Phone size={16} className="text-[var(--sending-orange)]" aria-hidden />
+                <Phone size={16} className="text-[var(--sending-blue)]" aria-hidden />
                 <a href={PASTORS.phoneHref} className={`rounded-sm hover:text-[#111] ${FOCUS}`}>
                   {PASTORS.phone}
                 </a>
@@ -239,22 +239,22 @@ export default function HomePage() {
                   <>
                     <span
                       aria-hidden
-                      className="absolute top-5 bottom-[-2rem] left-[9px] w-px bg-[#ffd3b8] lg:hidden"
+                      className="absolute top-5 bottom-[-2rem] left-[9px] w-px bg-[var(--sending-blue-line)] lg:hidden"
                     />
                     <span
                       aria-hidden
-                      className="absolute top-[9px] left-[10px] hidden h-px w-[calc(100%+2rem)] bg-[#ffd3b8] lg:block"
+                      className="absolute top-[9px] left-[10px] hidden h-px w-[calc(100%+2rem)] bg-[var(--sending-blue-line)] lg:block"
                     />
                   </>
                 ) : null}
                 <span
                   aria-hidden
-                  className="relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--sending-orange)]"
+                  className="relative z-10 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[var(--sending-blue)]"
                 >
                   <span className="h-2 w-2 rounded-full bg-white" />
                 </span>
                 <div className="min-w-0 lg:mt-5">
-                  <p className="inline-flex rounded-full bg-[#fff1e8] px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-[var(--sending-orange)] uppercase">
+                  <p className="inline-flex rounded-full bg-[var(--sending-blue-light)] px-2.5 py-1 text-[11px] font-semibold tracking-[0.08em] text-[var(--sending-blue-dark)] uppercase">
                     {step.months}
                   </p>
                   <h3 className="mt-3 text-lg font-semibold tracking-tight">{step.title}</h3>
@@ -282,9 +282,9 @@ export default function HomePage() {
           </div>
           <Image
             src={SEE_DO_SEND_IMAGE}
-            alt="See, Do, Send, and Multiply. Watch a Bible group, practice leading together, and send with support."
-            width={1400}
-            height={1400}
+            alt="See, Do, and Send around Multiply. Watch a Bible group, practice leading together, and be sent with support."
+            width={1254}
+            height={1254}
             className="h-auto w-full object-contain"
           />
         </div>
@@ -295,7 +295,7 @@ export default function HomePage() {
       <SundayRsvp />
       <Beliefs />
 
-      <section className="bg-[var(--sending-orange)] text-white">
+      <section className="bg-[var(--sending-blue)] text-white">
         <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-medium text-white/85">This Sunday</p>

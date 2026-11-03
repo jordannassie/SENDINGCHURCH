@@ -38,7 +38,7 @@ export function DownloadGuideButton() {
         type="button"
         onClick={downloadGuide}
         disabled={busy}
-        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-orange)] px-5 text-sm font-medium text-white transition-colors hover:bg-[var(--sending-orange-hover)] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
+        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-blue)] px-5 text-sm font-medium text-white transition-colors hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] disabled:cursor-not-allowed disabled:opacity-70 sm:w-auto"
       >
         {busy ? "Preparing…" : "Download to Print"}
         {busy ? null : <Download aria-hidden size={16} />}

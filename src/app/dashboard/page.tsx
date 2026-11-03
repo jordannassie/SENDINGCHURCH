@@ -33,7 +33,7 @@ export default function DashboardPage() {
           className="flex items-center justify-between gap-4 rounded-2xl border border-[#eee] bg-white px-4 py-3 lg:min-w-[220px]"
         >
           <span className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--sending-blue-light)] text-[var(--sending-blue)]">
               <MapPin size={16} />
             </span>
             <span>
@@ -80,7 +80,7 @@ export default function DashboardPage() {
           <p className="mt-1 text-sm text-[#777]">Take one step this week.</p>
           <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-start gap-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#fff4ec] text-[var(--sending-orange)]">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--sending-blue-light)] text-[var(--sending-blue)]">
                 <Rocket size={18} />
               </span>
               <div>
@@ -171,7 +171,7 @@ export default function DashboardPage() {
           <ol className="mt-5 space-y-3">
             {START_CHECKLIST.map((item, index) => (
               <li key={item} className="flex items-start gap-3 text-sm">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#fff4ec] text-xs font-semibold text-[var(--sending-orange)]">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--sending-blue-light)] text-xs font-semibold text-[var(--sending-blue)]">
                   {index + 1}
                 </span>
                 <span className="pt-0.5">{item}</span>

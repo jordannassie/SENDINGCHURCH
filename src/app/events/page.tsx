@@ -26,11 +26,11 @@ export default function EventsPage() {
             <div className="p-5">
               <h2 className="text-xl font-semibold">{event.title}</h2>
               <p className="mt-3 flex items-center gap-2 text-sm text-[#666]">
-                <Calendar size={15} className="text-[var(--sending-orange)]" />
+                <Calendar size={15} className="text-[var(--sending-blue)]" />
                 {event.dateLabel} · {event.time}
               </p>
               <p className="mt-2 flex items-center gap-2 text-sm text-[#666]">
-                <MapPin size={15} className="text-[var(--sending-orange)]" />
+                <MapPin size={15} className="text-[var(--sending-blue)]" />
                 {event.location}
               </p>
             </div>

@@ -117,7 +117,7 @@ export function DashboardShell({
                 href={item.href}
                 className={`flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm ${
                   active
-                    ? "bg-[var(--sending-orange)] text-white"
+                    ? "bg-[var(--sending-blue)] text-white"
                     : "text-[#666] hover:bg-[#f7f7f7]"
                 }`}
               >
@@ -146,7 +146,7 @@ export function DashboardShell({
             <button
               type="button"
               onClick={() => void signOut()}
-              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-orange)] px-3 py-2 text-sm font-medium text-white md:hidden"
+              className="inline-flex items-center gap-1.5 rounded-full bg-[var(--sending-blue)] px-3 py-2 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] md:hidden"
             >
               <LogOut size={15} />
               Log Out

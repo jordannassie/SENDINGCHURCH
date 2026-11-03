@@ -215,7 +215,7 @@ function Field({
         <span
           title="Website"
           aria-label="Website"
-          className="group/website relative inline-flex h-11 w-6 shrink-0 items-center justify-center text-[var(--sending-orange)]"
+          className="group/website relative inline-flex h-11 w-6 shrink-0 items-center justify-center text-[var(--sending-blue)]"
         >
           <Globe size={15} aria-hidden="true" />
           <span
@@ -249,7 +249,7 @@ function CopyButton({ value, label }: { value: string; label: string }) {
     <button
       type="button"
       aria-label={label}
-      className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--sending-orange)]"
+      className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[var(--sending-blue)]"
       onClick={() => {
         void navigator.clipboard.writeText(value).then(() => {
           setCopied(true);

@@ -37,7 +37,7 @@ export function LocationSearch({
       </label>
       <button
         type="submit"
-        className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-orange)] px-6 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] sm:w-auto"
+        className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[var(--sending-blue)] px-6 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] sm:w-auto"
       >
         Find
       </button>

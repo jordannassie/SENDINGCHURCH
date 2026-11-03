@@ -5,9 +5,9 @@ import { HOW_IMAGE, TWELVE_WEEKS } from "@/lib/demo/data";
 
 const PHASE_STYLES = {
   save: {
-    wrap: "border-l-2 border-[var(--sending-orange)]",
-    title: "text-[var(--sending-orange)]",
-    badge: "bg-[var(--sending-orange)] text-white",
+    wrap: "border-l-2 border-[var(--sending-blue)]",
+    title: "text-[var(--sending-blue)]",
+    badge: "bg-[var(--sending-blue)] text-white",
   },
   train: {
     wrap: "border-l-2 border-[#111]",
@@ -15,9 +15,9 @@ const PHASE_STYLES = {
     badge: "bg-[#111] text-white",
   },
   send: {
-    wrap: "border-l-2 border-[var(--sending-orange)] bg-[#f5f5f5] rounded-r-2xl py-4 pr-5",
+    wrap: "border-l-2 border-[var(--sending-blue)] bg-[#f5f5f5] rounded-r-2xl py-4 pr-5",
     title: "text-[#111]",
-    badge: "bg-[#fff4ec] text-[var(--sending-orange)]",
+    badge: "bg-[var(--sending-blue-light)] text-[var(--sending-blue-dark)]",
   },
 } as const;
 
@@ -70,7 +70,7 @@ export function HowItWorks() {
             <div
               key={track.label}
               className={`rounded-[28px] border bg-white px-7 py-8 ${
-                track.accent === "church" ? "border-[#ffd8c2]" : "border-[#eee]"
+                track.accent === "church" ? "border-[var(--sending-blue-line)]" : "border-[#eee]"
               }`}
             >
               <p className="text-xs font-medium tracking-[0.2em] uppercase text-[#999]">
@@ -164,7 +164,7 @@ export function HowItWorks() {
 
           <p className="mt-10 text-base font-medium tracking-tight text-[#111]">
             Learn it → Live it → Lead it →{" "}
-            <span className="text-[var(--sending-orange)]">Multiply it.</span>
+            <span className="text-[var(--sending-blue)]">Multiply it.</span>
           </p>
         </div>
       </div>

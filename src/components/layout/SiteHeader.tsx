@@ -14,7 +14,7 @@ const NAV = [
 ];
 
 const focus =
-  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]";
+  "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-blue)]";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -40,7 +40,7 @@ export function SiteHeader() {
           <SocialLinks size={18} className="hidden text-[#111] md:flex" />
           <Link
             href="/#sunday"
-            className={`hidden items-center gap-1 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] md:inline-flex ${focus}`}
+            className={`hidden items-center gap-1 rounded-full bg-[var(--sending-blue)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] md:inline-flex ${focus}`}
           >
             Come this Sunday
             <ArrowUpRight size={15} aria-hidden />
@@ -81,7 +81,7 @@ export function SiteHeader() {
           <SocialLinks size={22} className="pt-3 text-[#111]" />
           <Link
             href="/#sunday"
-            className={`mt-2 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-orange)] px-4 py-3 text-sm font-medium text-white ${focus}`}
+            className={`mt-2 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-blue)] px-4 py-3 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] ${focus}`}
             onClick={() => setOpen(false)}
           >
             Come this Sunday

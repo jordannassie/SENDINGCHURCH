@@ -95,7 +95,7 @@ export function CsvImport({ onImported }: { onImported: () => void }) {
         }}
       >
         <span className="text-base font-medium">{busy ? "Importing…" : "Drop a Meta leads CSV"}</span>
-        <span className="mt-2 text-sm text-[var(--sending-orange)]">or tap to choose a file</span>
+        <span className="mt-2 text-sm text-[var(--sending-blue)]">or tap to choose a file</span>
         <input
           type="file"
           accept=".csv,text/csv"

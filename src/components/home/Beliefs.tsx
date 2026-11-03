@@ -70,12 +70,12 @@ function Dropdown({
 }) {
   return (
     <details className="group rounded-[24px] border border-white/15 bg-transparent open:border-white/30">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-5 text-lg font-semibold tracking-tight text-white sm:px-7 sm:text-xl [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-orange)]">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-5 text-lg font-semibold tracking-tight text-white sm:px-7 sm:text-xl [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sending-blue)]">
         {title}
         <ChevronDown
           aria-hidden
           size={20}
-          className="shrink-0 text-[var(--sending-orange)] transition-transform group-open:rotate-180"
+          className="shrink-0 text-[var(--sending-blue)] transition-transform group-open:rotate-180"
         />
       </summary>
       <div className="px-5 pb-7 sm:px-7">{children}</div>

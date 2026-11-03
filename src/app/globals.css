@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --sending-orange: #ff6a00;
-  --sending-orange-hover: #e85f00;
+  --sending-blue: #1877f2;
+  --sending-blue-hover: #166fe5;
+  --sending-blue-dark: #145dbf;
+  --sending-blue-light: #e7f0ff;
+  --sending-blue-line: #c5d9fb;
   --sending-bg: #fafafa;
   --background: #ffffff;
   --foreground: #111111;

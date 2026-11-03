@@ -57,7 +57,7 @@ export function InstagramReels() {
             href={PROFILE_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--sending-orange)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--sending-orange-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="inline-flex shrink-0 items-center gap-1 rounded-full bg-[var(--sending-blue)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             Follow
             <ArrowUpRight size={16} aria-hidden />
@@ -135,7 +135,7 @@ export function InstagramReels() {
               aria-current={dotIndex === index}
               onClick={() => scrollToIndex(dotIndex)}
               className={`h-2 w-2 rounded-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
-                dotIndex === index ? "bg-[var(--sending-orange)]" : "bg-white/35"
+                dotIndex === index ? "bg-[var(--sending-blue)]" : "bg-white/35"
               }`}
             />
           ))}
