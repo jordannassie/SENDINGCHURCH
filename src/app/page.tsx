@@ -79,22 +79,28 @@ export default function HomePage() {
         />
         <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-5 py-12 sm:py-16 lg:grid-cols-[1.05fr_0.95fr] lg:gap-14 lg:py-20">
           <div className="min-w-0">
-            <h1 className="text-[3.25rem] font-semibold leading-[0.9] tracking-[-0.045em] sm:text-7xl lg:text-[5.15rem]">
-              <span className="block">Come as</span>
-              <span className="block">you are.</span>
-              <span className="mt-2 block text-[var(--sending-blue)]">Be sent.</span>
+            <h1 className="max-w-xl text-[3.25rem] font-semibold leading-[0.95] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
+              Join a <span className="text-[var(--sending-blue)]">Bible Study</span> on Sundays.
             </h1>
             <p className="mt-6 max-w-sm text-lg leading-snug text-[#3a3a3a] sm:text-xl">
               Follow Jesus. Grow together.
               <span className="block">Help others do the same.</span>
             </p>
-            <a
-              href="#sunday"
-              className={`mt-8 inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-blue)] px-5 py-3.5 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] sm:w-auto ${FOCUS}`}
-            >
-              Come this Sunday
-              <ArrowUpRight size={16} aria-hidden />
-            </a>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <a
+                href="#sunday"
+                className={`inline-flex w-full items-center justify-center gap-1 rounded-full bg-[var(--sending-blue)] px-5 py-3.5 text-sm font-medium text-white hover:bg-[var(--sending-blue-hover)] active:bg-[var(--sending-blue-hover)] sm:w-auto ${FOCUS}`}
+              >
+                Join a Bible Study
+                <ArrowUpRight size={16} aria-hidden />
+              </a>
+              <Link
+                href="/start-a-church"
+                className={`inline-flex w-full items-center justify-center rounded-full border border-[var(--sending-blue)] bg-white px-5 py-3.5 text-sm font-medium text-[var(--sending-blue)] hover:border-[var(--sending-blue-hover)] hover:text-[var(--sending-blue-hover)] active:border-[var(--sending-blue-hover)] active:text-[var(--sending-blue-hover)] sm:w-auto ${FOCUS}`}
+              >
+                Start Your Bible Study
+              </Link>
+            </div>
             <p className="mt-4 text-sm text-[#6b6b6b]">{sundayLine}</p>
           </div>
           <HeroVideo />
