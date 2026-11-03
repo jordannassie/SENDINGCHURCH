@@ -98,8 +98,11 @@ export function SundayRsvp() {
           id="sunday-heading"
           className="text-center text-5xl font-semibold tracking-[-0.04em] text-white sm:text-7xl sm:leading-[0.92]"
         >
-          Start with a Sunday.
+          Join us on Sundays.
         </h2>
+        <p className="mt-4 max-w-md text-center text-lg leading-snug text-balance text-white/70 sm:mt-5 sm:text-xl">
+          A Bible study. A community. A place for you.
+        </p>
 
         <div
           id="sunday-rsvp"
