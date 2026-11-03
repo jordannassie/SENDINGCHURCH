@@ -117,7 +117,7 @@ export default function HomePage() {
       <section className="bg-white">
         <div className="mx-auto max-w-6xl px-5 py-12 sm:py-16">
           <h2 className="text-center text-3xl font-semibold tracking-tight sm:text-4xl">
-            Simple enough to go everywhere.
+            A simple Bible Study Church.
           </h2>
           <ul className="mx-auto mt-8 grid max-w-3xl grid-cols-2 gap-x-4 gap-y-8 md:mt-10 md:grid-cols-4 md:gap-8">
             {SIMPLE_POINTS.map((point) => {
